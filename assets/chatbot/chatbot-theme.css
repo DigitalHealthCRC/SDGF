@@ -1,0 +1,45 @@
+/* === SynD Chatbot Theme Override (Shadow DOM-safe) === */
+
+/* Target the whole web component */
+openai-chatkit {
+  --chatkit-color-bg: #0d0d0f;        /* main dark bg */
+  --chatkit-color-surface: #17171b;
+  --chatkit-color-surface-hover: #222;
+  --chatkit-color-border: rgba(255,255,255,0.08);
+  --chatkit-color-accent: #0d9488;    /* teal accent */
+  --chatkit-color-text-primary: #fafafa;
+  --chatkit-color-text-secondary: #c8c8c8;
+  --chatkit-color-launcher-bg: var(--chatkit-color-accent);
+  --chatkit-color-launcher-text: #ffffff;
+  --chatkit-radius: 16px;
+  --chatkit-shadow: 0 12px 32px rgba(0,0,0,0.4);
+
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  width: 400px !important;
+  height: 600px !important;
+  box-shadow: var(--chatkit-shadow) !important;
+  border-radius: var(--chatkit-radius) !important;
+  overflow: hidden !important;
+  z-index: 9999 !important;
+}
+
+/* light mode adjustments */
+@media (prefers-color-scheme: light) {
+  openai-chatkit {
+    --chatkit-color-bg: #ffffff;
+    --chatkit-color-surface: #f7f7f7;
+    --chatkit-color-border: rgba(0,0,0,0.08);
+    --chatkit-color-text-primary: #111;
+    --chatkit-color-text-secondary: #444;
+    --chatkit-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+}
+
+/* launcher hover */
+openai-chatkit::part(launcher-button):hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
