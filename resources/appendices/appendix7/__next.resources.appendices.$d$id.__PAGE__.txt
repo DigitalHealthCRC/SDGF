@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[96054,["/SDGF/_next/static/chunks/b93bbc31d818e629.js","/SDGF/_next/static/chunks/0af1e25a07c43952.js"],"AppendixDetail"]
+3:I[97367,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/926350dec3317ae7.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"buildId":"-xjeyI5s5bu3nMAi0G5bW","rsc":["$","$1","c",{"children":[["$","$L2",null,{"appendix":{"id":"appendix7","title":"Appendix 7 - De-identification and Evaluation Guide","purpose":"Provides guidance on de-identification, minimisation, and evaluation of datasets to ensure compliance with privacy standards before data synthesis.","template":false}}],[["$","script","script-0",{"src":"/SDGF/_next/static/chunks/0af1e25a07c43952.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+5:null
