@@ -1,6 +1,16 @@
 {
-  "id": "appendix9",
-  "title": "Appendix 9 - Lawful Pathways Reference",
-  "purpose": "Summarises lawful and ethical pathways for data access, use, and sharing across jurisdictions, referencing relevant legislation and governance mechanisms.",
-  "template": false
+  "id": 9,
+  "title": "Appendix 9 — The Lawful Pathways Explained",
+  "purpose": "Explain lawful routes for using or disclosing synthetic data when re-identification risk remains more than very low, including typical approvals and conditions.",
+  "type": "read",
+  "component": "ReadOnlyContent",
+  "template": false,
+  "personaVisibility": ["custodian", "requestor", "scientist"],
+  "exportKey": "appendix9_lawful_pathways",
+  "body": [
+    "When re-identification risk is more than very low, synthetic data must be treated as personal information under privacy law. Use or sharing may proceed only under a suitable lawful pathway and with appropriate approvals.",
+    "Examples include: seeking a waiver of consent via an HREC for research, relying on statutory authorities where applicable, or proceeding under explicit legal permissions with proportionate safeguards.",
+    "This appendix clarifies typical documentation, governance conditions, and oversight mechanisms for different pathways, and links to the Decision Tree (Appendix 8) for guided routing when scenarios are complex.",
+    "Organisations should verify local legislative requirements, conditions of prior approvals, and any cross-jurisdictional constraints before proceeding."
+  ]
 }

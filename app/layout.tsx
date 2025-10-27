@@ -28,6 +28,11 @@ export const metadata: Metadata = {
   title: "SynD - Synthetic Health Data Governance Framework",
   description: "A comprehensive framework for safely generating and using synthetic health data in Australia",
   generator: "v0.app",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -35,6 +40,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href={assetPath("/print.css")} media="print" />
+        <link rel="icon" href={assetPath("/SynD-t.png")} />
+        <link rel="apple-touch-icon" href={assetPath("/SynD-t.png")} />
       </head>
       <body className={inter.className}>
         <ProgressProvider>

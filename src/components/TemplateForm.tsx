@@ -156,7 +156,7 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
         onChange={(event) => setFieldValue(field.storageKey, event.target.value)}
         placeholder={field.placeholder ?? ""}
         type={field.type === "date" ? "date" : "text"}
-        className="rounded-lg border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="rounded-lg border border-chart-3/60 bg-chart-3/10 text-foreground placeholder:text-foreground/70 focus-visible:border-chart-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-chart-3/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       />
     )
   }
@@ -169,7 +169,7 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
         value={typeof value === "string" ? value : value ? "true" : ""}
         onChange={(event) => setFieldValue(field.storageKey, event.target.value)}
         placeholder={field.placeholder ?? ""}
-        className="min-h-[140px] resize-y rounded-lg border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="min-h-[140px] resize-y rounded-lg border border-chart-3/60 bg-chart-3/10 text-foreground placeholder:text-foreground/70 focus-visible:border-chart-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-chart-3/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       />
     )
   }
@@ -179,12 +179,16 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
 
     return (
       <Select value={stringValue} onValueChange={(option) => setFieldValue(field.storageKey, option)}>
-        <SelectTrigger className="w-full">
+        <SelectTrigger className="w-full border border-chart-3/60 bg-chart-3/10 text-foreground focus:border-chart-3 focus:ring-2 focus:ring-chart-3/40">
           <SelectValue placeholder={field.placeholder ?? "Select an option"} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="border border-chart-3/60 bg-background">
           {field.options?.map((option) => (
-            <SelectItem key={`${field.key}-${option.value}`} value={option.value}>
+            <SelectItem
+              key={`${field.key}-${option.value}`}
+              value={option.value}
+              className="data-[state=checked]:bg-chart-3/20 data-[highlighted]:bg-chart-3/20"
+            >
               {option.label}
             </SelectItem>
           ))}

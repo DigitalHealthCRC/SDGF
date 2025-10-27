@@ -1,6 +1,16 @@
 {
-  "id": "appendix3",
-  "title": "Appendix 3 - Policy and Legal Framework",
-  "purpose": "Summarises the relevant Australian legal, regulatory, and policy instruments that govern the generation and use of synthetic health data.",
-  "template": false
+  "id": 3,
+  "title": "Appendix 3 — Policy and Legal Framework",
+  "purpose": "Explain the policy and legal context underpinning the Framework and how it guides lawful creation, use, and sharing of synthetic health data.",
+  "type": "read",
+  "component": "ReadOnlyContent",
+  "template": false,
+  "personaVisibility": ["custodian", "requestor", "scientist"],
+  "exportKey": "appendix3_policy_legal",
+  "body": [
+    "The creation, use, and sharing of synthetic health data must be lawful. Organisations remain responsible for ensuring that activities undertaken under this Framework align with applicable privacy laws and organisational policies.",
+    "This appendix outlines the policy landscape, privacy principles, and governance expectations that apply across the Five Steps. It also introduces how approvals, public interest tests, consent requirements, and ethics review may intersect with synthetic data projects.",
+    "When re-identification risk remains more than very low, synthetic data must be treated as personal information and handled under an appropriate lawful pathway before use or sharing.",
+    "This appendix should be read together with Appendix 8 (Decision Tree) and Appendix 9 (Lawful Pathways) when complex requests arise."
+  ]
 }
