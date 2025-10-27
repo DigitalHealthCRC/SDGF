@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { BookOpen, GitBranch, Shield, FileText, Scale, Users } from "lucide-react"
+import { BookOpen, GitBranch, Shield, FileText, Scale, Users, Layers } from "lucide-react"
 
 import ExportAllButton from "@/src/components/ExportAllButton"
 
@@ -18,6 +18,13 @@ export default function Resources() {
       icon: Scale,
       href: "/resources/lawful-pathways",
       color: "from-chart-2/20 to-chart-2/5",
+    },
+    {
+      title: "Appendices",
+      description: "Access all supporting templates, guidance, and tools",
+      icon: Layers,
+      href: "/resources/appendices",
+      color: "from-chart-3/20 to-chart-3/5",
     },
     {
       title: "Decision Tree",

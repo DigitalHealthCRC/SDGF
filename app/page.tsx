@@ -1,53 +1,72 @@
 "use client"
+
 import Link from "next/link"
-import { useProgress } from "@/lib/progress-context"
+import { useRouter } from "next/navigation"
 import { Users, Shield, FlaskConical, ArrowRight, CheckCircle2 } from "lucide-react"
 
-export default function Home() {
-  const { setPersona } = useProgress()
+import { usePersona, type PersonaId } from "@/lib/persona-context"
 
-  const personas = [
-    {
-      id: "requestor",
-      title: "Data Requestor / End User",
-      icon: Users,
-      description: "I need synthetic health data for research, education, or development",
-      tasks: [
-        "Check eligibility for synthetic data use",
-        "Specify data needs and requirements",
-        "Understand data use obligations",
-        "Generate request specification",
-      ],
-      color: "from-chart-1/20 to-chart-1/5",
-    },
-    {
-      id: "custodian",
-      title: "Data Custodian / Provider",
-      icon: Shield,
-      description: "I manage and govern synthetic health data generation and sharing",
-      tasks: [
-        "Assess use cases and impacts",
-        "Validate source data quality",
-        "Document synthesis approach",
-        "Manage re-identification risks",
-        "Approve safe data sharing",
-      ],
-      color: "from-chart-2/20 to-chart-2/5",
-    },
-    {
-      id: "scientist",
-      title: "Data Scientist / Ethics Committee",
-      icon: FlaskConical,
-      description: "I provide technical expertise or ethical oversight",
-      tasks: [
-        "Technical assessments",
-        "Re-identification risk evaluation",
-        "Review lawful pathways",
-        "Ethics review and approval",
-      ],
-      color: "from-chart-3/20 to-chart-3/5",
-    },
-  ]
+const personaMeta: Record<
+  PersonaId,
+  {
+    title: string
+    icon: typeof Users
+    description: string
+    tasks: string[]
+    color: string
+  }
+> = {
+  requestor: {
+    title: "Data Requestor / End User",
+    icon: Users,
+    description: "I need synthetic health data for research, education, or development.",
+    tasks: [
+      "Check eligibility for synthetic data use",
+      "Specify data needs and requirements",
+      "Understand data use obligations",
+      "Generate request specification",
+    ],
+    color: "from-chart-1/20 to-chart-1/5",
+  },
+  custodian: {
+    title: "Data Custodian / Provider",
+    icon: Shield,
+    description: "I manage and govern synthetic health data generation and sharing.",
+    tasks: [
+      "Assess use cases and impacts",
+      "Validate source data quality",
+      "Document synthesis approach",
+      "Manage re-identification risks",
+      "Approve safe data sharing",
+    ],
+    color: "from-chart-2/20 to-chart-2/5",
+  },
+  scientist: {
+    title: "Data Scientist / Ethics Committee",
+    icon: FlaskConical,
+    description: "I provide technical expertise or ethical oversight.",
+    tasks: [
+      "Lead technical assessments",
+      "Evaluate re-identification risk results",
+      "Review lawful pathways and controls",
+      "Support ethics review and approval",
+    ],
+    color: "from-chart-3/20 to-chart-3/5",
+  },
+}
+
+export default function Home() {
+  const { personas, persona, setPersonaById } = usePersona()
+  const router = useRouter()
+
+  const handleSelect = (id: PersonaId) => {
+    const chosen = personas.find((p) => p.id === id)
+    setPersonaById(id)
+
+    const landing = chosen?.defaultLanding ?? "/steps/1"
+    const url = landing.includes("?") ? landing : `${landing}?persona=${id}`
+    router.push(url)
+  }
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-7xl">
@@ -66,40 +85,45 @@ export default function Home() {
       <div className="mb-16">
         <h2 className="text-2xl font-semibold mb-6 text-center">Choose Your Role</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {personas.map((persona) => {
-            const Icon = persona.icon
+          {personas.map((personaConfig) => {
+            const meta = personaMeta[personaConfig.id]
+            if (!meta) return null
+            const Icon = meta.icon
+            const isActive = persona?.id === personaConfig.id
             return (
-              <Link
-                key={persona.id}
-                href={`/steps/1?persona=${persona.id}`}
-                onClick={() => setPersona(persona.id as any)}
-                className="group"
+              <button
+                key={personaConfig.id}
+                type="button"
+                onClick={() => handleSelect(personaConfig.id)}
+                className="group text-left"
               >
                 <div
-                  className={`h-full p-6 rounded-lg border-2 bg-gradient-to-br ${persona.color} hover:border-primary transition-all hover:shadow-lg`}
+                  className={`h-full rounded-lg border-2 bg-gradient-to-br ${meta.color} transition-all hover:border-primary hover:shadow-lg ${
+                    isActive ? "border-primary" : "border-border"
+                  }`}
                 >
-                  <div className="flex items-start gap-4 mb-4">
+                  <div className="flex items-start gap-4 p-6 pb-4">
                     <div className="p-3 rounded-lg bg-background/80">
                       <Icon className="w-6 h-6" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-lg mb-2">{persona.title}</h3>
-                      <p className="text-sm text-muted-foreground">{persona.description}</p>
+                      <h3 className="font-semibold text-lg mb-2">{meta.title}</h3>
+                      <p className="text-sm text-muted-foreground">{personaConfig.description ?? meta.description}</p>
                     </div>
                   </div>
-                  <ul className="space-y-2 mb-4">
-                    {persona.tasks.map((task, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-sm">
+                  <ul className="space-y-2 px-6 pb-6">
+                    {meta.tasks.map((task, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-sm text-foreground/90">
                         <CheckCircle2 className="w-4 h-4 mt-0.5 text-chart-2 flex-shrink-0" />
                         <span>{task}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className="flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all">
-                    Get Started <ArrowRight className="w-4 h-4" />
+                  <div className="flex items-center gap-2 px-6 pb-6 text-primary font-medium group-hover:gap-3 transition-all">
+                    {isActive ? "Continue" : "Select Persona"} <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
-              </Link>
+              </button>
             )
           })}
         </div>

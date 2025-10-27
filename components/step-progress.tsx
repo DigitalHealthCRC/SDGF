@@ -2,10 +2,12 @@
 
 import Link from "next/link"
 import { useProgress } from "@/lib/progress-context"
+import { usePersona } from "@/lib/persona-context"
 import { CheckCircle2, Lock } from "lucide-react"
 
 export function StepProgress({ currentStep }: { currentStep: number }) {
   const { stepCompletion } = useProgress()
+  const { isStepVisible } = usePersona()
 
   const steps = [
     { num: 1, title: "Use Case" },
@@ -14,6 +16,7 @@ export function StepProgress({ currentStep }: { currentStep: number }) {
     { num: 4, title: "Re-ID Risk" },
     { num: 5, title: "Safety" },
   ]
+  const visibleSteps = steps.filter((step) => isStepVisible(step.num))
 
   const isStepAccessible = (stepNum: number) => {
     if (stepNum === 1) return true
@@ -21,10 +24,10 @@ export function StepProgress({ currentStep }: { currentStep: number }) {
   }
 
   return (
-    <div className="bg-muted/30 border-b">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between max-w-4xl mx-auto">
-          {steps.map((step, idx) => {
+    <div className="border-b bg-muted/30">
+      <div className="mx-auto w-full max-w-screen-2xl px-4 py-4 lg:px-8">
+        <div className="mx-auto flex max-w-none items-center justify-between gap-4">
+          {visibleSteps.map((step, idx) => {
             const isCompleted = stepCompletion[step.num]
             const isCurrent = step.num === currentStep
             const isAccessible = isStepAccessible(step.num)

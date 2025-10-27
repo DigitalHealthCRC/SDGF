@@ -1,5 +1,5 @@
 {
-  "title": "Step 1 – Assess the Use Case",
+  "title": "Step 1 - Assess the Use Case",
   "summary": "Identify the intended purpose for synthetic health data and confirm that synthetic data is the right approach. Evaluate ethical, legal and governance alignment before proceeding.",
   "checklist": [
     "Define the proposed purpose for using synthetic data.",

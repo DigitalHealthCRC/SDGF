@@ -1,12 +1,12 @@
 {
-  "title": "Step 4 – Assess and Manage Re-identification Risk",
+  "title": "Step 4 - Assess and Manage Re-identification Risk",
   "summary": "Evaluate the residual risk of re-identification in the synthetic dataset using quantitative and qualitative assessment methods. Proceed only if risk is very low.",
   "checklist": [
     "Apply re-identification risk metrics suitable for synthetic data.",
     "Compare synthetic and real datasets for similarity and potential linkage.",
-    "Review results against ‘very low’ threshold as defined in the Framework.",
+    "Review results against the 'very low' threshold as defined in the Framework.",
     "If risk exceeds threshold, adjust synthesis parameters and retest.",
-    "Document outcomes and sign-off by responsible governance body."
+    "Document outcomes and sign-off by the responsible governance body."
   ],
   "readMore": ["/resources/appendices/appendix10"]
 }

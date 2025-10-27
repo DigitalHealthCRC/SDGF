@@ -1,6 +1,6 @@
 {
   "id": "appendix8",
-  "title": "Appendix 8 – Decision Tree for Complex Scenarios",
+  "title": "Appendix 8 - Decision Tree for Complex Scenarios",
   "purpose": "An interactive decision-support tool guiding users through complex or edge-case scenarios where the appropriate pathway for synthetic data generation or sharing may be unclear.",
   "template": true
 }

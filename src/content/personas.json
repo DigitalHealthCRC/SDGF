@@ -1,23 +1,30 @@
-[
-  {
-    "id": "custodian",
-    "name": "Data Custodian",
-    "description": "Manages and governs source health data, ensures lawful access and preparation before synthesis.",
-    "steps": [2, 4, 5],
-    "appendices": [6, 7, 10, 11]
-  },
-  {
-    "id": "requestor",
-    "name": "Data Requestor",
-    "description": "Requests synthetic data for research, product development or analysis.",
-    "steps": [1, 3, 4, 5],
-    "appendices": [4, 5, 8, 10, 11]
-  },
-  {
-    "id": "scientist",
-    "name": "Data Scientist / Generator",
-    "description": "Designs and generates synthetic datasets while maintaining privacy and data utility.",
-    "steps": [2, 3, 4, 5],
-    "appendices": [6, 8, 10]
-  }
-]
+
+
+{
+  "personas": [
+    {
+      "id": "custodian",
+      "label": "Data Custodian",
+      "description": "Owns the dataset governance and release obligations.",
+      "allowedSteps": [1, 2, 3, 4, 5],
+      "allowedAppendices": [1, 2, 3, 4, 5, 6, 8, 9, 10, 11],
+      "defaultLanding": "/steps/1"
+    },
+    {
+      "id": "requestor",
+      "label": "Data Requestor",
+      "description": "Seeks access to synthetic data for a stated purpose.",
+      "allowedSteps": [1, 2, 3, 5],
+      "allowedAppendices": [1, 3, 4, 6, 8, 10],
+      "defaultLanding": "/steps/1"
+    },
+    {
+      "id": "scientist",
+      "label": "Data Scientist",
+      "description": "Designs generation/utility/validation of synthetic data.",
+      "allowedSteps": [1, 2, 3, 4, 5],
+      "allowedAppendices": [1, 3, 4, 5, 6, 8, 10, 11],
+      "defaultLanding": "/steps/1"
+    }
+  ]
+}

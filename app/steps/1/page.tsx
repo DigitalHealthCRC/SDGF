@@ -6,6 +6,7 @@ import { AlertCircle, CheckCircle2, Download, Printer, Save } from "lucide-react
 
 import { StepProgress } from "@/components/step-progress"
 import { useProgress } from "@/lib/progress-context"
+import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import stepDataJson from "@/src/content/framework/step1.json"
 
@@ -36,6 +37,47 @@ const formatReadMoreLabel = (href: string) => {
 export default function Step1Page() {
   const stepNumber = 1
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
+  const { persona, isStepVisible } = usePersona()
+
+  const fallbackStep = useMemo(() => {
+    if (!persona) return stepNumber
+    return persona.allowedSteps.find((n) => n > stepNumber) ?? persona.allowedSteps[0] ?? stepNumber
+  }, [persona, stepNumber])
+
+  if (persona && !isStepVisible(stepNumber)) {
+    return (
+      <div className="space-y-6">
+        <StepProgress currentStep={fallbackStep} />
+        <TwoColumnLayout
+          title={`Step ${stepNumber} is not required for ${persona.label}`}
+          description="This persona skips certain framework activities. Continue with the recommended steps below or switch personas to see the full pathway."
+          left={(
+            <div className="space-y-3 text-sm text-muted-foreground">
+              <p>The {persona.label} persona focuses on a subset of the framework that matches the responsibilities of that role.</p>
+              <p>You can return to the landing page to choose a different persona if you need full framework access.</p>
+            </div>
+          )}
+          right={(
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">Open the next recommended step to continue:</p>
+              <Link
+                href={`/steps/${fallbackStep}?persona=${persona.id}`}
+                className="inline-flex items-center justify-center rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600"
+              >
+                Go to Step {fallbackStep}
+              </Link>
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center rounded-lg border border-border/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60"
+              >
+                Change persona
+              </Link>
+            </div>
+          )}
+        />
+      </div>
+    )
+  }
   const saved = (getFormData(stepNumber) as StepFormState) || { checklist: [] }
   const [formState, setFormState] = useState<StepFormState>(() => ({
     checklist: ensureChecklist(saved.checklist, stepData.checklist.length),
@@ -208,11 +250,10 @@ export default function Step1Page() {
         type="button"
         onClick={handleComplete}
         disabled={!allComplete || stepCompletion[stepNumber]}
-        className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2 ${
-          allComplete && !stepCompletion[stepNumber]
+        className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2 ${allComplete && !stepCompletion[stepNumber]
             ? "bg-emerald-500 text-white hover:bg-emerald-600"
             : "bg-muted text-muted-foreground cursor-not-allowed"
-        }`}
+          }`}
         aria-disabled={!allComplete || stepCompletion[stepNumber]}
       >
         {stepCompletion[stepNumber] ? (
@@ -356,3 +397,6 @@ export default function Step1Page() {
     </div>
   )
 }
+
+
+

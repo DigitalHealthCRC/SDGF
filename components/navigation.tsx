@@ -5,12 +5,14 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X, ChevronDown } from "lucide-react"
 import { useProgress } from "@/lib/progress-context"
+import { usePersona } from "@/lib/persona-context"
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [stepsMenuOpen, setStepsMenuOpen] = useState(false)
   const pathname = usePathname()
   const { stepCompletion } = useProgress()
+  const { isStepVisible } = usePersona()
 
   const steps = [
     { num: 1, title: "Assess Use Case", path: "/steps/1" },
@@ -19,6 +21,7 @@ export function Navigation() {
     { num: 4, title: "Assess Re-ID Risks", path: "/steps/4" },
     { num: 5, title: "Manage Residual Risks", path: "/steps/5" },
   ]
+  const visibleSteps = steps.filter((step) => isStepVisible(step.num))
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
@@ -48,7 +51,7 @@ export function Navigation() {
               </button>
               {stepsMenuOpen && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-popover border rounded-lg shadow-lg py-2">
-                  {steps.map((step) => (
+                  {visibleSteps.map((step) => (
                     <Link
                       key={step.num}
                       href={step.path}
@@ -71,9 +74,15 @@ export function Navigation() {
 
             <Link
               href="/resources"
-              className={`text-sm font-medium hover:text-primary transition-colors ${pathname.startsWith("/resources") ? "text-primary" : ""}`}
+              className={`text-sm font-medium hover:text-primary transition-colors ${pathname === "/resources" ? "text-primary" : ""}`}
             >
               Resources
+            </Link>
+            <Link
+              href="/resources/appendices"
+              className={`text-sm font-medium hover:text-primary transition-colors ${pathname.startsWith("/resources/appendices") ? "text-primary" : ""}`}
+            >
+              Appendices
             </Link>
 
             <Link
@@ -106,7 +115,7 @@ export function Navigation() {
               </Link>
               <div className="space-y-2">
                 <div className="text-sm font-medium text-muted-foreground">Five Steps</div>
-                {steps.map((step) => (
+                {visibleSteps.map((step) => (
                   <Link
                     key={step.num}
                     href={step.path}
@@ -126,6 +135,9 @@ export function Navigation() {
               </div>
               <Link href="/resources" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Resources
+              </Link>
+              <Link href="/resources/appendices" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
+                Appendices
               </Link>
               <Link href="/templates" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Templates

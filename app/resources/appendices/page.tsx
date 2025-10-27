@@ -1,10 +1,10 @@
 import fs from "fs"
 import path from "path"
-import Link from "next/link"
+import { AppendicesClient } from "./appendices-client"
 
 export const dynamic = "force-static"
 
-type AppendixRecord = {
+export type AppendixRecord = {
   id: string
   title: string
   purpose: string
@@ -53,30 +53,5 @@ const readAppendices = () => {
 export default function AppendicesIndexPage() {
   const appendices = readAppendices()
 
-  return (
-    <main className="max-w-4xl mx-auto p-8 space-y-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-semibold">Appendices</h1>
-        <p className="text-muted-foreground">
-          Reference materials, templates, and tools supporting the SynD Synthetic Data Governance Framework.
-        </p>
-      </header>
-
-      <ul className="space-y-4">
-        {appendices.map((appendix) => (
-          <li key={appendix.id} className="border rounded-xl p-4 hover:shadow-md transition">
-            <Link href={`/resources/appendices/${appendix.id}`} className="block">
-              <div className="flex items-center justify-between gap-4">
-                <h2 className="text-lg font-medium">{appendix.title}</h2>
-                {appendix.template && (
-                  <span className="text-sm bg-emerald-100 text-emerald-800 px-2 py-1 rounded-md">Template</span>
-                )}
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">{appendix.purpose}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </main>
-  )
+  return <AppendicesClient appendices={appendices} />
 }

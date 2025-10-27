@@ -1,5 +1,5 @@
 {
-  "title": "Step 3 – Generate Synthetic Health Data",
+  "title": "Step 3 - Generate Synthetic Health Data",
   "summary": "Apply approved synthesis techniques to generate synthetic data while maintaining data utility and privacy. Document processes for transparency.",
   "checklist": [
     "Select synthesis method appropriate to data type and intended use.",

@@ -1,7 +1,9 @@
-"use client"
+"use client";
 
-import TwoColumnLayout from "@/src/components/TwoColumnLayout"
-import TemplateForm from "@/src/components/TemplateForm"
+import Link from "next/link";
+
+import TwoColumnLayout from "@/src/components/TwoColumnLayout";
+import TemplateForm from "@/src/components/TemplateForm";
 
 export default function Appendix5Page() {
   const fields = [
@@ -9,46 +11,47 @@ export default function Appendix5Page() {
     {
       label: "Positive Impacts (benefits, efficiency, innovation)",
       type: "textarea",
-      placeholder: "Describe the benefits you expect from this initiative...",
+      placeholder: "Document anticipated benefits, outcomes, or efficiencies.",
     },
     {
       label: "Negative Impacts or Risks (privacy, ethics, misuse)",
       type: "textarea",
-      placeholder: "Outline the potential harms or risks identified...",
+      placeholder: "Describe potential harms, ethical concerns, or unintended consequences.",
     },
     {
       label: "Mitigation Actions Planned",
       type: "textarea",
-      placeholder: "Document the steps you will take to address any risks...",
+      placeholder: "Outline mitigation strategies and accountable teams.",
     },
     {
       label: "Stakeholders Consulted",
       type: "textarea",
-      placeholder: "List the stakeholders who have been involved in this assessment...",
+      placeholder: "List stakeholders and summarise their feedback.",
     },
     { label: "Date of Assessment", type: "date" },
-  ]
+  ];
 
-  const right = <TemplateForm id="appendix5" fields={fields} />
+  const right = <TemplateForm id="appendix5-impact-assessment" fields={fields} />;
 
   const left = (
     <div className="space-y-3 text-sm text-muted-foreground">
-      <p>Use this template to capture the key anticipated benefits and risks associated with your synthetic data project.</p>
-      <p className="border-l-2 border-emerald-500/50 bg-emerald-500/10 p-3 text-emerald-200">
-        Tip: Include tangible outcomes and impacted stakeholders to support governance review.
+      <p>Use this template to evaluate the positive outcomes and potential harms of your synthetic data initiative.</p>
+      <p className="rounded-md border border-emerald-500/40 bg-emerald-500/10 p-3 text-emerald-200">
+        Tip: Capture tangible benefits and risks so governance reviewers can weigh trade-offs quickly.
       </p>
-      <a href="/resources/appendices" className="inline-flex items-center text-emerald-400 hover:underline">
-        ← Back to Appendices
-      </a>
+      <Link href="/resources/appendices" className="inline-flex items-center gap-2 text-emerald-400 hover:underline">
+        <span aria-hidden="true">{"\u2190"}</span>
+        <span>Back to Appendices</span>
+      </Link>
     </div>
-  )
+  );
 
   return (
     <TwoColumnLayout
-      title="Appendix 5 – Impact Assessment"
-      description="Evaluate benefits, risks, and mitigation actions before proceeding with synthesis."
+      title="Appendix 5 - Impact Assessment"
+      description="Evaluate expected benefits, harms, and mitigation actions before progressing."
       left={left}
       right={right}
     />
-  )
+  );
 }

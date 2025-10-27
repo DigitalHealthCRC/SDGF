@@ -1,6 +1,6 @@
 {
   "id": "appendix10",
-  "title": "Appendix 10 – Safety Assessment Template",
+  "title": "Appendix 10 - Safety Assessment Template",
   "purpose": "Template for assessing the privacy and safety of synthetic data outputs, including re-identification risk analysis and approval sign-off.",
   "template": true
 }
