@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X, ChevronDown } from "lucide-react"
@@ -13,6 +14,8 @@ export function Navigation() {
   const pathname = usePathname()
   const { stepCompletion } = useProgress()
   const { isStepVisible } = usePersona()
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? process.env.__NEXT_ROUTER_BASEPATH ?? ""
+  const logoSrc = `${basePath}/logo.png`
 
   const steps = [
     { num: 1, title: "Assess Use Case", path: "/steps/1" },
@@ -28,8 +31,9 @@ export function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="font-bold text-xl">
-            SynD Framework
+          <Link href="/" className="flex items-center gap-3 font-semibold text-lg">
+            <Image src={logoSrc} alt="SynD Framework logo" width={54} height={54} priority className="h-[54px] w-[54px] rounded-md object-contain" />
+            <span className="hidden sm:inline">SynD Framework</span>
           </Link>
 
           {/* Desktop Navigation */}

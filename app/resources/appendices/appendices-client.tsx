@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { usePersona } from "@/lib/persona-context";
+import type { PersonaId } from "@/lib/persona-context";
 
 import type { AppendixRecord } from "./page";
 
@@ -20,11 +22,22 @@ interface AppendicesClientProps {
 }
 
 export function AppendicesClient({ appendices }: AppendicesClientProps) {
-  const { persona, isAppendixVisible } = usePersona();
+  const { persona, personas, setPersonaById, clearPersona, isAppendixVisible } = usePersona();
 
   const visibleAppendices = appendices.filter((appendix) => {
     return isAppendixVisible(appendix.number);
   });
+
+  const personaFilter = persona?.id ?? "all";
+  const personaLabel = persona ? persona.label : "All roles";
+
+  const handlePersonaChange = (value: string) => {
+    if (value === "all") {
+      clearPersona();
+      return;
+    }
+    setPersonaById(value as PersonaId);
+  };
 
   if (persona && visibleAppendices.length === 0) {
     return (
@@ -63,12 +76,30 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
             Choose the appendix that matches the task you are tackling today.
           </p>
         </div>
-        {persona && (
-          <div className="inline-flex items-center gap-2 rounded-lg border border-border/70 bg-muted/40 px-4 py-2 text-sm text-muted-foreground">
-            <FileText className="h-4 w-4 text-emerald-500" />
-            Showing appendices for <span className="font-semibold text-foreground">{persona.label}</span>
-          </div>
-        )}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-lg border border-border/70 bg-muted/40 px-4 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2"
+            >
+              <FileText className="h-4 w-4 text-emerald-500" />
+              <span>Showing appendices for</span>
+              <span className="font-semibold text-foreground">{personaLabel}</span>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="min-w-[220px]">
+            <DropdownMenuLabel>Filter by persona</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuRadioGroup value={personaFilter} onValueChange={handlePersonaChange}>
+              <DropdownMenuRadioItem value="all">All roles</DropdownMenuRadioItem>
+              {personas.map((option) => (
+                <DropdownMenuRadioItem key={option.id} value={option.id}>
+                  {option.label}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
