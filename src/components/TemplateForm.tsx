@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import type { ChangeEvent } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,6 +17,15 @@ type TemplateField = {
 
 export default function TemplateForm({ id, fields }: { id: string; fields: TemplateField[] }) {
   const [values, setValues] = useState<Record<string, string>>({})
+
+  const normalisedFields = useMemo(
+    () =>
+      fields.map((field) => ({
+        ...field,
+        id: `${id}-${field.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+      })),
+    [fields, id],
+  )
 
   // Load saved draft
   useEffect(() => {
@@ -49,11 +59,11 @@ export default function TemplateForm({ id, fields }: { id: string; fields: Templ
 
   const printPDF = () => window.print()
 
-  const renderField = (field: TemplateField) => {
+  const renderField = (field: TemplateField & { id: string }) => {
     const commonProps = {
+      id: field.id,
       value: values[field.label] || "",
-      onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-        handleChange(field.label, event.target.value),
+      onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(field.label, event.target.value),
       placeholder: field.placeholder || "",
     }
 
@@ -77,30 +87,38 @@ export default function TemplateForm({ id, fields }: { id: string; fields: Templ
 
   return (
     <div className="space-y-6">
-      {fields.map((field) => (
+      {normalisedFields.map((field) => (
         <Card
-          key={field.label}
+          key={field.id}
           className="border border-border/50 bg-muted/20 shadow-lg shadow-black/20 ring-1 ring-white/5 backdrop-blur"
         >
           <CardHeader className="pb-1">
             <CardTitle className="text-sm font-semibold tracking-wide text-foreground/90">{field.label}</CardTitle>
           </CardHeader>
           <CardContent className="pt-2">
-            <Label className="sr-only">{field.label}</Label>
+            <Label htmlFor={field.id} className="sr-only">
+              {field.label}
+            </Label>
             {renderField(field)}
           </CardContent>
         </Card>
       ))}
 
       <div className="flex flex-wrap gap-3 pt-2">
-        <Button type="button" onClick={downloadJSON} className="px-5 py-2 shadow-md shadow-primary/30">
+        <Button
+          type="button"
+          onClick={downloadJSON}
+          aria-label="Download form responses as JSON"
+          className="px-5 py-2 shadow-md shadow-primary/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+        >
           Download JSON
         </Button>
         <Button
           type="button"
           variant="secondary"
           onClick={printPDF}
-          className="px-5 py-2 shadow-md shadow-black/20 hover:shadow-black/30"
+          aria-label="Print form responses"
+          className="px-5 py-2 shadow-md shadow-black/20 hover:shadow-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
         >
           Print PDF
         </Button>

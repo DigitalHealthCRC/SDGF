@@ -1,94 +1,80 @@
-﻿"use client"
+"use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { CheckCircle2, Download, PartyPopper, Printer, Save } from "lucide-react"
+
 import { StepProgress } from "@/components/step-progress"
 import { useProgress } from "@/lib/progress-context"
+import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import stepDataJson from "@/src/content/framework/step5.json"
 
 interface StepContent {
   title: string
   summary: string
-  checklist: string[]
   readMore?: string[]
 }
 
 interface StepFormState {
-  checklist: boolean[]
+  [key: string]: boolean | string
 }
 
 const stepData = stepDataJson as StepContent
 
 const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Step 5: Manage Residual Risks")
 
-const ensureChecklist = (source: boolean[] | undefined, length: number) =>
-  Array.from({ length }, (_, idx) => (Array.isArray(source) ? Boolean(source[idx]) : false))
-
-const formatReadMoreLabel = (href: string) => {
-  const match = href.match(/appendix(\d+)/i)
-  if (match) {
-    return `Appendix ${match[1]}`
-  }
-  return href.replace(/^\//, "")
-}
-
 export default function Step5Page() {
   const stepNumber = 5
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
-  const saved = (getFormData(stepNumber) as StepFormState) || { checklist: [] }
-  const [formState, setFormState] = useState<StepFormState>(() => ({
-    checklist: ensureChecklist(saved.checklist, stepData.checklist.length),
-  }))
+  const [formData, setFormData] = useState<StepFormState>(() => ({ ...getFormData(stepNumber) }))
   const [showCompleteModal, setShowCompleteModal] = useState(false)
 
-  const checklistEntries = useMemo(
-    () => stepData.checklist.map((label, index) => ({ index, label })),
-    [stepData.checklist]
-  )
+  const safeguardChecks = [
+    {
+      id: "accessControls",
+      label: "Access controls implemented",
+      description: "Authentication, authorisation, and audit logging in place",
+    },
+    {
+      id: "dataAgreements",
+      label: "Data sharing agreements established",
+      description: "DSA or DUA executed with clear terms and obligations",
+    },
+    {
+      id: "usageRestrictions",
+      label: "Usage restrictions documented",
+      description: "Permitted and prohibited uses clearly specified",
+    },
+    {
+      id: "monitoringPlan",
+      label: "Ongoing monitoring plan established",
+      description: "Process for detecting and responding to misuse defined",
+    },
+  ] as const
 
-  const sections = useMemo(() => {
-    const splitIndex = Math.min(3, checklistEntries.length)
-    const primary = checklistEntries.slice(0, splitIndex)
-    const secondary = checklistEntries.slice(splitIndex)
+  const complianceChecks = [
+    { id: "privacyCompliance", label: "Privacy law compliance confirmed" },
+    { id: "ethicsApproval", label: "Ethics approval obtained (if required)" },
+    { id: "stakeholderConsent", label: "Stakeholder engagement and consent documented" },
+    { id: "incidentResponse", label: "Incident response plan in place" },
+    { id: "reviewSchedule", label: "Periodic review schedule established" },
+  ] as const
 
-    const result: Array<{ title: string; description: string; items: { index: number; label: string }[] }> = []
-
-    if (primary.length > 0) {
-      result.push({
-        title: "Safety Safeguards",
-        description: "Implement technical and administrative controls to protect synthetic data.",
-        items: primary,
-      })
-    }
-
-    if (secondary.length > 0) {
-      result.push({
-        title: "Compliance & Governance",
-        description: "Ensure ongoing governance, agreements, and monitoring are in place for safe use.",
-        items: secondary,
-      })
-    }
-
-    return result
-  }, [checklistEntries])
-
-  const updateChecklist = (next: boolean[]) => {
-    const state = { checklist: next }
-    setFormState(state)
-    saveFormData(stepNumber, state)
+  const allChecksComplete = () => {
+    const checks = [...safeguardChecks, ...complianceChecks]
+    return checks.every((check) => Boolean(formData[check.id]))
   }
 
-  const toggleItem = (index: number) => {
-    const next = formState.checklist.map((value, idx) => (idx === index ? !value : value))
-    updateChecklist(next)
+  const handleCheckChange = (id: string, checked: boolean) => {
+    const next = { ...formData, [id]: checked }
+    setFormData(next)
+    saveFormData(stepNumber, next)
   }
-
-  const allComplete = formState.checklist.length > 0 && formState.checklist.every(Boolean)
 
   const handleComplete = () => {
-    if (!allComplete) return
-    setShowCompleteModal(true)
+    if (allChecksComplete()) {
+      setShowCompleteModal(true)
+    }
   }
 
   const confirmComplete = () => {
@@ -96,16 +82,18 @@ export default function Step5Page() {
     setShowCompleteModal(false)
   }
 
-  const handleSaveDraft = () => saveFormData(stepNumber, formState)
+  const handleSaveDraft = () => saveFormData(stepNumber, formData)
 
   const exportJSON = () => {
     const payload = {
       step: normaliseTitle(stepData.title),
       summary: stepData.summary,
-      checklist: stepData.checklist.map((label, index) => ({
-        label,
-        completed: formState.checklist[index] ?? false,
+      checks: [...safeguardChecks, ...complianceChecks].map((item) => ({
+        id: item.id,
+        label: item.label,
+        completed: Boolean(formData[item.id]),
       })),
+      notes: formData.notes || "",
       exportedAt: new Date().toISOString(),
     }
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
@@ -120,222 +108,242 @@ export default function Step5Page() {
   const readMoreLinks = stepData.readMore ?? []
   const pageTitle = normaliseTitle(stepData.title)
 
-  return (
-    <div>
-      <StepProgress currentStep={stepNumber} />
-
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="grid lg:grid-cols-12 gap-8">
-          {/* Left Column - Context */}
-          <div className="lg:col-span-3">
-            <div className="sticky top-24 space-y-6">
-              <div>
-                <h3 className="font-semibold mb-2">Why This Step</h3>
-                <p className="text-sm text-muted-foreground">{stepData.summary}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Prerequisites</h3>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li>Completed risk assessment</li>
-                  <li>Identified residual risks</li>
-                  <li>Organizational policies in place</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Time Estimate</h3>
-                <p className="text-sm text-muted-foreground">2-3 hours</p>
-              </div>
-              <div className="p-4 bg-chart-2/10 border border-chart-2/20 rounded-lg">
-                <div className="flex gap-2 mb-2">
-                  <PartyPopper className="w-5 h-5 text-chart-2 flex-shrink-0" />
-                  <h3 className="font-semibold text-sm">Final Step</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  After completing this step, your synthetic data will be ready for safe, compliant sharing.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Center Column - Main Content */}
-          <div className="lg:col-span-6">
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-2">{pageTitle}</h1>
-              <p className="text-muted-foreground">{stepData.summary}</p>
-            </div>
-
-            {sections.map((section) => (
-              <div key={section.title} className="bg-card border rounded-lg p-6 mb-6">
-                <h2 className="text-xl font-semibold mb-4">{section.title}</h2>
-                <p className="text-sm text-muted-foreground mb-6">{section.description}</p>
-                <div className="space-y-4">
-                  {section.items.map(({ index, label }) => (
-                    <label key={index} className="flex gap-4">
-                      <input
-                        type="checkbox"
-                        checked={formState.checklist[index] ?? false}
-                        onChange={() => toggleItem(index)}
-                        className="mt-1.5 h-4 w-4 rounded border-muted-foreground/40"
-                      />
-                      <div>
-                        <div className="font-medium">{label}</div>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3 mb-6">
-              <button onClick={handleSaveDraft} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
-                <Save className="w-4 h-4" />
-                Save Draft
-              </button>
-              <button onClick={exportJSON} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
-                <Download className="w-4 h-4" />
-                Export JSON
-              </button>
-              <button onClick={() => window.print()} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
-                <Printer className="w-4 h-4" />
-                Print
-              </button>
-            </div>
-
-            {/* Complete Step Button */}
-            <button
-              onClick={handleComplete}
-              disabled={!allComplete || stepCompletion[stepNumber]}
-              className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                allComplete && !stepCompletion[stepNumber]
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "bg-muted text-muted-foreground cursor-not-allowed"
-              }`}
-            >
-              {stepCompletion[stepNumber] ? (
-                <span className="flex items-center justify-center gap-2">
-                  <CheckCircle2 className="w-5 h-5" />
-                  Framework Complete!
-                </span>
-              ) : (
-                "Complete Framework"
-              )}
-            </button>
-
-            {stepCompletion[stepNumber] && (
-              <div className="mt-6 p-6 bg-chart-2/10 border border-chart-2/20 rounded-lg">
-                <h3 className="text-xl font-semibold mb-2 flex items-center gap-2">
-                  <PartyPopper className="w-6 h-6 text-chart-2" />
-                  Congratulations!
-                </h3>
-                <p className="text-muted-foreground mb-4">
-                  You've completed all five steps of the Synthetic Health Data Governance Framework. Your synthetic data is now
-                  ready for safe, lawful, and efficient use.
-                </p>
-                <Link
-                  href="/"
-                  className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold"
-                >
-                  Return to Home
-                </Link>
-              </div>
-            )}
-
-            {readMoreLinks.length > 0 && (
-              <div className="mt-6 border-t pt-4">
-                <h3 className="font-semibold mb-2">Read more</h3>
-                <ul className="list-disc list-inside space-y-1 text-sm">
-                  {readMoreLinks.map((href) => (
-                    <li key={href}>
-                      <Link href={href} className="text-primary hover:underline">
-                        {formatReadMoreLabel(href)}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-
-          {/* Right Column - Support */}
-          <div className="lg:col-span-3">
-            <div className="sticky top-24 space-y-6">
-              <div className="bg-card border rounded-lg p-4">
-                <h3 className="font-semibold mb-3">Key Terms</h3>
-                <div className="space-y-3 text-sm">
-                  <div>
-                    <div className="font-medium">Residual Risk</div>
-                    <div className="text-muted-foreground">Privacy risk remaining after mitigation measures</div>
-                  </div>
-                  <div>
-                    <div className="font-medium">Data Sharing Agreement</div>
-                    <div className="text-muted-foreground">Legal contract governing data use and obligations</div>
-                  </div>
-                  <div>
-                    <div className="font-medium">Five Safes</div>
-                    <div className="text-muted-foreground">Framework for managing data access risks</div>
-                  </div>
-                </div>
-                <Link href="/resources/glossary" className="text-sm text-primary hover:underline mt-3 inline-block">
-                  View Full Glossary &rarr;
-                </Link>
-              </div>
-
-              <div className="bg-card border rounded-lg p-4">
-                <h3 className="font-semibold mb-3">Related Resources</h3>
-                <div className="space-y-2 text-sm">
-                  <Link href="/resources/five-safes" className="block text-primary hover:underline">
-                    Five Safes Framework
-                  </Link>
-                  <Link href="/resources/agreements" className="block text-primary hover:underline">
-                    Data Agreement Templates
-                  </Link>
-                  <Link href="/templates" className="block text-primary hover:underline">
-                    Governance Templates
-                  </Link>
-                </div>
-              </div>
-
-              {readMoreLinks.length > 0 && (
-                <div className="bg-card border rounded-lg p-4">
-                  <h3 className="font-semibold mb-3">Appendices</h3>
-                  <ul className="space-y-2 text-sm">
-                    {readMoreLinks.map((href) => (
-                      <li key={href}>
-                        <Link href={href} className="text-primary hover:underline">
-                          {formatReadMoreLabel(href)}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
+  const leftColumn = (
+    <div className="space-y-6 text-sm">
+      <div>
+        <h3 className="font-semibold text-foreground">Why This Step</h3>
+        <p className="text-muted-foreground">
+          Implement safeguards to manage residual risks and ensure responsible, compliant data sharing.
+        </p>
+      </div>
+      <div>
+        <h3 className="font-semibold text-foreground">Prerequisites</h3>
+        <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+          <li>Completed risk assessment</li>
+          <li>Identified residual risks</li>
+          <li>Organisational policies in place</li>
+        </ul>
+      </div>
+      <div>
+        <h3 className="font-semibold text-foreground">Time Estimate</h3>
+        <p className="text-muted-foreground">2-3 hours</p>
+      </div>
+      <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 p-4 text-sm text-muted-foreground">
+        <div className="mb-2 flex items-center gap-2 text-emerald-400">
+          <PartyPopper className="h-5 w-5" />
+          <span className="font-semibold">Final step!</span>
         </div>
+        After completing this step, your synthetic data environment will be ready for safe, compliant sharing.
+      </div>
+    </div>
+  )
+
+  const checklistSection = (
+    <div className="space-y-6">
+      <section className="space-y-4 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
+        <header className="space-y-2">
+          <h2 className="text-xl font-semibold text-foreground">Safety Safeguards</h2>
+          <p className="text-sm text-muted-foreground">Implement technical and administrative controls to protect synthetic data.</p>
+        </header>
+        <div className="space-y-3">
+          {safeguardChecks.map((check) => (
+            <label key={check.id} className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                checked={Boolean(formData[check.id])}
+                onChange={(event) => handleCheckChange(check.id, event.target.checked)}
+                className="mt-1 h-4 w-4 rounded border-border text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
+                aria-label={`Toggle ${check.label}`}
+              />
+              <div className="space-y-1 text-sm">
+                <span className="font-medium text-foreground">{check.label}</span>
+                <p className="text-muted-foreground">{check.description}</p>
+              </div>
+            </label>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-4 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
+        <header className="space-y-2">
+          <h2 className="text-xl font-semibold text-foreground">Compliance & Governance</h2>
+          <p className="text-sm text-muted-foreground">Confirm legal, ethical, and operational readiness before release.</p>
+        </header>
+        <div className="space-y-3">
+          {complianceChecks.map((check) => (
+            <label key={check.id} className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                checked={Boolean(formData[check.id])}
+                onChange={(event) => handleCheckChange(check.id, event.target.checked)}
+                className="mt-1 h-4 w-4 rounded border-border text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
+                aria-label={`Toggle ${check.label}`}
+              />
+              <span className="text-sm text-foreground">{check.label}</span>
+            </label>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
+        <h3 className="text-lg font-semibold text-foreground">Notes & follow-up</h3>
+        <p className="text-sm text-muted-foreground">Outline communications, agreement clauses, and monitoring actions.</p>
+        <textarea
+          value={(formData.notes as string) || ""}
+          onChange={(event) => {
+            const next = { ...formData, notes: event.target.value }
+            setFormData(next)
+            saveFormData(stepNumber, next)
+          }}
+          placeholder="Record responsibilities, monitoring schedules, and outstanding actions..."
+          className="h-32 w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
+        />
+      </section>
+
+      <div className="flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={handleSaveDraft}
+          className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+        >
+          <Save className="h-4 w-4" />
+          Save Draft
+        </button>
+        <button
+          type="button"
+          onClick={exportJSON}
+          className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+        >
+          <Download className="h-4 w-4" />
+          Export JSON
+        </button>
+        <button
+          type="button"
+          onClick={() => window.print()}
+          className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+        >
+          <Printer className="h-4 w-4" />
+          Print
+        </button>
       </div>
 
-      {/* Completion Modal */}
+      <button
+        type="button"
+        onClick={handleComplete}
+        disabled={!allChecksComplete() || stepCompletion[stepNumber]}
+        className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2 ${
+          allChecksComplete() && !stepCompletion[stepNumber]
+            ? "bg-emerald-500 text-white hover:bg-emerald-600"
+            : "bg-muted text-muted-foreground cursor-not-allowed"
+        }`}
+        aria-disabled={!allChecksComplete() || stepCompletion[stepNumber]}
+      >
+        {stepCompletion[stepNumber] ? (
+          <span className="flex items-center justify-center gap-2">
+            <CheckCircle2 className="h-5 w-5" />
+            Framework Complete!
+          </span>
+        ) : (
+          "Complete Framework"
+        )}
+      </button>
+    </div>
+  )
+
+  const supportColumn = (
+    <div className="space-y-6">
+      <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
+        <h3 className="font-semibold text-foreground">Key Terms</h3>
+        <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+          <li>
+            <span className="font-medium text-foreground">Residual Risk:</span> Privacy risk remaining after mitigation measures.
+          </li>
+          <li>
+            <span className="font-medium text-foreground">Data Sharing Agreement:</span> Legal contract governing data use and obligations.
+          </li>
+          <li>
+            <span className="font-medium text-foreground">Five Safes:</span> Framework for managing access risks across people, projects, data, settings, and outputs.
+          </li>
+        </ul>
+        <Link href="/resources/glossary" className="mt-4 inline-flex text-sm text-emerald-300 hover:underline">
+          View Full Glossary ?
+        </Link>
+      </div>
+
+      <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
+        <h3 className="font-semibold text-foreground">Related Resources</h3>
+        <ul className="mt-4 space-y-2 text-sm text-emerald-300">
+          <li>
+            <Link href="/resources/five-safes" className="hover:underline">
+              Five Safes Framework
+            </Link>
+          </li>
+          <li>
+            <Link href="/resources/agreements" className="hover:underline">
+              Data Agreement Templates
+            </Link>
+          </li>
+          <li>
+            <Link href="/templates" className="hover:underline">
+              Governance Templates
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      {readMoreLinks.length > 0 && (
+        <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
+          <h3 className="font-semibold text-foreground">Appendices</h3>
+          <ul className="mt-4 space-y-2 text-sm text-emerald-300">
+            {readMoreLinks.map((href) => (
+              <li key={href}>
+                <Link href={href} className="hover:underline">
+                  {href.replace(/^\//, "")}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+
+  const rightColumn = (
+    <div className="space-y-8">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+        <div className="space-y-8">{checklistSection}</div>
+        <div className="space-y-6">{supportColumn}</div>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="space-y-6">
+      <StepProgress currentStep={stepNumber} />
+      <TwoColumnLayout title={pageTitle} description={stepData.summary} left={leftColumn} right={rightColumn} />
+
       {showCompleteModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-background border rounded-lg p-6 max-w-md w-full">
-            <div className="flex items-center gap-3 mb-4">
-              <PartyPopper className="w-8 h-8 text-chart-2" />
-              <h3 className="text-xl font-semibold">Complete Framework?</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-md space-y-6 rounded-xl border border-border/60 bg-background p-6 shadow-2xl">
+            <div className="flex items-center gap-3 text-emerald-400">
+              <PartyPopper className="h-6 w-6" />
+              <h3 className="text-xl font-semibold text-foreground">Complete Framework?</h3>
             </div>
-            <p className="text-muted-foreground mb-6">
-              You've completed all safeguards and governance requirements. Your synthetic health data governance framework is complete and ready for implementation.
+            <p className="text-sm text-muted-foreground">
+              You've completed all safeguards and governance requirements. Your synthetic data framework is ready for implementation.
             </p>
             <div className="flex gap-3">
               <button
+                type="button"
                 onClick={() => setShowCompleteModal(false)}
-                className="flex-1 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
+                className="flex-1 rounded-lg border border-border/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
               >
                 Cancel
               </button>
               <button
+                type="button"
                 onClick={confirmComplete}
-                className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                className="flex-1 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
               >
                 Complete
               </button>

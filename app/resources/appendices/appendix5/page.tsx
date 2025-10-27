@@ -1,5 +1,6 @@
 "use client"
 
+import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import TemplateForm from "@/src/components/TemplateForm"
 
 export default function Appendix5Page() {
@@ -28,14 +29,26 @@ export default function Appendix5Page() {
     { label: "Date of Assessment", type: "date" },
   ]
 
-  return (
-    <main className="mx-auto max-w-3xl space-y-6 p-8">
-      <h1 className="text-2xl font-semibold">Appendix 5 – Impact Assessment</h1>
-      <p className="text-muted-foreground">
-        Use this template to identify the expected benefits, potential harms, and mitigation strategies associated with
-        generating or using synthetic data.
+  const right = <TemplateForm id="appendix5" fields={fields} />
+
+  const left = (
+    <div className="space-y-3 text-sm text-muted-foreground">
+      <p>Use this template to capture the key anticipated benefits and risks associated with your synthetic data project.</p>
+      <p className="border-l-2 border-emerald-500/50 bg-emerald-500/10 p-3 text-emerald-200">
+        Tip: Include tangible outcomes and impacted stakeholders to support governance review.
       </p>
-      <TemplateForm id="appendix5" fields={fields} />
-    </main>
+      <a href="/resources/appendices" className="inline-flex items-center text-emerald-400 hover:underline">
+        ← Back to Appendices
+      </a>
+    </div>
+  )
+
+  return (
+    <TwoColumnLayout
+      title="Appendix 5 – Impact Assessment"
+      description="Evaluate benefits, risks, and mitigation actions before proceeding with synthesis."
+      left={left}
+      right={right}
+    />
   )
 }

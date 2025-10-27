@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { BookOpen, GitBranch, Shield, FileText, Scale, Users } from "lucide-react"
 
+import ExportAllButton from "@/src/components/ExportAllButton"
+
 export default function Resources() {
   const resources = [
     {
@@ -48,33 +50,36 @@ export default function Resources() {
   ]
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-7xl">
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold mb-4">Resources</h1>
-        <p className="text-xl text-muted-foreground max-w-3xl">
-          Comprehensive guidance, definitions, and tools to support your synthetic health data journey
-        </p>
+    <div className="container mx-auto max-w-7xl px-4 py-12">
+      <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h1 className="text-4xl font-bold">Resources</h1>
+          <p className="mt-2 max-w-3xl text-xl text-muted-foreground">
+            Comprehensive guidance, definitions, and tools to support your synthetic health data journey.
+          </p>
+        </div>
+        <ExportAllButton />
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {resources.map((resource) => {
           const Icon = resource.icon
           return (
             <Link key={resource.href} href={resource.href} className="group">
               <div
-                className={`h-full p-6 rounded-lg border-2 bg-gradient-to-br ${resource.color} hover:border-primary transition-all hover:shadow-lg`}
+                className={`h-full rounded-lg border-2 bg-gradient-to-br ${resource.color} p-6 transition-all hover:border-primary hover:shadow-lg`}
               >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="p-3 rounded-lg bg-background/80">
-                    <Icon className="w-6 h-6" />
+                <div className="mb-4 flex items-start gap-4">
+                  <div className="rounded-lg bg-background/80 p-3">
+                    <Icon className="h-6 w-6" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-lg mb-2">{resource.title}</h3>
+                    <h3 className="mb-2 text-lg font-semibold">{resource.title}</h3>
                     <p className="text-sm text-muted-foreground">{resource.description}</p>
                   </div>
                 </div>
-                <div className="text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
-                  Learn more →
+                <div className="inline-block font-medium text-primary transition-transform group-hover:translate-x-1">
+                  Learn more ?
                 </div>
               </div>
             </Link>
