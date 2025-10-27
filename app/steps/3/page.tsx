@@ -1,83 +1,128 @@
-"use client"
+﻿"use client"
 
-import { useState } from "react"
-import { useProgress } from "@/lib/progress-context"
-import { StepProgress } from "@/components/step-progress"
-import { AlertCircle, CheckCircle2, Download, Save, Printer } from "lucide-react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
+import { AlertCircle, CheckCircle2, Download, Printer, Save } from "lucide-react"
+import { StepProgress } from "@/components/step-progress"
+import { useProgress } from "@/lib/progress-context"
+import stepDataJson from "@/src/content/framework/step3.json"
 
-export default function Step3() {
+interface StepContent {
+  title: string
+  summary: string
+  checklist: string[]
+  readMore?: string[]
+}
+
+interface StepFormState {
+  checklist: boolean[]
+}
+
+const stepData = stepDataJson as StepContent
+
+const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Step 3: Generate Synthetic Data")
+
+const ensureChecklist = (source: boolean[] | undefined, length: number) =>
+  Array.from({ length }, (_, idx) => (Array.isArray(source) ? Boolean(source[idx]) : false))
+
+const formatReadMoreLabel = (href: string) => {
+  const match = href.match(/appendix(\d+)/i)
+  if (match) {
+    return `Appendix ${match[1]}`
+  }
+  return href.replace(/^\//, "")
+}
+
+export default function Step3Page() {
+  const stepNumber = 3
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
-  const [formData, setFormData] = useState(getFormData(3))
+  const saved = (getFormData(stepNumber) as StepFormState) || { checklist: [] }
+  const [formState, setFormState] = useState<StepFormState>(() => ({
+    checklist: ensureChecklist(saved.checklist, stepData.checklist.length),
+  }))
   const [showCompleteModal, setShowCompleteModal] = useState(false)
 
-  const synthesisChecks = [
-    {
-      id: "methodSelection",
-      label: "Synthesis method selected and documented",
-      description: "Appropriate technique chosen based on data type and use case",
-    },
-    {
-      id: "parameterConfig",
-      label: "Synthesis parameters configured",
-      description: "Privacy-utility tradeoffs balanced and documented",
-    },
-    {
-      id: "validationPlan",
-      label: "Validation plan established",
-      description: "Metrics and tests defined to assess synthetic data quality",
-    },
-    {
-      id: "utilityPreservation",
-      label: "Utility preservation strategy documented",
-      description: "Approach to maintain statistical properties and relationships",
-    },
-  ]
+  const checklistEntries = useMemo(
+    () => stepData.checklist.map((label, index) => ({ index, label })),
+    [stepData.checklist]
+  )
 
-  const documentationChecks = [
-    { id: "methodDescription", label: "Detailed method description documented" },
-    { id: "softwareTools", label: "Software and tools used recorded" },
-    { id: "assumptions", label: "Assumptions and limitations documented" },
-    { id: "qualityMetrics", label: "Quality metrics and thresholds defined" },
-    { id: "iterationLog", label: "Synthesis iterations and refinements logged" },
-  ]
+  const sections = useMemo(() => {
+    const splitIndex = Math.min(3, checklistEntries.length)
+    const primary = checklistEntries.slice(0, splitIndex)
+    const secondary = checklistEntries.slice(splitIndex)
 
-  const allChecksComplete = () => {
-    return (
-      synthesisChecks.every((check) => formData[check.id]) && documentationChecks.every((check) => formData[check.id])
-    )
+    const result: Array<{ title: string; description: string; items: { index: number; label: string }[] }> = []
+
+    if (primary.length > 0) {
+      result.push({
+        title: "Synthesis Approach",
+        description: "Document the synthesis approach to ensure reproducibility, transparency, and appropriate privacy-utility balance.",
+        items: primary,
+      })
+    }
+
+    if (secondary.length > 0) {
+      result.push({
+        title: "Documentation Requirements",
+        description: "Capture the artefacts needed to evidence method, configuration, and validation outcomes.",
+        items: secondary,
+      })
+    }
+
+    return result
+  }, [checklistEntries])
+
+  const updateChecklist = (next: boolean[]) => {
+    const state = { checklist: next }
+    setFormState(state)
+    saveFormData(stepNumber, state)
   }
 
-  const handleCheckChange = (id: string, checked: boolean) => {
-    const newData = { ...formData, [id]: checked }
-    setFormData(newData)
-    saveFormData(3, newData)
+  const toggleItem = (index: number) => {
+    const next = formState.checklist.map((value, idx) => (idx === index ? !value : value))
+    updateChecklist(next)
   }
+
+  const allComplete = formState.checklist.length > 0 && formState.checklist.every(Boolean)
 
   const handleComplete = () => {
-    if (allChecksComplete()) {
-      setShowCompleteModal(true)
-    }
+    if (!allComplete) return
+    setShowCompleteModal(true)
   }
 
   const confirmComplete = () => {
-    completeStep(3)
+    completeStep(stepNumber)
     setShowCompleteModal(false)
   }
 
+  const handleSaveDraft = () => saveFormData(stepNumber, formState)
+
   const exportJSON = () => {
-    const dataStr = JSON.stringify(formData, null, 2)
-    const dataBlob = new Blob([dataStr], { type: "application/json" })
-    const url = URL.createObjectURL(dataBlob)
+    const payload = {
+      step: normaliseTitle(stepData.title),
+      summary: stepData.summary,
+      checklist: stepData.checklist.map((label, index) => ({
+        label,
+        completed: formState.checklist[index] ?? false,
+      })),
+      exportedAt: new Date().toISOString(),
+    }
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
     link.href = url
     link.download = "step3-synthetic-data-generation.json"
     link.click()
+    URL.revokeObjectURL(url)
   }
+
+  const readMoreLinks = stepData.readMore ?? []
+  const pageTitle = normaliseTitle(stepData.title)
 
   return (
     <div>
-      <StepProgress currentStep={3} />
+      <StepProgress currentStep={stepNumber} />
 
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="grid lg:grid-cols-12 gap-8">
@@ -86,17 +131,14 @@ export default function Step3() {
             <div className="sticky top-24 space-y-6">
               <div>
                 <h3 className="font-semibold mb-2">Why This Step</h3>
-                <p className="text-sm text-muted-foreground">
-                  Document the synthesis approach to ensure reproducibility, transparency, and appropriate
-                  privacy-utility balance.
-                </p>
+                <p className="text-sm text-muted-foreground">{stepData.summary}</p>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Prerequisites</h3>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Validated source data</li>
-                  <li>• Synthesis tool or platform</li>
-                  <li>• Technical expertise in synthesis methods</li>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                  <li>Validated source data</li>
+                  <li>Synthesis tool or platform</li>
+                  <li>Technical expertise in synthesis methods</li>
                 </ul>
               </div>
               <div>
@@ -118,81 +160,43 @@ export default function Step3() {
           {/* Center Column - Main Content */}
           <div className="lg:col-span-6">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-2">Step 3: Generate Synthetic Data</h1>
-              <p className="text-muted-foreground">Document synthesis approach and validate synthetic data quality</p>
+              <h1 className="text-3xl font-bold mb-2">{pageTitle}</h1>
+              <p className="text-muted-foreground">{stepData.summary}</p>
             </div>
 
-            {/* Synthesis Approach */}
-            <div className="bg-card border rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Synthesis Approach</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Select and configure appropriate synthesis methods for your data and use case.
-              </p>
-
-              <div className="space-y-6">
-                {synthesisChecks.map((check) => (
-                  <div key={check.id} className="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      id={check.id}
-                      checked={formData[check.id] || false}
-                      onChange={(e) => handleCheckChange(check.id, e.target.checked)}
-                      className="mt-1 w-5 h-5 rounded border-input"
-                    />
-                    <label htmlFor={check.id} className="flex-1 cursor-pointer">
-                      <div className="font-medium mb-1">{check.label}</div>
-                      <div className="text-sm text-muted-foreground">{check.description}</div>
+            {sections.map((section) => (
+              <div key={section.title} className="bg-card border rounded-lg p-6 mb-6">
+                <h2 className="text-xl font-semibold mb-4">{section.title}</h2>
+                <p className="text-sm text-muted-foreground mb-6">{section.description}</p>
+                <div className="space-y-4">
+                  {section.items.map(({ index, label }) => (
+                    <label key={index} className="flex gap-4">
+                      <input
+                        type="checkbox"
+                        checked={formState.checklist[index] ?? false}
+                        onChange={() => toggleItem(index)}
+                        className="mt-1.5 h-4 w-4 rounded border-muted-foreground/40"
+                      />
+                      <div>
+                        <div className="font-medium">{label}</div>
+                      </div>
                     </label>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-
-            {/* Documentation Requirements */}
-            <div className="bg-card border rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Documentation Requirements</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Comprehensive documentation supports transparency and enables future audits.
-              </p>
-
-              <div className="space-y-4">
-                {documentationChecks.map((check) => (
-                  <div key={check.id} className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      id={check.id}
-                      checked={formData[check.id] || false}
-                      onChange={(e) => handleCheckChange(check.id, e.target.checked)}
-                      className="w-5 h-5 rounded border-input"
-                    />
-                    <label htmlFor={check.id} className="flex-1 cursor-pointer font-medium">
-                      {check.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-3 mb-6">
-              <button
-                onClick={() => saveFormData(3, formData)}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={handleSaveDraft} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Save className="w-4 h-4" />
                 Save Draft
               </button>
-              <button
-                onClick={exportJSON}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={exportJSON} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Download className="w-4 h-4" />
                 Export JSON
               </button>
-              <button
-                onClick={() => window.print()}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={() => window.print()} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Printer className="w-4 h-4" />
                 Print
               </button>
@@ -201,14 +205,14 @@ export default function Step3() {
             {/* Complete Step Button */}
             <button
               onClick={handleComplete}
-              disabled={!allChecksComplete() || stepCompletion[3]}
+              disabled={!allComplete || stepCompletion[stepNumber]}
               className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                allChecksComplete() && !stepCompletion[3]
+                allComplete && !stepCompletion[stepNumber]
                   ? "bg-primary text-primary-foreground hover:bg-primary/90"
                   : "bg-muted text-muted-foreground cursor-not-allowed"
               }`}
             >
-              {stepCompletion[3] ? (
+              {stepCompletion[stepNumber] ? (
                 <span className="flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-5 h-5" />
                   Step Completed
@@ -218,13 +222,28 @@ export default function Step3() {
               )}
             </button>
 
-            {stepCompletion[3] && (
+            {stepCompletion[stepNumber] && (
               <Link
                 href="/steps/4"
                 className="block w-full mt-3 py-3 text-center rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-colors"
               >
-                Continue to Step 4 →
+                Continue to Step 4 &rarr;
               </Link>
+            )}
+
+            {readMoreLinks.length > 0 && (
+              <div className="mt-6 border-t pt-4">
+                <h3 className="font-semibold mb-2">Read more</h3>
+                <ul className="list-disc list-inside space-y-1 text-sm">
+                  {readMoreLinks.map((href) => (
+                    <li key={href}>
+                      <Link href={href} className="text-primary hover:underline">
+                        {formatReadMoreLabel(href)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
 
@@ -250,7 +269,7 @@ export default function Step3() {
                   </div>
                 </div>
                 <Link href="/resources/glossary" className="text-sm text-primary hover:underline mt-3 inline-block">
-                  View Full Glossary →
+                  View Full Glossary &rarr;
                 </Link>
               </div>
 
@@ -265,6 +284,21 @@ export default function Step3() {
                   </Link>
                 </div>
               </div>
+
+              {readMoreLinks.length > 0 && (
+                <div className="bg-card border rounded-lg p-4">
+                  <h3 className="font-semibold mb-3">Appendices</h3>
+                  <ul className="space-y-2 text-sm">
+                    {readMoreLinks.map((href) => (
+                      <li key={href}>
+                        <Link href={href} className="text-primary hover:underline">
+                          {formatReadMoreLabel(href)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>

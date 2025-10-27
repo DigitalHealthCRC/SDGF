@@ -1,81 +1,128 @@
-"use client"
+﻿"use client"
 
-import { useState } from "react"
-import { useProgress } from "@/lib/progress-context"
-import { StepProgress } from "@/components/step-progress"
-import { AlertCircle, CheckCircle2, Download, Save, Printer } from "lucide-react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
+import { AlertCircle, CheckCircle2, Download, Printer, Save } from "lucide-react"
+import { StepProgress } from "@/components/step-progress"
+import { useProgress } from "@/lib/progress-context"
+import stepDataJson from "@/src/content/framework/step2.json"
 
-export default function Step2() {
+interface StepContent {
+  title: string
+  summary: string
+  checklist: string[]
+  readMore?: string[]
+}
+
+interface StepFormState {
+  checklist: boolean[]
+}
+
+const stepData = stepDataJson as StepContent
+
+const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Step 2: Prepare Source Data")
+
+const ensureChecklist = (source: boolean[] | undefined, length: number) =>
+  Array.from({ length }, (_, idx) => (Array.isArray(source) ? Boolean(source[idx]) : false))
+
+const formatReadMoreLabel = (href: string) => {
+  const match = href.match(/appendix(\d+)/i)
+  if (match) {
+    return `Appendix ${match[1]}`
+  }
+  return href.replace(/^\//, "")
+}
+
+export default function Step2Page() {
+  const stepNumber = 2
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
-  const [formData, setFormData] = useState(getFormData(2))
+  const saved = (getFormData(stepNumber) as StepFormState) || { checklist: [] }
+  const [formState, setFormState] = useState<StepFormState>(() => ({
+    checklist: ensureChecklist(saved.checklist, stepData.checklist.length),
+  }))
   const [showCompleteModal, setShowCompleteModal] = useState(false)
 
-  const dataQualityChecks = [
-    {
-      id: "completeness",
-      label: "Data completeness assessed",
-      description: "Missing values, gaps, and coverage evaluated",
-    },
-    {
-      id: "accuracy",
-      label: "Data accuracy verified",
-      description: "Source data validated against known standards",
-    },
-    {
-      id: "consistency",
-      label: "Data consistency checked",
-      description: "Internal consistency and format standardization confirmed",
-    },
-    {
-      id: "timeliness",
-      label: "Data timeliness evaluated",
-      description: "Currency and relevance of source data assessed",
-    },
-  ]
+  const checklistEntries = useMemo(
+    () => stepData.checklist.map((label, index) => ({ index, label })),
+    [stepData.checklist]
+  )
 
-  const fitnessChecks = [
-    { id: "representativeness", label: "Representativeness of source data confirmed" },
-    { id: "sampleSize", label: "Adequate sample size for synthesis" },
-    { id: "variableSelection", label: "Key variables identified and documented" },
-    { id: "biasAssessment", label: "Potential biases in source data assessed" },
-    { id: "dataLineage", label: "Data lineage and provenance documented" },
-  ]
+  const sections = useMemo(() => {
+    const splitIndex = Math.min(3, checklistEntries.length)
+    const primary = checklistEntries.slice(0, splitIndex)
+    const secondary = checklistEntries.slice(splitIndex)
 
-  const allChecksComplete = () => {
-    return dataQualityChecks.every((check) => formData[check.id]) && fitnessChecks.every((check) => formData[check.id])
+    const result: Array<{ title: string; description: string; items: { index: number; label: string }[] }> = []
+
+    if (primary.length > 0) {
+      result.push({
+        title: "Data Quality Assessment",
+        description: "Evaluate source data readiness across key quality dimensions before synthesis.",
+        items: primary,
+      })
+    }
+
+    if (secondary.length > 0) {
+      result.push({
+        title: "Fitness for Purpose",
+        description: "Confirm that the dataset can support the intended synthetic data use case.",
+        items: secondary,
+      })
+    }
+
+    return result
+  }, [checklistEntries])
+
+  const updateChecklist = (next: boolean[]) => {
+    const state = { checklist: next }
+    setFormState(state)
+    saveFormData(stepNumber, state)
   }
 
-  const handleCheckChange = (id: string, checked: boolean) => {
-    const newData = { ...formData, [id]: checked }
-    setFormData(newData)
-    saveFormData(2, newData)
+  const toggleItem = (index: number) => {
+    const next = formState.checklist.map((value, idx) => (idx === index ? !value : value))
+    updateChecklist(next)
   }
+
+  const allComplete = formState.checklist.length > 0 && formState.checklist.every(Boolean)
 
   const handleComplete = () => {
-    if (allChecksComplete()) {
-      setShowCompleteModal(true)
-    }
+    if (!allComplete) return
+    setShowCompleteModal(true)
   }
 
   const confirmComplete = () => {
-    completeStep(2)
+    completeStep(stepNumber)
     setShowCompleteModal(false)
   }
 
+  const handleSaveDraft = () => saveFormData(stepNumber, formState)
+
   const exportJSON = () => {
-    const dataStr = JSON.stringify(formData, null, 2)
-    const dataBlob = new Blob([dataStr], { type: "application/json" })
-    const url = URL.createObjectURL(dataBlob)
+    const payload = {
+      step: normaliseTitle(stepData.title),
+      summary: stepData.summary,
+      checklist: stepData.checklist.map((label, index) => ({
+        label,
+        completed: formState.checklist[index] ?? false,
+      })),
+      exportedAt: new Date().toISOString(),
+    }
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
     link.href = url
     link.download = "step2-source-data-preparation.json"
     link.click()
+    URL.revokeObjectURL(url)
   }
+
+  const readMoreLinks = stepData.readMore ?? []
+  const pageTitle = normaliseTitle(stepData.title)
 
   return (
     <div>
-      <StepProgress currentStep={2} />
+      <StepProgress currentStep={stepNumber} />
 
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="grid lg:grid-cols-12 gap-8">
@@ -84,17 +131,14 @@ export default function Step2() {
             <div className="sticky top-24 space-y-6">
               <div>
                 <h3 className="font-semibold mb-2">Why This Step</h3>
-                <p className="text-sm text-muted-foreground">
-                  Ensure source data quality and fitness for purpose before synthesis. Poor quality input leads to poor
-                  quality synthetic data.
-                </p>
+                <p className="text-sm text-muted-foreground">{stepData.summary}</p>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Prerequisites</h3>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Access to source data</li>
-                  <li>• Data dictionary or schema</li>
-                  <li>• Understanding of data collection methods</li>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                  <li>Access to source data</li>
+                  <li>Data dictionary or schema</li>
+                  <li>Understanding of data collection methods</li>
                 </ul>
               </div>
               <div>
@@ -116,83 +160,43 @@ export default function Step2() {
           {/* Center Column - Main Content */}
           <div className="lg:col-span-6">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-2">Step 2: Prepare Source Data</h1>
-              <p className="text-muted-foreground">
-                Validate data quality and confirm fitness for synthetic data generation
-              </p>
+              <h1 className="text-3xl font-bold mb-2">{pageTitle}</h1>
+              <p className="text-muted-foreground">{stepData.summary}</p>
             </div>
 
-            {/* Data Quality Assessment */}
-            <div className="bg-card border rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Data Quality Assessment</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Assess the quality dimensions of your source data using established frameworks.
-              </p>
-
-              <div className="space-y-6">
-                {dataQualityChecks.map((check) => (
-                  <div key={check.id} className="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      id={check.id}
-                      checked={formData[check.id] || false}
-                      onChange={(e) => handleCheckChange(check.id, e.target.checked)}
-                      className="mt-1 w-5 h-5 rounded border-input"
-                    />
-                    <label htmlFor={check.id} className="flex-1 cursor-pointer">
-                      <div className="font-medium mb-1">{check.label}</div>
-                      <div className="text-sm text-muted-foreground">{check.description}</div>
+            {sections.map((section) => (
+              <div key={section.title} className="bg-card border rounded-lg p-6 mb-6">
+                <h2 className="text-xl font-semibold mb-4">{section.title}</h2>
+                <p className="text-sm text-muted-foreground mb-6">{section.description}</p>
+                <div className="space-y-4">
+                  {section.items.map(({ index, label }) => (
+                    <label key={index} className="flex gap-4">
+                      <input
+                        type="checkbox"
+                        checked={formState.checklist[index] ?? false}
+                        onChange={() => toggleItem(index)}
+                        className="mt-1.5 h-4 w-4 rounded border-muted-foreground/40"
+                      />
+                      <div>
+                        <div className="font-medium">{label}</div>
+                      </div>
                     </label>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-
-            {/* Fitness for Purpose */}
-            <div className="bg-card border rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Fitness for Purpose</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Confirm the source data is appropriate for your intended synthetic data use case.
-              </p>
-
-              <div className="space-y-4">
-                {fitnessChecks.map((check) => (
-                  <div key={check.id} className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      id={check.id}
-                      checked={formData[check.id] || false}
-                      onChange={(e) => handleCheckChange(check.id, e.target.checked)}
-                      className="w-5 h-5 rounded border-input"
-                    />
-                    <label htmlFor={check.id} className="flex-1 cursor-pointer font-medium">
-                      {check.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-3 mb-6">
-              <button
-                onClick={() => saveFormData(2, formData)}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={handleSaveDraft} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Save className="w-4 h-4" />
                 Save Draft
               </button>
-              <button
-                onClick={exportJSON}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={exportJSON} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Download className="w-4 h-4" />
                 Export JSON
               </button>
-              <button
-                onClick={() => window.print()}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={() => window.print()} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Printer className="w-4 h-4" />
                 Print
               </button>
@@ -201,14 +205,14 @@ export default function Step2() {
             {/* Complete Step Button */}
             <button
               onClick={handleComplete}
-              disabled={!allChecksComplete() || stepCompletion[2]}
+              disabled={!allComplete || stepCompletion[stepNumber]}
               className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                allChecksComplete() && !stepCompletion[2]
+                allComplete && !stepCompletion[stepNumber]
                   ? "bg-primary text-primary-foreground hover:bg-primary/90"
                   : "bg-muted text-muted-foreground cursor-not-allowed"
               }`}
             >
-              {stepCompletion[2] ? (
+              {stepCompletion[stepNumber] ? (
                 <span className="flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-5 h-5" />
                   Step Completed
@@ -218,13 +222,28 @@ export default function Step2() {
               )}
             </button>
 
-            {stepCompletion[2] && (
+            {stepCompletion[stepNumber] && (
               <Link
                 href="/steps/3"
                 className="block w-full mt-3 py-3 text-center rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-colors"
               >
-                Continue to Step 3 →
+                Continue to Step 3 &rarr;
               </Link>
+            )}
+
+            {readMoreLinks.length > 0 && (
+              <div className="mt-6 border-t pt-4">
+                <h3 className="font-semibold mb-2">Read more</h3>
+                <ul className="list-disc list-inside space-y-1 text-sm">
+                  {readMoreLinks.map((href) => (
+                    <li key={href}>
+                      <Link href={href} className="text-primary hover:underline">
+                        {formatReadMoreLabel(href)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
 
@@ -250,7 +269,7 @@ export default function Step2() {
                   </div>
                 </div>
                 <Link href="/resources/glossary" className="text-sm text-primary hover:underline mt-3 inline-block">
-                  View Full Glossary →
+                  View Full Glossary &rarr;
                 </Link>
               </div>
 
@@ -265,6 +284,21 @@ export default function Step2() {
                   </Link>
                 </div>
               </div>
+
+              {readMoreLinks.length > 0 && (
+                <div className="bg-card border rounded-lg p-4">
+                  <h3 className="font-semibold mb-3">Appendices</h3>
+                  <ul className="space-y-2 text-sm">
+                    {readMoreLinks.map((href) => (
+                      <li key={href}>
+                        <Link href={href} className="text-primary hover:underline">
+                          {formatReadMoreLabel(href)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>

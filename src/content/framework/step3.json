@@ -1,0 +1,12 @@
+{
+  "title": "Step 3 – Generate Synthetic Health Data",
+  "summary": "Apply approved synthesis techniques to generate synthetic data while maintaining data utility and privacy. Document processes for transparency.",
+  "checklist": [
+    "Select synthesis method appropriate to data type and intended use.",
+    "Validate algorithms for statistical fidelity and privacy protection.",
+    "Record synthesis parameters and version of generator used.",
+    "Conduct internal testing for quality, representativeness and bias.",
+    "Store synthesis scripts securely and maintain provenance logs."
+  ],
+  "readMore": ["/resources/appendices/appendix8", "/resources/appendices/appendix9"]
+}

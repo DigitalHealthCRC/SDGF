@@ -1,0 +1,12 @@
+{
+  "title": "Step 2 – Assess and Prepare the Source Data",
+  "summary": "Determine whether the original dataset is suitable for synthetic generation. Apply governance, data quality and privacy checks before data access.",
+  "checklist": [
+    "Verify data custodianship, lawful basis and data sharing agreements.",
+    "Confirm de-identification or minimisation has been applied where required.",
+    "Check data completeness, quality, representativeness and bias.",
+    "Assess risks of re-identification in the source dataset.",
+    "Document any required approvals or ethics clearance."
+  ],
+  "readMore": ["/resources/appendices/appendix6", "/resources/appendices/appendix7"]
+}

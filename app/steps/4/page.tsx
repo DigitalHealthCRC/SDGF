@@ -1,83 +1,128 @@
-"use client"
+﻿"use client"
 
-import { useState } from "react"
-import { useProgress } from "@/lib/progress-context"
-import { StepProgress } from "@/components/step-progress"
-import { AlertCircle, CheckCircle2, Download, Save, Printer } from "lucide-react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
+import { AlertCircle, CheckCircle2, Download, Printer, Save } from "lucide-react"
+import { StepProgress } from "@/components/step-progress"
+import { useProgress } from "@/lib/progress-context"
+import stepDataJson from "@/src/content/framework/step4.json"
 
-export default function Step4() {
+interface StepContent {
+  title: string
+  summary: string
+  checklist: string[]
+  readMore?: string[]
+}
+
+interface StepFormState {
+  checklist: boolean[]
+}
+
+const stepData = stepDataJson as StepContent
+
+const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Step 4: Assess Re-Identification Risks")
+
+const ensureChecklist = (source: boolean[] | undefined, length: number) =>
+  Array.from({ length }, (_, idx) => (Array.isArray(source) ? Boolean(source[idx]) : false))
+
+const formatReadMoreLabel = (href: string) => {
+  const match = href.match(/appendix(\d+)/i)
+  if (match) {
+    return `Appendix ${match[1]}`
+  }
+  return href.replace(/^\//, "")
+}
+
+export default function Step4Page() {
+  const stepNumber = 4
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
-  const [formData, setFormData] = useState(getFormData(4))
+  const saved = (getFormData(stepNumber) as StepFormState) || { checklist: [] }
+  const [formState, setFormState] = useState<StepFormState>(() => ({
+    checklist: ensureChecklist(saved.checklist, stepData.checklist.length),
+  }))
   const [showCompleteModal, setShowCompleteModal] = useState(false)
 
-  const riskAssessmentChecks = [
-    {
-      id: "identifiabilityTest",
-      label: "Identifiability testing conducted",
-      description: "Attempted re-identification attacks performed and documented",
-    },
-    {
-      id: "attributeDisclosure",
-      label: "Attribute disclosure risk assessed",
-      description: "Risk of inferring sensitive attributes evaluated",
-    },
-    {
-      id: "membershipInference",
-      label: "Membership inference testing completed",
-      description: "Ability to determine if individual was in source data tested",
-    },
-    {
-      id: "linkageRisk",
-      label: "Linkage risk with external datasets evaluated",
-      description: "Potential for linking with publicly available data assessed",
-    },
-  ]
+  const checklistEntries = useMemo(
+    () => stepData.checklist.map((label, index) => ({ index, label })),
+    [stepData.checklist]
+  )
 
-  const mitigationChecks = [
-    { id: "riskLevel", label: "Overall risk level determined (Very Low / Low / Medium / High)" },
-    { id: "mitigationStrategy", label: "Mitigation strategies identified and documented" },
-    { id: "residualRisk", label: "Residual risk after mitigation assessed" },
-    { id: "acceptanceCriteria", label: "Risk acceptance criteria defined" },
-    { id: "expertReview", label: "Expert review of risk assessment completed" },
-  ]
+  const sections = useMemo(() => {
+    const splitIndex = Math.min(3, checklistEntries.length)
+    const primary = checklistEntries.slice(0, splitIndex)
+    const secondary = checklistEntries.slice(splitIndex)
 
-  const allChecksComplete = () => {
-    return (
-      riskAssessmentChecks.every((check) => formData[check.id]) && mitigationChecks.every((check) => formData[check.id])
-    )
+    const result: Array<{ title: string; description: string; items: { index: number; label: string }[] }> = []
+
+    if (primary.length > 0) {
+      result.push({
+        title: "Re-Identification Risk Testing",
+        description: "Quantify re-identification risks using appropriate testing and comparison methods.",
+        items: primary,
+      })
+    }
+
+    if (secondary.length > 0) {
+      result.push({
+        title: "Risk Mitigation & Sign-off",
+        description: "Capture mitigation actions, acceptance criteria, and governance approvals before release.",
+        items: secondary,
+      })
+    }
+
+    return result
+  }, [checklistEntries])
+
+  const updateChecklist = (next: boolean[]) => {
+    const state = { checklist: next }
+    setFormState(state)
+    saveFormData(stepNumber, state)
   }
 
-  const handleCheckChange = (id: string, checked: boolean) => {
-    const newData = { ...formData, [id]: checked }
-    setFormData(newData)
-    saveFormData(4, newData)
+  const toggleItem = (index: number) => {
+    const next = formState.checklist.map((value, idx) => (idx === index ? !value : value))
+    updateChecklist(next)
   }
+
+  const allComplete = formState.checklist.length > 0 && formState.checklist.every(Boolean)
 
   const handleComplete = () => {
-    if (allChecksComplete()) {
-      setShowCompleteModal(true)
-    }
+    if (!allComplete) return
+    setShowCompleteModal(true)
   }
 
   const confirmComplete = () => {
-    completeStep(4)
+    completeStep(stepNumber)
     setShowCompleteModal(false)
   }
 
+  const handleSaveDraft = () => saveFormData(stepNumber, formState)
+
   const exportJSON = () => {
-    const dataStr = JSON.stringify(formData, null, 2)
-    const dataBlob = new Blob([dataStr], { type: "application/json" })
-    const url = URL.createObjectURL(dataBlob)
+    const payload = {
+      step: normaliseTitle(stepData.title),
+      summary: stepData.summary,
+      checklist: stepData.checklist.map((label, index) => ({
+        label,
+        completed: formState.checklist[index] ?? false,
+      })),
+      exportedAt: new Date().toISOString(),
+    }
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
     link.href = url
     link.download = "step4-reid-risk-assessment.json"
     link.click()
+    URL.revokeObjectURL(url)
   }
+
+  const readMoreLinks = stepData.readMore ?? []
+  const pageTitle = normaliseTitle(stepData.title)
 
   return (
     <div>
-      <StepProgress currentStep={4} />
+      <StepProgress currentStep={stepNumber} />
 
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="grid lg:grid-cols-12 gap-8">
@@ -86,17 +131,14 @@ export default function Step4() {
             <div className="sticky top-24 space-y-6">
               <div>
                 <h3 className="font-semibold mb-2">Why This Step</h3>
-                <p className="text-sm text-muted-foreground">
-                  Quantify re-identification risks to determine if synthetic data achieves de-identification and what
-                  additional safeguards are needed.
-                </p>
+                <p className="text-sm text-muted-foreground">{stepData.summary}</p>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Prerequisites</h3>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Generated synthetic dataset</li>
-                  <li>• Access to source data for comparison</li>
-                  <li>• Privacy expertise or consultation</li>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                  <li>Generated synthetic dataset</li>
+                  <li>Access to source data for comparison</li>
+                  <li>Privacy expertise or consultation</li>
                 </ul>
               </div>
               <div>
@@ -109,8 +151,7 @@ export default function Step4() {
                   <h3 className="font-semibold text-sm">Expert Input Required</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Re-identification risk assessment requires specialized expertise. Consult privacy or data science
-                  experts.
+                  Re-identification risk assessment requires specialized expertise. Consult privacy or data science experts.
                 </p>
               </div>
             </div>
@@ -119,81 +160,43 @@ export default function Step4() {
           {/* Center Column - Main Content */}
           <div className="lg:col-span-6">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-2">Step 4: Assess Re-Identification Risks</h1>
-              <p className="text-muted-foreground">Test and quantify privacy risks in the synthetic dataset</p>
+              <h1 className="text-3xl font-bold mb-2">{pageTitle}</h1>
+              <p className="text-muted-foreground">{stepData.summary}</p>
             </div>
 
-            {/* Risk Assessment */}
-            <div className="bg-card border rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Re-Identification Risk Testing</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Conduct comprehensive testing to identify potential privacy vulnerabilities.
-              </p>
-
-              <div className="space-y-6">
-                {riskAssessmentChecks.map((check) => (
-                  <div key={check.id} className="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      id={check.id}
-                      checked={formData[check.id] || false}
-                      onChange={(e) => handleCheckChange(check.id, e.target.checked)}
-                      className="mt-1 w-5 h-5 rounded border-input"
-                    />
-                    <label htmlFor={check.id} className="flex-1 cursor-pointer">
-                      <div className="font-medium mb-1">{check.label}</div>
-                      <div className="text-sm text-muted-foreground">{check.description}</div>
+            {sections.map((section) => (
+              <div key={section.title} className="bg-card border rounded-lg p-6 mb-6">
+                <h2 className="text-xl font-semibold mb-4">{section.title}</h2>
+                <p className="text-sm text-muted-foreground mb-6">{section.description}</p>
+                <div className="space-y-4">
+                  {section.items.map(({ index, label }) => (
+                    <label key={index} className="flex gap-4">
+                      <input
+                        type="checkbox"
+                        checked={formState.checklist[index] ?? false}
+                        onChange={() => toggleItem(index)}
+                        className="mt-1.5 h-4 w-4 rounded border-muted-foreground/40"
+                      />
+                      <div>
+                        <div className="font-medium">{label}</div>
+                      </div>
                     </label>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-
-            {/* Risk Mitigation */}
-            <div className="bg-card border rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Risk Mitigation & Acceptance</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Document risk levels, mitigation strategies, and acceptance criteria.
-              </p>
-
-              <div className="space-y-4">
-                {mitigationChecks.map((check) => (
-                  <div key={check.id} className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      id={check.id}
-                      checked={formData[check.id] || false}
-                      onChange={(e) => handleCheckChange(check.id, e.target.checked)}
-                      className="w-5 h-5 rounded border-input"
-                    />
-                    <label htmlFor={check.id} className="flex-1 cursor-pointer font-medium">
-                      {check.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-3 mb-6">
-              <button
-                onClick={() => saveFormData(4, formData)}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={handleSaveDraft} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Save className="w-4 h-4" />
                 Save Draft
               </button>
-              <button
-                onClick={exportJSON}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={exportJSON} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Download className="w-4 h-4" />
                 Export JSON
               </button>
-              <button
-                onClick={() => window.print()}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={() => window.print()} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Printer className="w-4 h-4" />
                 Print
               </button>
@@ -202,14 +205,14 @@ export default function Step4() {
             {/* Complete Step Button */}
             <button
               onClick={handleComplete}
-              disabled={!allChecksComplete() || stepCompletion[4]}
+              disabled={!allComplete || stepCompletion[stepNumber]}
               className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                allChecksComplete() && !stepCompletion[4]
+                allComplete && !stepCompletion[stepNumber]
                   ? "bg-primary text-primary-foreground hover:bg-primary/90"
                   : "bg-muted text-muted-foreground cursor-not-allowed"
               }`}
             >
-              {stepCompletion[4] ? (
+              {stepCompletion[stepNumber] ? (
                 <span className="flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-5 h-5" />
                   Step Completed
@@ -219,13 +222,28 @@ export default function Step4() {
               )}
             </button>
 
-            {stepCompletion[4] && (
+            {stepCompletion[stepNumber] && (
               <Link
                 href="/steps/5"
                 className="block w-full mt-3 py-3 text-center rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-colors"
               >
-                Continue to Step 5 →
+                Continue to Step 5 &rarr;
               </Link>
+            )}
+
+            {readMoreLinks.length > 0 && (
+              <div className="mt-6 border-t pt-4">
+                <h3 className="font-semibold mb-2">Read more</h3>
+                <ul className="list-disc list-inside space-y-1 text-sm">
+                  {readMoreLinks.map((href) => (
+                    <li key={href}>
+                      <Link href={href} className="text-primary hover:underline">
+                        {formatReadMoreLabel(href)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
 
@@ -237,9 +255,7 @@ export default function Step4() {
                 <div className="space-y-3 text-sm">
                   <div>
                     <div className="font-medium">Re-identification</div>
-                    <div className="text-muted-foreground">
-                      Process of matching de-identified data back to individuals
-                    </div>
+                    <div className="text-muted-foreground">Process of matching de-identified data back to individuals</div>
                   </div>
                   <div>
                     <div className="font-medium">Attribute Disclosure</div>
@@ -251,7 +267,7 @@ export default function Step4() {
                   </div>
                 </div>
                 <Link href="/resources/glossary" className="text-sm text-primary hover:underline mt-3 inline-block">
-                  View Full Glossary →
+                  View Full Glossary &rarr;
                 </Link>
               </div>
 
@@ -269,6 +285,21 @@ export default function Step4() {
                   </Link>
                 </div>
               </div>
+
+              {readMoreLinks.length > 0 && (
+                <div className="bg-card border rounded-lg p-4">
+                  <h3 className="font-semibold mb-3">Appendices</h3>
+                  <ul className="space-y-2 text-sm">
+                    {readMoreLinks.map((href) => (
+                      <li key={href}>
+                        <Link href={href} className="text-primary hover:underline">
+                          {formatReadMoreLabel(href)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -280,8 +311,7 @@ export default function Step4() {
           <div className="bg-background border rounded-lg p-6 max-w-md w-full">
             <h3 className="text-xl font-semibold mb-4">Complete Step 4?</h3>
             <p className="text-muted-foreground mb-6">
-              You've completed re-identification risk assessment. Next, you'll establish safeguards for safe data
-              sharing.
+              You've completed re-identification risk assessment. Next, you'll establish safeguards for safe data sharing.
             </p>
             <div className="flex gap-3">
               <button

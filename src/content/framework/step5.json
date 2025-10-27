@@ -1,0 +1,12 @@
+{
+  "title": "Step 5 – Manage Residual Privacy and Operational Risks",
+  "summary": "Ensure any remaining risks are managed through governance, secure handling, and continuous monitoring. Define processes for responsible release and use.",
+  "checklist": [
+    "Establish data use agreements and access controls.",
+    "Communicate limitations and intended use to recipients.",
+    "Monitor for misuse, breach or re-identification attempts.",
+    "Apply retention and disposal policies consistent with data governance standards.",
+    "Undertake periodic review and re-approval for ongoing use."
+  ],
+  "readMore": ["/resources/appendices/appendix11"]
+}

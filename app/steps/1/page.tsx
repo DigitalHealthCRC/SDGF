@@ -1,78 +1,128 @@
-"use client"
+﻿"use client"
 
-import { useState } from "react"
-import { useProgress } from "@/lib/progress-context"
-import { StepProgress } from "@/components/step-progress"
-import { AlertCircle, CheckCircle2, Download, Save, Printer } from "lucide-react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
+import { AlertCircle, CheckCircle2, Download, Printer, Save } from "lucide-react"
+import { StepProgress } from "@/components/step-progress"
+import { useProgress } from "@/lib/progress-context"
+import stepDataJson from "@/src/content/framework/step1.json"
 
-export default function Step1() {
+interface StepContent {
+  title: string
+  summary: string
+  checklist: string[]
+  readMore?: string[]
+}
+
+interface StepFormState {
+  checklist: boolean[]
+}
+
+const stepData = stepDataJson as StepContent
+
+const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Step 1: Assess the Use Case")
+
+const ensureChecklist = (source: boolean[] | undefined, length: number) =>
+  Array.from({ length }, (_, idx) => (Array.isArray(source) ? Boolean(source[idx]) : false))
+
+const formatReadMoreLabel = (href: string) => {
+  const match = href.match(/appendix(\d+)/i)
+  if (match) {
+    return `Appendix ${match[1]}`
+  }
+  return href.replace(/^\//, "")
+}
+
+export default function Step1Page() {
+  const stepNumber = 1
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
-  const [formData, setFormData] = useState(getFormData(1))
+  const saved = (getFormData(stepNumber) as StepFormState) || { checklist: [] }
+  const [formState, setFormState] = useState<StepFormState>(() => ({
+    checklist: ensureChecklist(saved.checklist, stepData.checklist.length),
+  }))
   const [showCompleteModal, setShowCompleteModal] = useState(false)
 
-  const useCaseChecks = [
-    {
-      id: "publicBenefit",
-      label: "Clear public benefit purpose related to health services",
-      description: "The use case must be for consumer health or health system outcomes",
-    },
-    {
-      id: "deidentified",
-      label: "Aim is to achieve a de-identified dataset",
-      description: "The synthetic dataset must significantly minimize risk compared to source data",
-    },
-    {
-      id: "transparency",
-      label: "Public communications setting expectations",
-      description: "Organization has communicated about synthetic data use to health consumers",
-    },
-  ]
+  const checklistEntries = useMemo(
+    () => stepData.checklist.map((label, index) => ({ index, label })),
+    [stepData.checklist]
+  )
 
-  const impactChecks = [
-    { id: "publicInterest", label: "Public interest assessment completed" },
-    { id: "resourcing", label: "Resourcing impacts evaluated" },
-    { id: "beneficiaries", label: "Beneficiaries identified" },
-    { id: "communityExpectations", label: "Community expectations considered" },
-    { id: "privacyImpacts", label: "Privacy impacts assessed" },
-    { id: "dataEthics", label: "Data ethics reviewed" },
-    { id: "indigenousData", label: "Indigenous data sovereignty considered (if applicable)" },
-  ]
+  const sections = useMemo(() => {
+    const splitIndex = Math.min(3, checklistEntries.length)
+    const primary = checklistEntries.slice(0, splitIndex)
+    const secondary = checklistEntries.slice(splitIndex)
 
-  const allChecksComplete = () => {
-    return useCaseChecks.every((check) => formData[check.id]) && impactChecks.every((check) => formData[check.id])
+    const result: Array<{ title: string; description: string; items: { index: number; label: string }[] }> = []
+
+    if (primary.length > 0) {
+      result.push({
+        title: "Use Case Assessment (Appendix 4)",
+        description: "All three criteria must be met for the use case to proceed under this Framework.",
+        items: primary,
+      })
+    }
+
+    if (secondary.length > 0) {
+      result.push({
+        title: "Impact Assessment (Appendix 5)",
+        description: "Consider broader impacts including public interest, ethics, and community expectations.",
+        items: secondary,
+      })
+    }
+
+    return result
+  }, [checklistEntries])
+
+  const updateChecklist = (next: boolean[]) => {
+    const state = { checklist: next }
+    setFormState(state)
+    saveFormData(stepNumber, state)
   }
 
-  const handleCheckChange = (id: string, checked: boolean) => {
-    const newData = { ...formData, [id]: checked }
-    setFormData(newData)
-    saveFormData(1, newData)
+  const toggleItem = (index: number) => {
+    const next = formState.checklist.map((value, idx) => (idx === index ? !value : value))
+    updateChecklist(next)
   }
+
+  const allComplete = formState.checklist.length > 0 && formState.checklist.every(Boolean)
 
   const handleComplete = () => {
-    if (allChecksComplete()) {
-      setShowCompleteModal(true)
-    }
+    if (!allComplete) return
+    setShowCompleteModal(true)
   }
 
   const confirmComplete = () => {
-    completeStep(1)
+    completeStep(stepNumber)
     setShowCompleteModal(false)
   }
 
+  const handleSaveDraft = () => saveFormData(stepNumber, formState)
+
   const exportJSON = () => {
-    const dataStr = JSON.stringify(formData, null, 2)
-    const dataBlob = new Blob([dataStr], { type: "application/json" })
-    const url = URL.createObjectURL(dataBlob)
+    const payload = {
+      step: normaliseTitle(stepData.title),
+      summary: stepData.summary,
+      checklist: stepData.checklist.map((label, index) => ({
+        label,
+        completed: formState.checklist[index] ?? false,
+      })),
+      exportedAt: new Date().toISOString(),
+    }
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
     link.href = url
     link.download = "step1-use-case-assessment.json"
     link.click()
+    URL.revokeObjectURL(url)
   }
+
+  const readMoreLinks = stepData.readMore ?? []
+  const pageTitle = normaliseTitle(stepData.title)
 
   return (
     <div>
-      <StepProgress currentStep={1} />
+      <StepProgress currentStep={stepNumber} />
 
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="grid lg:grid-cols-12 gap-8">
@@ -81,17 +131,14 @@ export default function Step1() {
             <div className="sticky top-24 space-y-6">
               <div>
                 <h3 className="font-semibold mb-2">Why This Step</h3>
-                <p className="text-sm text-muted-foreground">
-                  Confirm the use case is acceptable under this Framework by ensuring it meets public benefit criteria,
-                  aims for de-identification, and has transparent communications.
-                </p>
+                <p className="text-sm text-muted-foreground">{stepData.summary}</p>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Prerequisites</h3>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Clear project description</li>
-                  <li>• Understanding of intended benefits</li>
-                  <li>• Awareness of data sources</li>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                  <li>Clear project description</li>
+                  <li>Understanding of intended benefits</li>
+                  <li>Awareness of data sources</li>
                 </ul>
               </div>
               <div>
@@ -114,83 +161,43 @@ export default function Step1() {
           {/* Center Column - Main Content */}
           <div className="lg:col-span-6">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-2">Step 1: Assess the Use Case</h1>
-              <p className="text-muted-foreground">
-                Determine if the proposed use case is acceptable and assess potential impacts
-              </p>
+              <h1 className="text-3xl font-bold mb-2">{pageTitle}</h1>
+              <p className="text-muted-foreground">{stepData.summary}</p>
             </div>
 
-            {/* Use Case Assessment */}
-            <div className="bg-card border rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Use Case Assessment (Appendix 4)</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                All three criteria must be met for the use case to proceed under this Framework.
-              </p>
-
-              <div className="space-y-6">
-                {useCaseChecks.map((check) => (
-                  <div key={check.id} className="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      id={check.id}
-                      checked={formData[check.id] || false}
-                      onChange={(e) => handleCheckChange(check.id, e.target.checked)}
-                      className="mt-1 w-5 h-5 rounded border-input"
-                    />
-                    <label htmlFor={check.id} className="flex-1 cursor-pointer">
-                      <div className="font-medium mb-1">{check.label}</div>
-                      <div className="text-sm text-muted-foreground">{check.description}</div>
+            {sections.map((section) => (
+              <div key={section.title} className="bg-card border rounded-lg p-6 mb-6">
+                <h2 className="text-xl font-semibold mb-4">{section.title}</h2>
+                <p className="text-sm text-muted-foreground mb-6">{section.description}</p>
+                <div className="space-y-4">
+                  {section.items.map(({ index, label }) => (
+                    <label key={index} className="flex gap-4">
+                      <input
+                        type="checkbox"
+                        checked={formState.checklist[index] ?? false}
+                        onChange={() => toggleItem(index)}
+                        className="mt-1.5 h-4 w-4 rounded border-muted-foreground/40"
+                      />
+                      <div>
+                        <div className="font-medium">{label}</div>
+                      </div>
                     </label>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-
-            {/* Impact Assessment */}
-            <div className="bg-card border rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Impact Assessment (Appendix 5)</h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                Consider broader impacts including public interest, ethics, and community expectations.
-              </p>
-
-              <div className="space-y-4">
-                {impactChecks.map((check) => (
-                  <div key={check.id} className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      id={check.id}
-                      checked={formData[check.id] || false}
-                      onChange={(e) => handleCheckChange(check.id, e.target.checked)}
-                      className="w-5 h-5 rounded border-input"
-                    />
-                    <label htmlFor={check.id} className="flex-1 cursor-pointer font-medium">
-                      {check.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-3 mb-6">
-              <button
-                onClick={() => saveFormData(1, formData)}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={handleSaveDraft} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Save className="w-4 h-4" />
                 Save Draft
               </button>
-              <button
-                onClick={exportJSON}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={exportJSON} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Download className="w-4 h-4" />
                 Export JSON
               </button>
-              <button
-                onClick={() => window.print()}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors"
-              >
+              <button onClick={() => window.print()} className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors">
                 <Printer className="w-4 h-4" />
                 Print
               </button>
@@ -199,14 +206,14 @@ export default function Step1() {
             {/* Complete Step Button */}
             <button
               onClick={handleComplete}
-              disabled={!allChecksComplete() || stepCompletion[1]}
+              disabled={!allComplete || stepCompletion[stepNumber]}
               className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                allChecksComplete() && !stepCompletion[1]
+                allComplete && !stepCompletion[stepNumber]
                   ? "bg-primary text-primary-foreground hover:bg-primary/90"
                   : "bg-muted text-muted-foreground cursor-not-allowed"
               }`}
             >
-              {stepCompletion[1] ? (
+              {stepCompletion[stepNumber] ? (
                 <span className="flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-5 h-5" />
                   Step Completed
@@ -216,13 +223,28 @@ export default function Step1() {
               )}
             </button>
 
-            {stepCompletion[1] && (
+            {stepCompletion[stepNumber] && (
               <Link
                 href="/steps/2"
                 className="block w-full mt-3 py-3 text-center rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-colors"
               >
-                Continue to Step 2 →
+                Continue to Step 2 &rarr;
               </Link>
+            )}
+
+            {readMoreLinks.length > 0 && (
+              <div className="mt-6 border-t pt-4">
+                <h3 className="font-semibold mb-2">Read more</h3>
+                <ul className="list-disc list-inside space-y-1 text-sm">
+                  {readMoreLinks.map((href) => (
+                    <li key={href}>
+                      <Link href={href} className="text-primary hover:underline">
+                        {formatReadMoreLabel(href)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
 
@@ -250,7 +272,7 @@ export default function Step1() {
                   </div>
                 </div>
                 <Link href="/resources/glossary" className="text-sm text-primary hover:underline mt-3 inline-block">
-                  View Full Glossary →
+                  View Full Glossary &rarr;
                 </Link>
               </div>
 
@@ -268,6 +290,21 @@ export default function Step1() {
                   </Link>
                 </div>
               </div>
+
+              {readMoreLinks.length > 0 && (
+                <div className="bg-card border rounded-lg p-4">
+                  <h3 className="font-semibold mb-3">Appendices</h3>
+                  <ul className="space-y-2 text-sm">
+                    {readMoreLinks.map((href) => (
+                      <li key={href}>
+                        <Link href={href} className="text-primary hover:underline">
+                          {formatReadMoreLabel(href)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
