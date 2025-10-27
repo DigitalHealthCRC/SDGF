@@ -1,5 +1,7 @@
 "use client"
 
+import type { ComponentType, ReactNode } from "react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 
 import { usePersona } from "@/lib/persona-context"
@@ -56,17 +58,53 @@ const renderTemplateForm = (appendix: AppendixRecord) => {
   )
 }
 
-const renderBody = (appendix: AppendixRecord) => (
-  <section className="space-y-3 text-sm text-muted-foreground">
-    <p>
-      {appendix.description ??
-        "This appendix provides guidance and contextual material for framework implementation."}
-    </p>
-    {appendix.body && <p>{appendix.body}</p>}
-  </section>
-)
+const renderBody = (appendix: AppendixRecord, MarkdownRenderer?: ComponentType<{ children?: ReactNode }>) => {
+  const { description, body } = appendix
+
+  const renderMarkdown = (content: string) =>
+    MarkdownRenderer ? <MarkdownRenderer>{content}</MarkdownRenderer> : content
+
+  const hasDescription = typeof description === "string" && description.trim().length > 0
+  const hasBody =
+    typeof body === "string"
+      ? body.trim().length > 0
+      : Array.isArray(body)
+        ? body.some((item) => typeof item === "string" && item.trim().length > 0)
+        : false
+
+  if (!hasDescription && !hasBody) {
+    return (
+      <section className="space-y-3 text-sm text-muted-foreground">
+        <p>This appendix provides guidance and contextual material for framework implementation.</p>
+      </section>
+    )
+  }
+
+  return (
+    <section className="space-y-4 text-sm text-muted-foreground">
+      {hasDescription && <p>{description}</p>}
+
+      {typeof body === "string" && body.trim().length > 0 && (
+        <div className="prose prose-invert max-w-none text-sm">{renderMarkdown(body)}</div>
+      )}
+
+      {Array.isArray(body) && body.length > 0 && (
+        <ul className="list-disc space-y-2 pl-4 marker:text-emerald-400">
+          {body
+            .filter((item): item is string => typeof item === "string" && item.trim().length > 0)
+            .map((item, index) => (
+              <li key={index} className="text-sm leading-relaxed">
+                <div className="prose prose-invert max-w-none text-sm">{renderMarkdown(item)}</div>
+              </li>
+            ))}
+        </ul>
+      )}
+    </section>
+  )
+}
 
 export function AppendixDetail({ appendix }: { appendix: AppendixRecord }) {
+  const MarkdownRenderer = dynamic(() => import("react-markdown").then((mod) => mod.default), { ssr: false })
   const { persona, isAppendixVisible } = usePersona()
 
   if (persona && !isAppendixVisible(appendix.number)) {
@@ -83,7 +121,7 @@ export function AppendixDetail({ appendix }: { appendix: AppendixRecord }) {
         <p className="text-muted-foreground">{appendix.purpose}</p>
       </header>
 
-      {showTemplate ? renderTemplateForm(appendix) : renderBody(appendix)}
+      {showTemplate ? renderTemplateForm(appendix) : renderBody(appendix, MarkdownRenderer)}
 
       <BackLink />
     </main>

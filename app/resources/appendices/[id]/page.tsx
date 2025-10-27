@@ -13,7 +13,7 @@ export type AppendixRecord = {
   purpose: string
   template?: boolean
   description?: string
-  body?: string
+  body?: string | string[]
   component?: string
   type?: string
   exportKey?: string
@@ -48,6 +48,13 @@ const loadAppendix = (slug: string): AppendixRecord | null => {
     const id = typeof candidateId === "string" && candidateId.trim().length > 0 ? candidateId : slug
     const number = parseAppendixNumber(raw.id, slug)
 
+    const body =
+      typeof raw.body === "string"
+        ? raw.body
+        : Array.isArray(raw.body)
+          ? raw.body.filter((item: unknown) => typeof item === "string")
+          : undefined
+
     return {
       id,
       number,
@@ -55,7 +62,7 @@ const loadAppendix = (slug: string): AppendixRecord | null => {
       purpose: typeof raw.purpose === "string" && raw.purpose.trim().length > 0 ? raw.purpose : "Purpose coming soon.",
       template: Boolean(raw.template),
       description: typeof raw.description === "string" ? raw.description : undefined,
-      body: typeof raw.body === "string" ? raw.body : undefined,
+      body,
       component: typeof raw.component === "string" ? raw.component : undefined,
       type: typeof raw.type === "string" ? raw.type : undefined,
       exportKey: typeof raw.exportKey === "string" ? raw.exportKey : undefined,

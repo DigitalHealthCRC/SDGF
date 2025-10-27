@@ -96,6 +96,11 @@ export default function Appendix8Page() {
 
   const rightPanel = (
     <div className="space-y-6">
+      {appendixData.description && (
+        <div className="rounded-md border border-border/60 bg-card/80 p-4 text-sm text-muted-foreground">
+          {appendixData.description}
+        </div>
+      )}
       {currentNode && !isTerminal && (
         <div className="space-y-4 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
           <h2 className="text-lg font-semibold text-foreground">{currentNode.text}</h2>
