@@ -1,50 +1,60 @@
-"use client";
+"use client"
 
-import Link from "next/link";
+import { usePersona } from "@/lib/persona-context"
+import TwoColumnLayout from "@/src/components/TwoColumnLayout"
+import TemplateForm, { type TemplateSection } from "@/src/components/TemplateForm"
+import appendixData from "@/src/content/appendices/appendix6.json"
 
-import TwoColumnLayout from "@/src/components/TwoColumnLayout";
-import TemplateForm from "@/src/components/TemplateForm";
+import { BackLink, RestrictionNotice } from "../appendix-detail"
+
+const appendixNumber = typeof appendixData.id === "number" ? appendixData.id : 6
+const sections = (appendixData.sections ?? []) as TemplateSection[]
 
 export default function Appendix6Page() {
-  const fields = [
-    { label: "Dataset Name" },
-    { label: "Data Custodian or Source" },
-    {
-      label: "Data Quality Summary",
-      type: "textarea",
-      placeholder: "Summarise completeness, accuracy, and timeliness.",
-    },
-    { label: "Representativeness of the Dataset", type: "textarea" },
-    { label: "Known Biases or Limitations", type: "textarea" },
-    { label: "Pre-processing or De-identification Performed", type: "textarea" },
-    { label: "Technical Readiness for Synthesis", type: "textarea" },
-    { label: "Assessed By" },
-    { label: "Assessment Date", type: "date" },
-  ];
+  const { persona, isAppendixVisible } = usePersona()
 
-  const right = <TemplateForm id="appendix6-technical-assessment" fields={fields} />;
+  const headlineFields = sections.flatMap((section) => section.fields.slice(0, 2).map((field) => field.label))
+
+  if (persona && !isAppendixVisible(appendixNumber)) {
+    return <RestrictionNotice title="Appendix 6 – Technical Assessment" personaLabel={persona.label} />
+  }
 
   const left = (
-    <div className="space-y-3 text-sm text-muted-foreground">
-      <p>Capture the technical posture of your source dataset prior to starting synthesis.</p>
-      <ul className="list-disc list-inside space-y-1 text-xs text-muted-foreground/80">
-        <li>Reference data lineage and any data preparation tooling.</li>
+    <div className="space-y-4 text-sm text-muted-foreground">
+      <p>{appendixData.purpose}</p>
+      <ul className="list-disc list-inside space-y-2 text-xs text-muted-foreground/80">
+        <li>Reference data lineage, custodians, and lawful use conditions.</li>
         <li>Flag remediation actions needed before progressing to Step 3.</li>
-        <li>Link to evidence or dashboards supporting your assessments.</li>
+        <li>Link to dashboards or quality evidence that supports each decision.</li>
       </ul>
-      <Link href="/resources/appendices" className="inline-flex items-center gap-2 text-emerald-400 hover:underline">
-        <span aria-hidden="true">{"\u2190"}</span>
-        <span>Back to Appendices</span>
-      </Link>
+      <div className="rounded-md border border-emerald-500/40 bg-emerald-500/10 p-3 text-emerald-200">
+        Tip: Capture blockers early so delivery teams can plan cleansing or linkage activity without delaying synthesis.
+      </div>
+      <div className="space-y-2 text-xs text-muted-foreground/80">
+        <p className="font-semibold text-foreground">Sections covered</p>
+        <ul className="list-disc list-inside space-y-1">
+          {headlineFields.slice(0, 5).map((label) => (
+            <li key={label}>{label}</li>
+          ))}
+          <li>…plus detailed readiness and outcome tracking.</li>
+        </ul>
+      </div>
+      <BackLink />
     </div>
-  );
+  )
 
   return (
     <TwoColumnLayout
       title="Appendix 6 - Technical Assessment"
       description="Document dataset quality, representativeness, and readiness indicators."
       left={left}
-      right={right}
+      right={
+        <TemplateForm
+          id={(appendixData.exportKey as string) ?? "appendix6-technical-assessment"}
+          exportKey={appendixData.exportKey as string | undefined}
+          sections={sections}
+        />
+      }
     />
-  );
+  )
 }

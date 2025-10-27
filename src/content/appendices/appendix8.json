@@ -1,6 +1,117 @@
 {
-  "id": "appendix8",
-  "title": "Appendix 8 - Decision Tree for Complex Scenarios",
-  "purpose": "An interactive decision-support tool guiding users through complex or edge-case scenarios where the appropriate pathway for synthetic data generation or sharing may be unclear.",
-  "template": true
+  "id": 8,
+  "title": "Appendix 8 - Decision Tree for Complex Synthetic Health Data Scenarios",
+  "purpose": "Provide a guided decision pathway for requests where risk cannot be reduced to very low, or where lawful pathways and approvals are uncertain.",
+  "type": "wizard",
+  "component": "DecisionWizard",
+  "template": false,
+  "personaVisibility": [
+    "custodian",
+    "requestor",
+    "scientist"
+  ],
+  "exportKey": "appendix8_decision_tree",
+  "nodes": [
+    {
+      "id": "start",
+      "text": "Has a Re-identification Risk Assessment been completed on the synthetic dataset?",
+      "options": [
+        {
+          "label": "Yes",
+          "next": "risk_result"
+        },
+        {
+          "label": "No",
+          "next": "do_risk_assessment"
+        }
+      ]
+    },
+    {
+      "id": "do_risk_assessment",
+      "text": "Complete a Re-identification Risk Assessment. If residual risk cannot be reduced to very low, treat the dataset as personal information and proceed via a lawful pathway.",
+      "options": [
+        {
+          "label": "Continue",
+          "next": "risk_result"
+        }
+      ]
+    },
+    {
+      "id": "risk_result",
+      "text": "What is the assessed re-identification risk?",
+      "options": [
+        {
+          "label": "Very low",
+          "next": "proceed_step5"
+        },
+        {
+          "label": "More than very low, but can be reduced",
+          "next": "apply_more_controls"
+        },
+        {
+          "label": "More than very low and cannot be reduced",
+          "next": "lawful_pathway"
+        }
+      ]
+    },
+    {
+      "id": "apply_more_controls",
+      "text": "Consult with the Requestor and apply further de-identification techniques and controls. Re-run the assessment.",
+      "options": [
+        {
+          "label": "Re-run assessment",
+          "next": "risk_result"
+        }
+      ]
+    },
+    {
+      "id": "lawful_pathway",
+      "text": "Treat as personal information. Determine a lawful pathway (e.g., seek waiver of consent via HREC for research).",
+      "options": [
+        {
+          "label": "View lawful pathways",
+          "next": "appendix9_link"
+        },
+        {
+          "label": "Stop and document outcome",
+          "next": "end_stop"
+        }
+      ]
+    },
+    {
+      "id": "appendix9_link",
+      "text": "Open Appendix 9 to review lawful pathways and conditions. When ready, return to confirm pathway and approvals.",
+      "options": [
+        {
+          "label": "Pathway confirmed",
+          "next": "end_pathway_confirmed"
+        }
+      ]
+    },
+    {
+      "id": "proceed_step5",
+      "text": "Residual risk is very low. Proceed to Step 5 (Safety Assessment, controls and approvals) and document the decision.",
+      "options": [
+        {
+          "label": "Go to Step 5 controls",
+          "next": "end_step5"
+        }
+      ]
+    },
+    {
+      "id": "end_step5",
+      "text": "Route to Safety Assessment (Appendix 10) and complete final documentation (Appendix 11).",
+      "options": []
+    },
+    {
+      "id": "end_pathway_confirmed",
+      "text": "Proceed under the confirmed lawful pathway with appropriate approvals and controls documented.",
+      "options": []
+    },
+    {
+      "id": "end_stop",
+      "text": "Request cannot proceed under the Framework without a lawful pathway. Record decision and rationale.",
+      "options": []
+    }
+  ]
 }

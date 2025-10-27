@@ -1,6 +1,144 @@
 {
-  "id": "appendix11",
-  "title": "Appendix 11 - Request and Outcomes Form",
-  "purpose": "Template used for documenting final requests, approvals, and outcomes of synthetic data generation or sharing activities.",
-  "template": true
+  "id": 11,
+  "title": "Appendix 11 - Synthetic Health Data Request & Assessment Outcomes Form",
+  "purpose": "Document consolidated results and approvals across all Framework steps.",
+  "type": "form",
+  "component": "TemplateForm",
+  "template": true,
+  "personaVisibility": [
+    "custodian",
+    "requestor",
+    "scientist"
+  ],
+  "exportKey": "appendix11_outcomes_form",
+  "sections": [
+    {
+      "groupLabel": "A. Project Identification",
+      "fields": [
+        {
+          "name": "projectName",
+          "label": "Project name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "organisation",
+          "label": "Organisation (Data Requestor)",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "contact",
+          "label": "Primary contact person",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "description",
+          "label": "Project summary",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    },
+    {
+      "groupLabel": "B. Assessment Summaries",
+      "fields": [
+        {
+          "name": "useCaseOutcome",
+          "label": "Use Case Assessment outcome summary",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "impactOutcome",
+          "label": "Impact Assessment outcome summary",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "technicalOutcome",
+          "label": "Technical Assessment outcome summary",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "riskOutcome",
+          "label": "Re-identification risk outcome",
+          "type": "select",
+          "options": [
+            "Very low",
+            "More than very low"
+          ],
+          "required": true
+        },
+        {
+          "name": "safetyOutcome",
+          "label": "Safety Assessment outcome",
+          "type": "select",
+          "options": [
+            "Safe to share",
+            "Safe with conditions",
+            "Do not share"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "groupLabel": "C. Retention and Post-sharing",
+      "fields": [
+        {
+          "name": "retentionPeriod",
+          "label": "Retention period and conditions",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "endOfRetention",
+          "label": "Actions at end of retention (destroy, return, retain)",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "postSharing",
+          "label": "Post-sharing controls (e.g., audit, attestations)",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "D. Decision and Authorisation",
+      "fields": [
+        {
+          "name": "decision",
+          "label": "Final decision",
+          "type": "select",
+          "options": [
+            "Approved",
+            "Approved with conditions",
+            "Not approved"
+          ],
+          "required": true
+        },
+        {
+          "name": "decisionMaker",
+          "label": "Decision-maker (name and title)",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "decisionDate",
+          "label": "Date of decision",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "conditions",
+          "label": "Conditions (if any)",
+          "type": "textarea"
+        }
+      ]
+    }
+  ]
 }

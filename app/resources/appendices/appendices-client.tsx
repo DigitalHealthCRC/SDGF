@@ -7,11 +7,6 @@ import { usePersona } from "@/lib/persona-context";
 
 import type { AppendixRecord } from "./page";
 
-const parseAppendixNumber = (id: string) => {
-  const numeric = parseInt(id.replace(/\D/g, ""), 10);
-  return Number.isNaN(numeric) ? 0 : numeric;
-};
-
 const cardGradients = [
   "from-chart-1/20 to-chart-1/5",
   "from-chart-2/20 to-chart-2/5",
@@ -28,8 +23,7 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
   const { persona, isAppendixVisible } = usePersona();
 
   const visibleAppendices = appendices.filter((appendix) => {
-    const num = parseAppendixNumber(appendix.id);
-    return isAppendixVisible(num);
+    return isAppendixVisible(appendix.number);
   });
 
   if (persona && visibleAppendices.length === 0) {
@@ -86,7 +80,7 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-2">
                   <p className="text-xs uppercase tracking-wide text-muted-foreground/80">
-                    Appendix {parseAppendixNumber(appendix.id)}
+                    Appendix {appendix.number}
                   </p>
                   <h3 className="text-lg font-semibold text-foreground">{appendix.title}</h3>
                 </div>

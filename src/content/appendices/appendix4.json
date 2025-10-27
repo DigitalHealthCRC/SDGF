@@ -1,6 +1,148 @@
 {
-  "id": "appendix4",
-  "title": "Appendix 4 - Use Case Assessment Template",
-  "purpose": "Template used in Step 1 to assess the intended purpose for synthetic data, capturing justification, benefits, and alignment with policy and ethical principles.",
-  "template": true
+  "id": 4,
+  "title": "Appendix 4 - Use Case Assessment",
+  "purpose": "Assess the proposed synthetic data use case for public benefit, suitability, and alignment with governance principles.",
+  "type": "form",
+  "component": "TemplateForm",
+  "template": true,
+  "personaVisibility": [
+    "custodian",
+    "requestor"
+  ],
+  "exportKey": "appendix4_use_case_assessment",
+  "sections": [
+    {
+      "groupLabel": "A. Project Overview",
+      "fields": [
+        {
+          "name": "projectName",
+          "label": "Project name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "projectLead",
+          "label": "Project lead / contact person",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "organisation",
+          "label": "Organisation requesting data",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "description",
+          "label": "Brief description of the proposed project",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "publicBenefit",
+          "label": "Describe the anticipated public benefit (who benefits and how)",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    },
+    {
+      "groupLabel": "B. Suitability of Synthetic Data",
+      "fields": [
+        {
+          "name": "purposeAlignment",
+          "label": "How does the project purpose align with use of synthetic data?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "realDataNeeded",
+          "label": "Would the project require real data at any stage? If yes, explain why.",
+          "type": "textarea"
+        },
+        {
+          "name": "dataScope",
+          "label": "Scope of data requested (domains, variables, population, timeframe)",
+          "type": "textarea"
+        },
+        {
+          "name": "outputs",
+          "label": "Expected outputs or deliverables",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "C. Governance Context",
+      "fields": [
+        {
+          "name": "ethicsReview",
+          "label": "Is ethics review required or has it been obtained?",
+          "type": "radio",
+          "options": [
+            "Required",
+            "Obtained",
+            "Not required",
+            "Unclear"
+          ],
+          "required": true
+        },
+        {
+          "name": "legalBasis",
+          "label": "Lawful basis (if known)",
+          "type": "select",
+          "options": [
+            "De-identified sharing",
+            "Waiver of consent via HREC",
+            "Public interest authority",
+            "Other (specify)"
+          ]
+        },
+        {
+          "name": "legalBasisOther",
+          "label": "If 'Other', specify",
+          "type": "text"
+        },
+        {
+          "name": "complexityFlag",
+          "label": "Is this a complex or high-risk scenario (cross-organisation, sensitive domains, Indigenous data)?",
+          "type": "radio",
+          "options": [
+            "Yes",
+            "No",
+            "Unclear"
+          ],
+          "required": true
+        },
+        {
+          "name": "notes",
+          "label": "Additional notes or context for review",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "D. Declaration",
+      "fields": [
+        {
+          "name": "acknowledgement",
+          "label": "I confirm that the information above is accurate and may be used to determine governance requirements.",
+          "type": "checkbox",
+          "required": true
+        },
+        {
+          "name": "submittedBy",
+          "label": "Submitted by (name)",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "submissionDate",
+          "label": "Date",
+          "type": "date",
+          "required": true
+        }
+      ]
+    }
+  ]
 }

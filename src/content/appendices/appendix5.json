@@ -1,6 +1,114 @@
 {
-  "id": "appendix5",
-  "title": "Appendix 5 - Impact Assessment Template",
-  "purpose": "Template for evaluating the potential benefits, harms, and broader impacts of generating and sharing synthetic data, including stakeholder and public impact considerations.",
-  "template": true
+  "id": 5,
+  "title": "Appendix 5 - Impact Assessment",
+  "purpose": "Evaluate potential benefits, harms, and equity impacts of using synthetic health data.",
+  "type": "form",
+  "component": "TemplateForm",
+  "template": true,
+  "personaVisibility": [
+    "custodian",
+    "requestor",
+    "scientist"
+  ],
+  "exportKey": "appendix5_impact_assessment",
+  "sections": [
+    {
+      "groupLabel": "A. Benefits and Harms",
+      "fields": [
+        {
+          "name": "publicInterest",
+          "label": "Describe how the project serves a clear public interest or health benefit.",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "beneficiaries",
+          "label": "Who stands to benefit and in what way?",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "potentialHarms",
+          "label": "Identify possible harms (privacy, equity, trust, reputational, social, or cultural).",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "mitigations",
+          "label": "List measures proposed to minimise or eliminate these harms.",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    },
+    {
+      "groupLabel": "B. Community and Cultural Considerations",
+      "fields": [
+        {
+          "name": "communityExpectations",
+          "label": "Describe how community expectations and transparency have been considered.",
+          "type": "textarea"
+        },
+        {
+          "name": "indigenousData",
+          "label": "Does this project involve Aboriginal or Torres Strait Islander data or contexts? If yes, describe engagement and cultural governance arrangements.",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "C. Organisational Impacts",
+      "fields": [
+        {
+          "name": "resourceImpacts",
+          "label": "Identify resource or operational impacts on the Data Provider.",
+          "type": "textarea"
+        },
+        {
+          "name": "ethicsRequired",
+          "label": "Is ethics approval required (HREC or equivalent)?",
+          "type": "radio",
+          "options": [
+            "Yes",
+            "No",
+            "Unclear"
+          ],
+          "required": true
+        },
+        {
+          "name": "piaRequired",
+          "label": "Does the proposal trigger a Privacy Impact Assessment (PIA)? Explain rationale.",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "D. Assessment Outcome",
+      "fields": [
+        {
+          "name": "impactDecision",
+          "label": "Overall assessment outcome",
+          "type": "select",
+          "options": [
+            "Proceed",
+            "Proceed with conditions",
+            "Do not proceed"
+          ],
+          "required": true
+        },
+        {
+          "name": "assessor",
+          "label": "Assessor name and position",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "assessmentDate",
+          "label": "Date of assessment",
+          "type": "date",
+          "required": true
+        }
+      ]
+    }
+  ]
 }

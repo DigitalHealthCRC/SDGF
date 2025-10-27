@@ -1,93 +1,58 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import Link from "next/link"
+import { useState } from "react"
 
+import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
+import appendixData from "@/src/content/appendices/appendix8.json"
 
-type DecisionNode = { id: string; question: string; yes: NodeId; no: NodeId }
-type ResultNode = { id: string; result: string }
-type Node = DecisionNode | ResultNode
+import { BackLink, RestrictionNotice } from "../appendix-detail"
 
-type NodeId =
-  | "start"
-  | "riskAssessment"
-  | "controlsReady"
-  | "reviewRisk"
-  | "mitigationPlan"
-  | "ethicsCheck"
-  | "ethicsRequired"
-  | "governanceReview"
-  | "proceed"
+type WizardOption = { label: string; next: string }
+type WizardNode = { id: string; text: string; options: WizardOption[] }
 
-const tree: Record<NodeId, Node> = {
-  start: {
-    id: "start",
-    question: "Is the synthetic data intended for public release or sharing outside your organisation?",
-    yes: "riskAssessment",
-    no: "ethicsCheck",
-  },
-  riskAssessment: {
-    id: "riskAssessment",
-    question: "Has a formal re-identification risk assessment been completed and rated very low?",
-    yes: "controlsReady",
-    no: "reviewRisk",
-  },
-  controlsReady: {
-    id: "controlsReady",
-    question: "Are mitigation controls documented and approved by governance?",
-    yes: "proceed",
-    no: "mitigationPlan",
-  },
-  reviewRisk: {
-    id: "reviewRisk",
-    result:
-      "Re-identification risk must be mitigated or synthesis parameters adjusted before proceeding. Revisit Step 4 and repeat testing.",
-  },
-  mitigationPlan: {
-    id: "mitigationPlan",
-    result:
-      "Document the mitigation actions, secure approvals, and update the residual risk rating before continuing to synthesis.",
-  },
-  ethicsCheck: {
-    id: "ethicsCheck",
-    question: "Does the use case involve vulnerable cohorts or highly sensitive attributes?",
-    yes: "ethicsRequired",
-    no: "governanceReview",
-  },
-  ethicsRequired: {
-    id: "ethicsRequired",
-    result:
-      "Submit the proposal for ethics or governance review prior to data synthesis. Proceed only once formal approval is granted.",
-  },
-  governanceReview: {
-    id: "governanceReview",
-    question: "Has the organisation's governance or privacy office endorsed proceeding without additional approvals?",
-    yes: "riskAssessment",
-    no: "ethicsRequired",
-  },
-  proceed: {
-    id: "proceed",
-    result:
-      "The scenario meets governance expectations. You may proceed to Step 3 (Generate Synthetic Data) and ready the mitigation log for sign-off.",
-  },
+const nodes = (appendixData.nodes ?? []) as WizardNode[]
+const appendixNumber = typeof appendixData.id === "number" ? appendixData.id : 8
+
+const findStartNode = (collection: WizardNode[]) => {
+  const explicit = collection.find((node) => node.id === "start")
+  return explicit ?? collection[0]
 }
 
-const isDecisionNode = (node: Node): node is DecisionNode => "yes" in node && "no" in node
+const nodesById = nodes.reduce<Record<string, WizardNode>>((acc, node) => {
+  acc[node.id] = node
+  return acc
+}, {})
+
+const startNode = findStartNode(nodes)
 
 export default function Appendix8Page() {
-  const [path, setPath] = useState<NodeId[]>(["start"])
-  const [history, setHistory] = useState<Array<{ id: NodeId; question: string; answer: "yes" | "no" }>>([])
+  const { persona, isAppendixVisible } = usePersona()
+  const [path, setPath] = useState<string[]>(startNode ? [startNode.id] : [])
+  const [history, setHistory] = useState<Array<{ id: string; question: string; answer: string }>>([])
 
-  const currentId = useMemo(() => path[path.length - 1], [path])
-  const current = tree[currentId]
+  const currentId = path[path.length - 1]
+  const currentNode = currentId ? nodesById[currentId] : undefined
+  const isTerminal = !currentNode || currentNode.options.length === 0
 
-  const answer = (response: "yes" | "no") => {
-    if (!isDecisionNode(current)) return
+  if (persona && !isAppendixVisible(appendixNumber)) {
+    return <RestrictionNotice title="Appendix 8 – Decision Tree" personaLabel={persona.label} />
+  }
 
-    const nextId = current[response]
-    setHistory((prev) => [...prev, { id: current.id as NodeId, question: current.question, answer: response }])
-    setPath((prev) => [...prev, nextId])
+  if (!startNode) {
+    return (
+      <main className="mx-auto max-w-3xl space-y-6 p-8 text-sm text-muted-foreground">
+        <h1 className="text-2xl font-semibold text-foreground">Appendix 8 - Decision Tree</h1>
+        <p>Decision tree content is unavailable. Please contact the framework team.</p>
+        <BackLink />
+      </main>
+    )
+  }
+
+  const answer = (option: WizardOption) => {
+    if (!currentNode) return
+    setHistory((prev) => [...prev, { id: currentNode.id, question: currentNode.text, answer: option.label }])
+    setPath((prev) => [...prev, option.next])
   }
 
   const goBack = () => {
@@ -96,7 +61,7 @@ export default function Appendix8Page() {
   }
 
   const reset = () => {
-    setPath(["start"])
+    setPath([startNode.id])
     setHistory([])
   }
 
@@ -104,51 +69,46 @@ export default function Appendix8Page() {
     const payload = {
       timestamp: new Date().toISOString(),
       path: history,
-      outcome: !isDecisionNode(current) ? current.result : null,
+      outcome: isTerminal ? currentNode?.text ?? null : null,
     }
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
     const anchor = document.createElement("a")
     anchor.href = URL.createObjectURL(blob)
-    anchor.download = "appendix8-decision-tree.json"
+    anchor.download = `${(appendixData.exportKey as string) ?? "appendix8-decision-tree"}.json`
     anchor.click()
+    URL.revokeObjectURL(anchor.href)
   }
 
   const leftPanel = (
     <div className="space-y-4 text-sm text-muted-foreground">
-      <p>
-        Follow this branched questionnaire to confirm whether further governance or ethics review is required before you
-        continue through the Framework.
-      </p>
+      <p>{appendixData.purpose}</p>
       <ul className="list-disc list-inside space-y-1 text-xs text-muted-foreground/80">
-        <li>Document each answer in case governance review is needed later.</li>
-        <li>Use the Back button if you need to revisit a previous answer.</li>
-        <li>Download your path to attach it to Step 4 or Step 5 evidence logs.</li>
+        <li>Document each response so governance reviewers can trace the decision.</li>
+        <li>Use the Back button to revisit earlier choices if circumstances change.</li>
+        <li>Download the JSON log and attach it to Step 4 or Step 5 evidence packs.</li>
       </ul>
-      <Link href="/resources/appendices" className="inline-flex items-center gap-2 text-emerald-300 hover:underline">
-        <span aria-hidden="true">{"\u2190"}</span>
-        <span>Back to Appendices</span>
-      </Link>
+      <div className="rounded-md border border-emerald-500/40 bg-emerald-500/10 p-3 text-emerald-200">
+        Tip: If you end on a stop condition, escalate to the governance office with your recorded answers.
+      </div>
+      <BackLink />
     </div>
   )
 
   const rightPanel = (
     <div className="space-y-6">
-      {isDecisionNode(current) ? (
+      {currentNode && !isTerminal && (
         <div className="space-y-4 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
-          <h2 className="text-lg font-semibold text-foreground">{current.question}</h2>
+          <h2 className="text-lg font-semibold text-foreground">{currentNode.text}</h2>
           <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => answer("yes")}
-              className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
-            >
-              Yes
-            </button>
-            <button
-              onClick={() => answer("no")}
-              className="rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
-            >
-              No
-            </button>
+            {currentNode.options.map((option) => (
+              <button
+                key={`${currentNode.id}-${option.next}`}
+                onClick={() => answer(option)}
+                className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+              >
+                {option.label}
+              </button>
+            ))}
             {path.length > 1 && (
               <button
                 onClick={goBack}
@@ -165,10 +125,12 @@ export default function Appendix8Page() {
             </button>
           </div>
         </div>
-      ) : (
+      )}
+
+      {isTerminal && (
         <div className="space-y-4 rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-6 shadow-md">
           <h2 className="text-lg font-semibold text-emerald-200">Outcome</h2>
-          <p className="text-sm text-emerald-100">{current.result}</p>
+          <p className="text-sm text-emerald-100">{currentNode?.text ?? "Outcome unavailable."}</p>
           <div className="flex flex-wrap gap-3 pt-2">
             <button
               onClick={reset}
@@ -210,8 +172,8 @@ export default function Appendix8Page() {
 
   return (
     <TwoColumnLayout
-      title="Appendix 8: Decision Tree for Complex Scenarios"
-      description="Answer a short series of governance questions to confirm whether additional review is required before synthesis."
+      title="Appendix 8 - Decision Tree for Complex Scenarios"
+      description={appendixData.purpose}
       left={leftPanel}
       right={rightPanel}
     />

@@ -1,6 +1,135 @@
 {
-  "id": "appendix10",
-  "title": "Appendix 10 - Safety Assessment Template",
-  "purpose": "Template for assessing the privacy and safety of synthetic data outputs, including re-identification risk analysis and approval sign-off.",
-  "template": true
+  "id": 10,
+  "title": "Appendix 10 - Safety Assessment (Five Safes)",
+  "purpose": "Assess the adequacy of controls across the Five Safes model before releasing synthetic data.",
+  "type": "form",
+  "component": "TemplateForm",
+  "template": true,
+  "personaVisibility": [
+    "custodian",
+    "requestor"
+  ],
+  "exportKey": "appendix10_safety_assessment",
+  "sections": [
+    {
+      "groupLabel": "A. Safe People",
+      "fields": [
+        {
+          "name": "accessPeople",
+          "label": "List individuals or roles with access to data and confirm training and authorisation.",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    },
+    {
+      "groupLabel": "B. Safe Projects",
+      "fields": [
+        {
+          "name": "projectPurpose",
+          "label": "Confirm approved purpose and scope align with the Framework.",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "approvals",
+          "label": "List all approvals and conditions governing this project.",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "C. Safe Data",
+      "fields": [
+        {
+          "name": "residualRisk",
+          "label": "Summarise residual re-identification risk (very low / more than very low) and controls applied.",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "dataMinimisation",
+          "label": "Confirm data minimisation and exclusion of unnecessary variables.",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "D. Safe Settings",
+      "fields": [
+        {
+          "name": "environment",
+          "label": "Describe the environment where data will be accessed (secure network, VDI, etc.).",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "securityControls",
+          "label": "Summarise authentication, monitoring, and incident response measures.",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "E. Safe Outputs",
+      "fields": [
+        {
+          "name": "outputControls",
+          "label": "Describe how outputs will be checked prior to release/publication.",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    },
+    {
+      "groupLabel": "F. Agreements & Retention",
+      "fields": [
+        {
+          "name": "agreements",
+          "label": "Data Sharing / Use Agreements in place (reference IDs or titles).",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "retention",
+          "label": "Specify data retention period and end-of-retention actions.",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "postSharing",
+          "label": "Post-sharing audits or attestations required?",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "G. Final Decision",
+      "fields": [
+        {
+          "name": "safetyDecision",
+          "label": "Overall Safety Assessment decision",
+          "type": "select",
+          "options": [
+            "Safe to share",
+            "Safe with conditions",
+            "Do not share"
+          ],
+          "required": true
+        },
+        {
+          "name": "assessor",
+          "label": "Assessor name and position",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "assessmentDate",
+          "label": "Date",
+          "type": "date",
+          "required": true
+        }
+      ]
+    }
+  ]
 }

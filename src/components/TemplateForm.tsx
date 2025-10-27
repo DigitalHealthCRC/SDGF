@@ -1,107 +1,296 @@
 "use client"
 
-import type { ChangeEvent } from "react"
+import type { ReactNode } from "react"
 import { useEffect, useMemo, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 
-type TemplateField = {
+type FieldType = "text" | "textarea" | "date" | "select" | "radio" | "checkbox"
+
+type TemplateFieldOption = string | { label: string; value?: string }
+
+export interface TemplateField {
+  name?: string
   label: string
-  type?: string
+  type?: FieldType
   placeholder?: string
+  options?: TemplateFieldOption[]
+  required?: boolean
+  helperText?: string
 }
 
-export default function TemplateForm({ id, fields }: { id: string; fields: TemplateField[] }) {
-  const [values, setValues] = useState<Record<string, string>>({})
+export interface TemplateSection {
+  groupLabel?: string
+  description?: string
+  fields: TemplateField[]
+}
 
-  const normalisedFields = useMemo(
-    () =>
-      fields.map((field) => ({
-        ...field,
-        id: `${id}-${field.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-      })),
-    [fields, id],
-  )
+interface TemplateFormProps {
+  id: string
+  exportKey?: string
+  fields?: TemplateField[]
+  sections?: TemplateSection[]
+  intro?: ReactNode
+}
 
-  // Load saved draft
+type NormalisedOption = { label: string; value: string }
+
+type NormalisedField = TemplateField & {
+  type: FieldType
+  key: string
+  storageKey: string
+  options?: NormalisedOption[]
+}
+
+type NormalisedSection = {
+  groupLabel?: string
+  description?: string
+  fields: NormalisedField[]
+}
+
+type FieldValue = string | boolean
+
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")
+
+const normaliseOption = (option: TemplateFieldOption): NormalisedOption => {
+  if (typeof option === "string") {
+    return { label: option, value: option }
+  }
+
+  return { label: option.label, value: option.value ?? option.label }
+}
+
+export default function TemplateForm({ id, exportKey, fields, sections, intro }: TemplateFormProps) {
+  const storageId = exportKey ?? id
+  const [values, setValues] = useState<Record<string, FieldValue>>({})
+
+  const normalisedSections = useMemo<NormalisedSection[]>(() => {
+    const baseSections = sections && sections.length > 0 ? sections : [{ fields: fields ?? [] }]
+
+    return baseSections.map((section, sectionIndex) => ({
+      groupLabel: section.groupLabel,
+      description: section.description,
+      fields: section.fields.map((field, fieldIndex) => {
+        const baseKey = field.name && field.name.trim().length > 0 ? field.name : field.label
+        const storageKey = baseKey
+        const type = (field.type as FieldType) ?? "text"
+        const key = `${id}-${sectionIndex}-${slugify(`${baseKey}-${fieldIndex}`)}`
+
+        return {
+          ...field,
+          type,
+          key,
+          storageKey,
+          options: field.options?.map(normaliseOption),
+        }
+      }),
+    }))
+  }, [fields, id, sections])
+
   useEffect(() => {
     if (typeof window === "undefined") return
-    const saved = window.localStorage.getItem(id)
-    if (saved) setValues(JSON.parse(saved))
-  }, [id])
+    try {
+      const saved = window.localStorage.getItem(storageId)
+      if (!saved) return
+      const parsed = JSON.parse(saved) as Record<string, FieldValue>
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setValues(parsed)
+    } catch {
+      // ignore corrupted drafts
+    }
+  }, [storageId])
 
-  // Save whenever values change
   useEffect(() => {
     if (typeof window === "undefined") return
-    if (Object.keys(values).length === 0) return
-    window.localStorage.setItem(id, JSON.stringify(values))
-  }, [id, values])
+    if (normalisedSections.length === 0) return
+    window.localStorage.setItem(storageId, JSON.stringify(values))
+  }, [normalisedSections.length, storageId, values])
 
-  const handleChange = (label: string, value: string) =>
+  const setFieldValue = (key: string, value: FieldValue) => {
     setValues((prev) => ({
       ...prev,
-      [label]: value,
+      [key]: value,
     }))
+  }
 
-  // Export as JSON
   const downloadJSON = () => {
-    const blob = new Blob([JSON.stringify(values, null, 2)], { type: "application/json" })
+    const payload = normalisedSections.reduce<Record<string, FieldValue>>((acc, section) => {
+      section.fields.forEach((field) => {
+        const value = values[field.storageKey]
+        if (typeof value === "boolean") {
+          acc[field.storageKey] = value
+        } else {
+          acc[field.storageKey] = value ?? ""
+        }
+      })
+      return acc
+    }, {})
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
     const anchor = document.createElement("a")
     anchor.href = URL.createObjectURL(blob)
-    anchor.download = `${id}.json`
+    anchor.download = `${storageId}.json`
     anchor.click()
     URL.revokeObjectURL(anchor.href)
   }
 
   const printPDF = () => window.print()
 
-  const renderField = (field: TemplateField & { id: string }) => {
-    const commonProps = {
-      id: field.id,
-      value: values[field.label] || "",
-      onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(field.label, event.target.value),
-      placeholder: field.placeholder || "",
-    }
-
-    if (field.type === "textarea") {
-      return (
-        <Textarea
-          {...commonProps}
-          className="min-h-[120px] resize-y rounded-lg border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        />
-      )
-    }
-
+  const renderTextInput = (field: NormalisedField) => {
+    const value = values[field.storageKey]
     return (
       <Input
-        {...commonProps}
-        type={field.type || "text"}
+        id={field.key}
+        value={typeof value === "string" ? value : value ? "true" : ""}
+        onChange={(event) => setFieldValue(field.storageKey, event.target.value)}
+        placeholder={field.placeholder ?? ""}
+        type={field.type === "date" ? "date" : "text"}
         className="rounded-lg border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       />
     )
   }
 
+  const renderTextarea = (field: NormalisedField) => {
+    const value = values[field.storageKey]
+    return (
+      <Textarea
+        id={field.key}
+        value={typeof value === "string" ? value : value ? "true" : ""}
+        onChange={(event) => setFieldValue(field.storageKey, event.target.value)}
+        placeholder={field.placeholder ?? ""}
+        className="min-h-[140px] resize-y rounded-lg border-border bg-background text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      />
+    )
+  }
+
+  const renderSelect = (field: NormalisedField) => {
+    const stringValue = typeof values[field.storageKey] === "string" ? (values[field.storageKey] as string) : ""
+
+    return (
+      <Select value={stringValue} onValueChange={(option) => setFieldValue(field.storageKey, option)}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={field.placeholder ?? "Select an option"} />
+        </SelectTrigger>
+        <SelectContent>
+          {field.options?.map((option) => (
+            <SelectItem key={`${field.key}-${option.value}`} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    )
+  }
+
+  const renderRadioGroup = (field: NormalisedField) => {
+    const stringValue = typeof values[field.storageKey] === "string" ? (values[field.storageKey] as string) : ""
+
+    return (
+      <RadioGroup
+        value={stringValue}
+        onValueChange={(option) => setFieldValue(field.storageKey, option)}
+        className="space-y-3"
+      >
+        {field.options?.map((option) => {
+          const optionId = `${field.key}-${option.value}`
+          return (
+            <div key={optionId} className="flex items-start gap-3 rounded-lg border border-border/60 bg-muted/30 p-3">
+              <RadioGroupItem value={option.value} id={optionId} />
+              <Label htmlFor={optionId} className="text-sm text-foreground">
+                {option.label}
+              </Label>
+            </div>
+          )
+        })}
+      </RadioGroup>
+    )
+  }
+
+  const renderCheckbox = (field: NormalisedField) => {
+    const checked = Boolean(values[field.storageKey])
+
+    return (
+      <div className="flex items-start gap-3 rounded-lg border border-border/60 bg-muted/30 p-3">
+        <Checkbox
+          id={field.key}
+          checked={checked}
+          onCheckedChange={(value) => setFieldValue(field.storageKey, value === true)}
+        />
+        <Label htmlFor={field.key} className="text-sm text-foreground">
+          {field.label}
+        </Label>
+      </div>
+    )
+  }
+
+  const renderField = (field: NormalisedField) => {
+    switch (field.type) {
+      case "textarea":
+        return renderTextarea(field)
+      case "date":
+        return renderTextInput(field)
+      case "select":
+        return renderSelect(field)
+      case "radio":
+        return renderRadioGroup(field)
+      case "checkbox":
+        return renderCheckbox(field)
+      case "text":
+      default:
+        return renderTextInput(field)
+    }
+  }
+
   return (
     <div className="space-y-6">
-      {normalisedFields.map((field) => (
-        <Card
-          key={field.id}
-          className="border border-border/50 bg-muted/20 shadow-lg shadow-black/20 ring-1 ring-white/5 backdrop-blur"
-        >
-          <CardHeader className="pb-1">
-            <CardTitle className="text-sm font-semibold tracking-wide text-foreground/90">{field.label}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-2">
-            <Label htmlFor={field.id} className="sr-only">
-              {field.label}
-            </Label>
-            {renderField(field)}
-          </CardContent>
-        </Card>
+      {intro}
+      {normalisedSections.map((section) => (
+        <div key={section.groupLabel ?? section.fields.map((field) => field.key).join("-")} className="space-y-4">
+          {(section.groupLabel || section.description) && (
+            <div className="space-y-1">
+              {section.groupLabel && (
+                <h2 className="text-lg font-semibold text-foreground">{section.groupLabel}</h2>
+              )}
+              {section.description && <p className="text-sm text-muted-foreground">{section.description}</p>}
+            </div>
+          )}
+
+          <div className="space-y-4">
+            {section.fields.map((field) => (
+              <Card
+                key={field.key}
+                className="border border-border/50 bg-muted/20 shadow-lg shadow-black/20 ring-1 ring-white/5 backdrop-blur"
+              >
+                <CardHeader className="pb-1">
+                  <CardTitle className="text-sm font-semibold tracking-wide text-foreground/90">
+                    {field.label}
+                    {field.required && <span className="ml-2 text-xs font-normal text-destructive">*</span>}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 pt-2">
+                  {field.type !== "checkbox" && (
+                    <Label htmlFor={field.key} className="sr-only">
+                      {field.label}
+                    </Label>
+                  )}
+                  {renderField(field)}
+                  {field.helperText && <p className="text-xs text-muted-foreground/80">{field.helperText}</p>}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       ))}
 
       <div className="flex flex-wrap gap-3 pt-2">
@@ -124,77 +313,5 @@ export default function TemplateForm({ id, fields }: { id: string; fields: Templ
         </Button>
       </div>
     </div>
-  )
-}
-
-export function Appendix5ImpactAssessmentForm() {
-  return (
-    <TemplateForm
-      id="appendix5-impact-assessment"
-      fields={[
-        { label: "Impact Area" },
-        { label: "Benefits", type: "textarea", placeholder: "Describe the positive outcomes expected..." },
-        { label: "Risks", type: "textarea", placeholder: "Outline potential negative impacts or challenges..." },
-        { label: "Mitigation Actions", type: "textarea", placeholder: "List planned mitigation strategies..." },
-      ]}
-    />
-  )
-}
-
-export function Appendix6TechnicalAssessmentForm() {
-  return (
-    <TemplateForm
-      id="appendix6-technical-assessment"
-      fields={[
-        { label: "Dataset Name" },
-        { label: "Data Custodian or Source" },
-        { label: "Data Quality Summary", type: "textarea" },
-        { label: "Representativeness of the Dataset", type: "textarea" },
-        { label: "Known Biases or Limitations", type: "textarea" },
-        { label: "Pre-processing or De-identification Performed", type: "textarea" },
-        { label: "Technical Readiness for Synthesis", type: "textarea" },
-        { label: "Assessed By" },
-        { label: "Assessment Date", type: "date" },
-      ]}
-    />
-  )
-}
-
-export function Appendix8DecisionTreeForm() {
-  return (
-    <TemplateForm
-      id="appendix8-decision-tree"
-      fields={[
-        { label: "Scenario Description", type: "textarea" },
-        { label: "Decision Outcome", type: "textarea" },
-      ]}
-    />
-  )
-}
-
-export function Appendix10SafetyAssessmentForm() {
-  return (
-    <TemplateForm
-      id="appendix10-safety-assessment"
-      fields={[
-        { label: "Risk Score" },
-        { label: "Re-identification Likelihood", type: "textarea" },
-        { label: "Mitigation Actions", type: "textarea" },
-      ]}
-    />
-  )
-}
-
-export function Appendix11RequestOutcomesForm() {
-  return (
-    <TemplateForm
-      id="appendix11-request-outcomes"
-      fields={[
-        { label: "Requester Name" },
-        { label: "Purpose", type: "textarea" },
-        { label: "Decision Outcome", type: "textarea" },
-        { label: "Follow-up Actions", type: "textarea" },
-      ]}
-    />
   )
 }

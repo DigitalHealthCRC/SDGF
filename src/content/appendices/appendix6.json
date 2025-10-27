@@ -1,6 +1,136 @@
 {
-  "id": "appendix6",
-  "title": "Appendix 6 - Technical Assessment Template",
-  "purpose": "Template supporting Step 2, assessing data quality, representativeness, and technical readiness of source datasets prior to synthesis.",
-  "template": true
+  "id": 6,
+  "title": "Appendix 6 - Technical Assessment",
+  "purpose": "Evaluate source data quality, lawful use conditions, linkage, and readiness for synthesis.",
+  "type": "form",
+  "component": "TemplateForm",
+  "template": true,
+  "personaVisibility": [
+    "custodian",
+    "scientist"
+  ],
+  "exportKey": "appendix6_technical_assessment",
+  "sections": [
+    {
+      "groupLabel": "A. Data Governance Conditions",
+      "fields": [
+        {
+          "name": "lawfulUse",
+          "label": "Describe lawful use and data-sharing constraints that apply to the source dataset.",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "approvals",
+          "label": "List any data access or ethics approvals relevant to the data.",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "B. Data Preparation and Linkage",
+      "fields": [
+        {
+          "name": "linkageRequired",
+          "label": "Is data linkage required before synthesis?",
+          "type": "radio",
+          "options": [
+            "Yes",
+            "No"
+          ],
+          "required": true
+        },
+        {
+          "name": "linkageDetails",
+          "label": "If yes, describe linkage datasets, purpose, and risk controls.",
+          "type": "textarea"
+        },
+        {
+          "name": "piatrigger",
+          "label": "Does linkage or cross-organisation use trigger a PIA? Explain.",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "C. Data Fitness and Minimisation",
+      "fields": [
+        {
+          "name": "fitForPurpose",
+          "label": "Describe how the source data meet the needs of the proposed use case.",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "name": "minimumNecessary",
+          "label": "List minimum data elements necessary for synthesis.",
+          "type": "textarea"
+        },
+        {
+          "name": "directIdentifiersRemoved",
+          "label": "Confirm direct identifiers have been removed or irreversibly treated.",
+          "type": "radio",
+          "options": [
+            "Yes",
+            "No",
+            "In progress"
+          ],
+          "required": true
+        },
+        {
+          "name": "sensitiveFields",
+          "label": "Identify any sensitive variables retained and rationale for inclusion.",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "groupLabel": "D. Data Quality and Metadata",
+      "fields": [
+        {
+          "name": "qualitySummary",
+          "label": "Summarise data quality (accuracy, completeness, currency).",
+          "type": "textarea"
+        },
+        {
+          "name": "metadataAvailable",
+          "label": "Is metadata/data dictionary available for Requestor?",
+          "type": "radio",
+          "options": [
+            "Yes",
+            "No"
+          ],
+          "required": true
+        }
+      ]
+    },
+    {
+      "groupLabel": "E. Assessment Outcome",
+      "fields": [
+        {
+          "name": "technicalOutcome",
+          "label": "Technical assessment outcome",
+          "type": "select",
+          "options": [
+            "Fit for purpose",
+            "Fit with conditions",
+            "Not fit for purpose"
+          ],
+          "required": true
+        },
+        {
+          "name": "assessor",
+          "label": "Assessor name and position",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "assessmentDate",
+          "label": "Date of assessment",
+          "type": "date",
+          "required": true
+        }
+      ]
+    }
+  ]
 }
