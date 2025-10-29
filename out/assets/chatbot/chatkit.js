@@ -28,13 +28,6 @@
           return data.client_secret;
         },
       },
-      theme: {
-        color: {
-          accent: {
-            primary: "#0d9488",
-          },
-        },
-      },
     };
 
     // create element
