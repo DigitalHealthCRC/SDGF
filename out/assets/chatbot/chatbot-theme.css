@@ -2,44 +2,83 @@
 
 /* Target the whole web component */
 openai-chatkit {
-  --chatkit-color-bg: #0d0d0f;        /* main dark bg */
-  --chatkit-color-surface: #17171b;
-  --chatkit-color-surface-hover: #222;
-  --chatkit-color-border: rgba(255,255,255,0.08);
-  --chatkit-color-accent: #0d9488;    /* teal accent */
-  --chatkit-color-text-primary: #fafafa;
-  --chatkit-color-text-secondary: #c8c8c8;
-  --chatkit-color-launcher-bg: var(--chatkit-color-accent);
-  --chatkit-color-launcher-text: #ffffff;
-  --chatkit-radius: 16px;
-  --chatkit-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  --chatkit-color-bg: #0b1120;
+  --chatkit-color-surface: linear-gradient(155deg, rgba(17,24,39,0.94) 0%, rgba(15,23,42,0.92) 60%, rgba(12,20,33,0.92) 100%);
+  --chatkit-color-surface-hover: rgba(17,24,39,0.92);
+  --chatkit-color-border: rgba(13, 148, 136, 0.35);
+  --chatkit-color-accent: #0d9488;
+  --chatkit-color-text-primary: #f8fafc;
+  --chatkit-color-text-secondary: rgba(226, 232, 240, 0.78);
+  --chatkit-color-launcher-bg: #0d9488;
+  --chatkit-color-launcher-text: #0b1120;
+  --chatkit-radius: 18px;
+  --chatkit-shadow: 0 18px 42px rgba(0, 0, 0, 0.48);
 
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   position: fixed !important;
-  bottom: 24px !important;
-  right: 24px !important;
-  width: 400px !important;
-  height: 600px !important;
+  bottom: 32px !important;
+  right: 32px !important;
+  width: 420px !important;
+  height: 640px !important;
+  background: var(--chatkit-color-surface) !important;
+  border: 1px solid var(--chatkit-color-border) !important;
   box-shadow: var(--chatkit-shadow) !important;
   border-radius: var(--chatkit-radius) !important;
   overflow: hidden !important;
   z-index: 9999 !important;
 }
 
-/* light mode adjustments */
-@media (prefers-color-scheme: light) {
-  openai-chatkit {
-    --chatkit-color-bg: #ffffff;
-    --chatkit-color-surface: #f7f7f7;
-    --chatkit-color-border: rgba(0,0,0,0.08);
-    --chatkit-color-text-primary: #111;
-    --chatkit-color-text-secondary: #444;
-    --chatkit-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  }
+openai-chatkit::part(container) {
+  background: transparent;
+  backdrop-filter: blur(14px);
 }
 
-/* launcher hover */
+openai-chatkit::part(header) {
+  background: rgba(15, 23, 42, 0.88);
+  color: var(--chatkit-color-text-primary);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+openai-chatkit::part(message-list) {
+  background: transparent;
+}
+
+openai-chatkit::part(message-assistant) {
+  background: rgba(15, 118, 110, 0.16);
+  border: 1px solid rgba(13, 148, 136, 0.35);
+  color: var(--chatkit-color-text-primary);
+}
+
+openai-chatkit::part(message-user) {
+  background: rgba(99, 102, 241, 0.14);
+  border: 1px solid rgba(79, 70, 229, 0.35);
+}
+
+openai-chatkit::part(composer) {
+  background: rgba(8, 11, 19, 0.92);
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  color: var(--chatkit-color-text-primary);
+}
+
+openai-chatkit::part(launcher-button) {
+  box-shadow: 0 12px 32px rgba(13, 148, 136, 0.38);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
 openai-chatkit::part(launcher-button):hover {
-  transform: scale(1.05);
-  filter: brightness(1.1);
-  transition: transform 0.2s ease, filter 0.2s ease;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(13, 148, 136, 0.45);
+}
+
+openai-chatkit::part(start-screen) {
+  background: transparent;
+}
+
+@media (max-width: 768px) {
+  openai-chatkit {
+    width: min(100%, 360px) !important;
+    height: min(100%, 520px) !important;
+    right: 16px !important;
+    bottom: 16px !important;
+  }
 }

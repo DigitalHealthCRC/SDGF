@@ -28,6 +28,45 @@
           return data.client_secret;
         },
       },
+      header: {
+        title: "SynD Assistant",
+      },
+      theme: {
+        colorScheme: "dark",
+        color: {
+          accent: {
+            primary: "#0d9488",
+            level: 2,
+          },
+        },
+        radius: "round",
+        typography: {
+          fontFamily: "'Inter', sans-serif",
+        },
+      },
+      composer: {
+        placeholder: "Ask SynD Assistant anything about the SynD framework…",
+      },
+      startScreen: {
+        greeting: "Welcome to SynD Assistant! How can we help with synthetic data today?",
+        prompts: [
+          {
+            name: "SynD overview",
+            prompt: "Give me a high-level overview of the SynD Synthetic Health Data Governance Framework.",
+            icon: "sparkle",
+          },
+          {
+            name: "Risk assessment",
+            prompt: "Help me plan a re-identification risk assessment for a new synthetic dataset.",
+            icon: "shield-check",
+          },
+          {
+            name: "Share safely",
+            prompt: "What controls should I consider before sharing synthetic health data?",
+            icon: "lock-open",
+          },
+        ],
+      },
     };
 
     // create element
