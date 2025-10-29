@@ -29,7 +29,11 @@
         },
       },
       theme: {
-        brandColor: "#0d9488",
+        color: {
+          accent: {
+            primary: "#0d9488",
+          },
+        },
       },
     };
 
