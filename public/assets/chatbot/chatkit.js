@@ -1,7 +1,7 @@
 // SynD ChatKit widget bootstrap – safe version
 (() => {
   const WORKER_URL =
-    "https://synd-dgf-chatkit-token.c0bd37ebef2581d947d3d1e069bd9a37.workers.dev";
+    "https://synd-dgf-chatkit-token.synd-dgf.workers.dev";
 
   // wait for body
   function onReady(fn) {

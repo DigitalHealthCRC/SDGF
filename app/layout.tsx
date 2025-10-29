@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </Suspense>
         </ProgressProvider>
         <link rel="stylesheet" href={assetPath("/assets/chatbot/chatbot-theme.css")} />
-        <script src="https://cdn.jsdelivr.net/npm/@openai/chatkit@latest/dist/chatkit.umd.js" defer />
+        <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" async />
         <script src={assetPath("/assets/chatbot/chatkit.js")} defer />
       </body>
     </html>
