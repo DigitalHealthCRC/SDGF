@@ -52,5 +52,15 @@
     });
 
     document.body.appendChild(el);
+
+    if (typeof el.setOptions === "function") {
+      el.setOptions(window.OpenAIChatKitConfig);
+    } else {
+      // ensure options applied once custom element upgrades
+      customElements.whenDefined("openai-chatkit").then(() => {
+        const upgraded = document.querySelector("openai-chatkit");
+        upgraded?.setOptions(window.OpenAIChatKitConfig);
+      });
+    }
   });
 })();
