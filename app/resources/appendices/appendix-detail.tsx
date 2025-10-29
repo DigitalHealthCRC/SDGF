@@ -1,6 +1,6 @@
 "use client"
 
-import type { ComponentType, ReactNode } from "react"
+import type { ComponentType } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 
@@ -58,7 +58,7 @@ const renderTemplateForm = (appendix: AppendixRecord) => {
   )
 }
 
-const renderBody = (appendix: AppendixRecord, MarkdownRenderer?: ComponentType<{ children?: ReactNode }>) => {
+const renderBody = (appendix: AppendixRecord, MarkdownRenderer?: ComponentType<any>) => {
   const { description, body } = appendix
 
   const renderMarkdown = (content: string) =>

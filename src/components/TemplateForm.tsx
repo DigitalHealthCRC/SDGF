@@ -42,7 +42,7 @@ interface TemplateFormProps {
 
 type NormalisedOption = { label: string; value: string }
 
-type NormalisedField = TemplateField & {
+type NormalisedField = Omit<TemplateField, "options" | "type"> & {
   type: FieldType
   key: string
   storageKey: string
@@ -93,7 +93,7 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
           key,
           storageKey,
           options: field.options?.map(normaliseOption),
-        }
+        } as NormalisedField
       }),
     }))
   }, [fields, id, sections])

@@ -9,10 +9,12 @@ import appendixData from "@/src/content/appendices/appendix8.json"
 import { BackLink, RestrictionNotice } from "../appendix-detail"
 
 type WizardOption = { label: string; next: string }
-type WizardNode = { id: string; text: string; options: WizardOption[] }
+type WizardNode = { id: string; text: string; options?: WizardOption[] }
 
 const nodes = (appendixData.nodes ?? []) as WizardNode[]
 const appendixNumber = typeof appendixData.id === "number" ? appendixData.id : 8
+const { description: rawDescription } = appendixData as { description?: unknown }
+const appendixDescription = typeof rawDescription === "string" ? rawDescription : undefined
 
 const findStartNode = (collection: WizardNode[]) => {
   const explicit = collection.find((node) => node.id === "start")
@@ -29,14 +31,15 @@ const startNode = findStartNode(nodes)
 export default function Appendix8Page() {
   const { persona, isAppendixVisible } = usePersona()
   const [path, setPath] = useState<string[]>(startNode ? [startNode.id] : [])
-  const [history, setHistory] = useState<Array<{ id: string; question: string; answer: string }>>([])
+  const [history, setHistory] = useState<Array<{ id: string; text: string; answer: string }>>([])
 
   const currentId = path[path.length - 1]
   const currentNode = currentId ? nodesById[currentId] : undefined
-  const isTerminal = !currentNode || currentNode.options.length === 0
+  const currentOptions = currentNode?.options ?? []
+  const isTerminal = !currentNode || currentOptions.length === 0
 
   if (persona && !isAppendixVisible(appendixNumber)) {
-    return <RestrictionNotice title="Appendix 8 – Decision Tree" personaLabel={persona.label} />
+    return <RestrictionNotice title="Appendix 8 - Decision Tree" personaLabel={persona.label} />
   }
 
   if (!startNode) {
@@ -51,7 +54,7 @@ export default function Appendix8Page() {
 
   const answer = (option: WizardOption) => {
     if (!currentNode) return
-    setHistory((prev) => [...prev, { id: currentNode.id, question: currentNode.text, answer: option.label }])
+    setHistory((prev) => [...prev, { id: currentNode.id, text: currentNode.text, answer: option.label }])
     setPath((prev) => [...prev, option.next])
   }
 
@@ -96,16 +99,16 @@ export default function Appendix8Page() {
 
   const rightPanel = (
     <div className="space-y-6">
-      {appendixData.description && (
+      {appendixDescription && (
         <div className="rounded-md border border-border/60 bg-card/80 p-4 text-sm text-muted-foreground">
-          {appendixData.description}
+          {appendixDescription}
         </div>
       )}
       {currentNode && !isTerminal && (
         <div className="space-y-4 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
           <h2 className="text-lg font-semibold text-foreground">{currentNode.text}</h2>
           <div className="flex flex-wrap gap-3">
-            {currentNode.options.map((option) => (
+            {currentOptions.map((option) => (
               <button
                 key={`${currentNode.id}-${option.next}`}
                 onClick={() => answer(option)}
@@ -165,7 +168,7 @@ export default function Appendix8Page() {
           <ol className="space-y-2 text-sm text-muted-foreground">
             {history.map((step, index) => (
               <li key={`${step.id}-${index}`} className="flex flex-col">
-                <span className="font-medium text-foreground">{step.question}</span>
+                <span className="font-medium text-foreground">{step.text}</span>
                 <span className="text-xs uppercase text-emerald-300">Answer: {step.answer}</span>
               </li>
             ))}
@@ -184,3 +187,4 @@ export default function Appendix8Page() {
     />
   )
 }
+
