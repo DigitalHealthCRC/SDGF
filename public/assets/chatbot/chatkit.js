@@ -85,9 +85,63 @@
       borderRadius: "16px",
       boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
       overflow: "hidden",
+      opacity: "0",
+      visibility: "hidden",
+      pointerEvents: "none",
+      transform: "translateY(12px)",
+      transition: "opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease",
     });
 
     document.body.appendChild(el);
+
+    const launcher = document.createElement("button");
+    launcher.type = "button";
+    launcher.className = "synd-chat-launcher";
+    const ICON_OPEN = '<span class="synd-chat-launcher__icon" aria-hidden="true">✶</span>';
+    const ICON_CLOSE = '<span class="synd-chat-launcher__icon" aria-hidden="true">×</span>';
+    launcher.innerHTML = ICON_OPEN;
+    launcher.setAttribute("aria-label", "Open SynD Assistant chat");
+    launcher.setAttribute("aria-expanded", "false");
+
+    let isOpen = false;
+    const setOpen = (next) => {
+      isOpen = next;
+      launcher.setAttribute("aria-expanded", String(isOpen));
+      launcher.setAttribute("aria-label", isOpen ? "Minimise SynD Assistant chat" : "Open SynD Assistant chat");
+      launcher.innerHTML = isOpen ? ICON_CLOSE : ICON_OPEN;
+      if (isOpen) {
+        el.dataset.open = "true";
+        el.style.visibility = "visible";
+        el.style.opacity = "1";
+        el.style.pointerEvents = "auto";
+        el.style.transform = "translateY(0)";
+        setTimeout(() => el.focus?.(), 0);
+      } else {
+        delete el.dataset.open;
+        el.style.opacity = "0";
+        el.style.pointerEvents = "none";
+        el.style.transform = "translateY(12px)";
+        setTimeout(() => {
+          if (!isOpen) {
+            el.style.visibility = "hidden";
+          }
+        }, 250);
+      }
+    };
+
+    launcher.addEventListener("click", () => {
+      setOpen(!isOpen);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isOpen) {
+        setOpen(false);
+        launcher.focus();
+      }
+    });
+
+    setOpen(false);
+    document.body.appendChild(launcher);
 
     if (typeof el.setOptions === "function") {
       el.setOptions(window.OpenAIChatKitConfig);
