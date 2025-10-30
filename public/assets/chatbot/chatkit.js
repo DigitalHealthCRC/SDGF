@@ -29,7 +29,7 @@
         },
       },
       header: {
-        title: "SynD Assistant",
+        title: { text: "SynD Assistant" },
       },
       theme: {
         colorScheme: "dark",
@@ -51,17 +51,17 @@
         greeting: "Welcome to SynD Assistant! How can we help with synthetic data today?",
         prompts: [
           {
-            name: "SynD overview",
+            label: "SynD overview",
             prompt: "Give me a high-level overview of the SynD Synthetic Health Data Governance Framework.",
             icon: "sparkle",
           },
           {
-            name: "Risk assessment",
+            label: "Risk assessment",
             prompt: "Help me plan a re-identification risk assessment for a new synthetic dataset.",
             icon: "shield-check",
           },
           {
-            name: "Share safely",
+            label: "Share safely",
             prompt: "What controls should I consider before sharing synthetic health data?",
             icon: "lock-open",
           },
