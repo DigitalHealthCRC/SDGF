@@ -1,18 +1,49 @@
 /* === SynD Chatbot Theme Override (Shadow DOM-safe) === */
 
 /* Target the whole web component */
+:root {
+  --chatbot-primary: var(--color-primary, #0d9488);
+  --chatbot-primary-strong: color-mix(in srgb, var(--chatbot-primary) 92%, black 8%);
+  --chatbot-background: var(--color-background, #0b1120);
+  --chatbot-surface-top: color-mix(in srgb, var(--chatbot-background) 92%, black 8%);
+  --chatbot-surface-mid: color-mix(in srgb, var(--chatbot-background) 82%, black 18%);
+  --chatbot-surface-bottom: color-mix(in srgb, var(--chatbot-background) 78%, black 22%);
+  --chatbot-border: color-mix(in srgb, var(--chatbot-primary) 55%, transparent);
+  --chatbot-text-strong: var(--color-foreground, #f8fafc);
+  --chatbot-text-soft: color-mix(in srgb, var(--chatbot-text-strong) 82%, transparent);
+  --chatbot-radius: calc(var(--radius, 0.625rem) + 0.5rem);
+  --chatbot-shadow: 0 18px 42px rgba(0, 0, 0, 0.48);
+}
+
+.dark {
+  --chatbot-primary: var(--color-primary, #38d5c1);
+  --chatbot-primary-strong: color-mix(in srgb, var(--chatbot-primary) 88%, white 12%);
+  --chatbot-background: var(--color-background, #050816);
+  --chatbot-surface-top: color-mix(in srgb, var(--chatbot-background) 94%, white 6%);
+  --chatbot-surface-mid: color-mix(in srgb, var(--chatbot-background) 88%, white 12%);
+  --chatbot-surface-bottom: color-mix(in srgb, var(--chatbot-background) 82%, white 18%);
+  --chatbot-border: color-mix(in srgb, var(--chatbot-primary) 45%, transparent);
+  --chatbot-text-strong: var(--color-foreground, #f8fafc);
+  --chatbot-text-soft: color-mix(in srgb, var(--chatbot-text-strong) 70%, transparent);
+}
+
 openai-chatkit {
-  --chatkit-color-bg: #0b1120;
-  --chatkit-color-surface: linear-gradient(155deg, rgba(17,24,39,0.94) 0%, rgba(15,23,42,0.92) 60%, rgba(12,20,33,0.92) 100%);
-  --chatkit-color-surface-hover: rgba(17,24,39,0.92);
-  --chatkit-color-border: rgba(13, 148, 136, 0.35);
-  --chatkit-color-accent: #0d9488;
-  --chatkit-color-text-primary: #f8fafc;
-  --chatkit-color-text-secondary: rgba(226, 232, 240, 0.78);
-  --chatkit-color-launcher-bg: #0d9488;
-  --chatkit-color-launcher-text: #0b1120;
-  --chatkit-radius: 18px;
-  --chatkit-shadow: 0 18px 42px rgba(0, 0, 0, 0.48);
+  --chatkit-color-bg: var(--chatbot-background);
+  --chatkit-color-surface: linear-gradient(
+    155deg,
+    var(--chatbot-surface-top) 0%,
+    var(--chatbot-surface-mid) 60%,
+    var(--chatbot-surface-bottom) 100%
+  );
+  --chatkit-color-surface-hover: var(--chatbot-surface-mid);
+  --chatkit-color-border: var(--chatbot-border);
+  --chatkit-color-accent: var(--chatbot-primary);
+  --chatkit-color-text-primary: var(--chatbot-text-strong);
+  --chatkit-color-text-secondary: var(--chatbot-text-soft);
+  --chatkit-color-launcher-bg: var(--chatbot-primary-strong);
+  --chatkit-color-launcher-text: var(--chatbot-background);
+  --chatkit-radius: var(--chatbot-radius);
+  --chatkit-shadow: var(--chatbot-shadow);
 
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   position: fixed !important;
@@ -81,9 +112,14 @@ openai-chatkit::part(composer) {
   height: 58px;
   border-radius: 999px;
   border: none;
-  background: radial-gradient(circle at 30% 30%, #2dd4bf 0%, #0d9488 55%, #0f766e 100%);
-  color: #02121f;
-  box-shadow: 0 14px 32px rgba(13, 148, 136, 0.4);
+  background: radial-gradient(
+    circle at 30% 30%,
+    color-mix(in srgb, var(--chatbot-primary) 80%, white 20%) 0%,
+    var(--chatbot-primary-strong) 55%,
+    color-mix(in srgb, var(--chatbot-primary) 90%, black 10%) 100%
+  );
+  color: color-mix(in srgb, var(--chatbot-background) 94%, white 6%);
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--chatbot-primary) 35%, transparent);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -107,16 +143,6 @@ openai-chatkit::part(composer) {
   font-size: 24px;
   line-height: 1;
   color: currentColor;
-}
-
-openai-chatkit::part(launcher-button) {
-  box-shadow: 0 12px 32px rgba(13, 148, 136, 0.38);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-openai-chatkit::part(launcher-button):hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(13, 148, 136, 0.45);
 }
 
 openai-chatkit::part(start-screen) {
