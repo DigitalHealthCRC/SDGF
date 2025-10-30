@@ -38,6 +38,7 @@ openai-chatkit[data-open="true"] {
   visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
+  bottom: 104px !important;
 }
 
 openai-chatkit::part(container) {
@@ -135,5 +136,9 @@ openai-chatkit::part(start-screen) {
     height: 52px;
     bottom: 16px;
     right: 16px;
+  }
+
+  openai-chatkit[data-open="true"] {
+    bottom: 84px !important;
   }
 }
