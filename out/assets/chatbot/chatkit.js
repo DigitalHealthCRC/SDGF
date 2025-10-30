@@ -58,12 +58,12 @@
           {
             label: "Risk assessment",
             prompt: "Help me plan a re-identification risk assessment for a new synthetic dataset.",
-            icon: "shield-check",
+            icon: "lifesaver",
           },
           {
             label: "Share safely",
             prompt: "What controls should I consider before sharing synthetic health data?",
-            icon: "lock-open",
+            icon: "lightbulb",
           },
         ],
       },
