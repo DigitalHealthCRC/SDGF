@@ -32,6 +32,8 @@
   --chatbot-launcher-gradient-outer: color-mix(in srgb, var(--chatbot-primary) 78%, var(--chatbot-background) 22%);
   --chatbot-launcher-shadow: 0 14px 32px color-mix(in srgb, var(--chatbot-primary) 35%, transparent);
   --chatbot-launcher-shadow-hover: 0 18px 42px color-mix(in srgb, var(--chatbot-primary) 55%, transparent);
+  --chatbot-window-bottom: 104px;
+  --chatbot-window-offset: 72px;
 }
 
 .dark {
@@ -80,7 +82,7 @@ openai-chatkit {
 
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   position: fixed !important;
-  bottom: 32px !important;
+  bottom: var(--chatbot-window-bottom, 104px) !important;
   right: 32px !important;
   width: 420px !important;
   height: 640px !important;
@@ -93,7 +95,7 @@ openai-chatkit {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateY(12px);
+  transform: translateY(var(--chatbot-window-offset, 72px));
   transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
 }
 
@@ -102,7 +104,6 @@ openai-chatkit[data-open="true"] {
   visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
-  bottom: 104px !important;
 }
 
 openai-chatkit::part(container) {
@@ -184,11 +185,15 @@ openai-chatkit::part(start-screen) {
 }
 
 @media (max-width: 768px) {
+  :root {
+    --chatbot-window-bottom: 84px;
+    --chatbot-window-offset: 68px;
+  }
+
   openai-chatkit {
     width: min(100%, 360px) !important;
     height: min(100%, 520px) !important;
     right: 16px !important;
-    bottom: 16px !important;
   }
 
   .synd-chat-launcher {
@@ -199,6 +204,5 @@ openai-chatkit::part(start-screen) {
   }
 
   openai-chatkit[data-open="true"] {
-    bottom: 84px !important;
   }
 }
