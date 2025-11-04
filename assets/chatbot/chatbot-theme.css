@@ -34,6 +34,7 @@
   --chatbot-launcher-shadow-hover: 0 18px 42px color-mix(in srgb, var(--chatbot-primary) 55%, transparent);
   --chatbot-window-bottom: 104px;
   --chatbot-window-offset: 72px;
+  --chatbot-icon-mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiPjxwYXRoIGQ9Ik0xMiAyIDIgN2wxMCA1IDEwLTV6Ii8+PHBhdGggZD0ibTIgMTcgMTAgNSAxMC01Ii8+PHBhdGggZD0ibTIgMTIgMTAgNSAxMC01Ii8+PC9zdmc+");
 }
 
 .dark {
@@ -60,6 +61,7 @@
   --chatbot-launcher-gradient-outer: color-mix(in srgb, var(--chatbot-primary) 68%, var(--chatbot-background) 32%);
   --chatbot-launcher-shadow: 0 14px 32px color-mix(in srgb, var(--chatbot-primary) 42%, transparent);
   --chatbot-launcher-shadow-hover: 0 18px 42px color-mix(in srgb, var(--chatbot-primary) 58%, transparent);
+  --chatbot-icon-mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGZpbGw9Im5vbmUiPjxwYXRoIGQ9Ik0xMiAyIDIgN2wxMCA1IDEwLTV6Ii8+PHBhdGggZD0ibTIgMTcgMTAgNSAxMC01Ii8+PHBhdGggZD0ibTIgMTIgMTAgNSAxMC01Ii8+PC9zdmc+");
 }
 
 openai-chatkit {
@@ -145,14 +147,14 @@ openai-chatkit::part(header)::before {
 }
 
 openai-chatkit::part(header)::after {
-  content: "SynD";
-  display: grid;
-  place-items: center;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: #2d4a2b;
+  content: "";
+  display: block;
   z-index: 1;
+  background-color: #163c24;
+  mask: var(--chatbot-icon-mask) no-repeat center;
+  mask-size: 28px 28px;
+  -webkit-mask: var(--chatbot-icon-mask) no-repeat center;
+  -webkit-mask-size: 28px 28px;
 }
 
 openai-chatkit::part(header) > * {
@@ -216,13 +218,8 @@ openai-chatkit::part(composer) {
   height: 58px;
   border-radius: 999px;
   border: none;
-  background: radial-gradient(
-    circle at 30% 30%,
-    var(--chatbot-launcher-gradient-inner) 0%,
-    var(--chatbot-primary-strong) 55%,
-    var(--chatbot-launcher-gradient-outer) 100%
-  );
-  color: var(--chatbot-launcher-foreground);
+  background: linear-gradient(135deg, #0f2917 0%, #1d4225 100%);
+  color: #eaf2ec;
   box-shadow: var(--chatbot-launcher-shadow);
   cursor: pointer;
   display: inline-flex;
@@ -244,9 +241,14 @@ openai-chatkit::part(composer) {
 }
 
 .synd-chat-launcher__icon {
-  font-size: 24px;
-  line-height: 1;
-  color: currentColor;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-color: #0d2f19;
+  mask: var(--chatbot-icon-mask) no-repeat center;
+  mask-size: 22px 22px;
+  -webkit-mask: var(--chatbot-icon-mask) no-repeat center;
+  -webkit-mask-size: 22px 22px;
 }
 
 openai-chatkit::part(start-screen) {
