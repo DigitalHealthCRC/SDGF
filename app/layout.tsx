@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   description: "A comprehensive framework for safely generating and using synthetic health data in Australia",
   generator: "v0.app",
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
   },
 };
 
@@ -40,8 +40,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href={assetPath("/print.css")} media="print" />
-        <link rel="icon" href={assetPath("/SynD-t.png")} />
-        <link rel="apple-touch-icon" href={assetPath("/SynD-t.png")} />
+        <link rel="icon" href={assetPath("/favicon.png")} sizes="192x192" />
+        <link rel="apple-touch-icon" href={assetPath("/favicon.png")} />
       </head>
       <body className={inter.className}>
         <ProgressProvider>

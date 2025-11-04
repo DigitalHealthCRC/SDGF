@@ -271,6 +271,27 @@ openai-chatkit[data-open="true"] + .synd-chat-launcher .synd-chat-launcher__icon
 
 openai-chatkit::part(start-screen) {
   background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 24px;
+  min-height: 100%;
+  overflow-y: auto;
+}
+
+openai-chatkit::part(start-screen) > * {
+  margin: 0 !important;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+openai-chatkit::part(start-screen) h2,
+openai-chatkit::part(start-screen) h3,
+openai-chatkit::part(start-screen) h1,
+openai-chatkit::part(start-screen) p {
+  margin: 0;
 }
 
 @media (max-width: 768px) {
