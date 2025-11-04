@@ -24,7 +24,7 @@
   --chatbot-user-surface: color-mix(in srgb, var(--chatbot-chart-4) 22%, transparent);
   --chatbot-user-border: color-mix(in srgb, var(--chatbot-chart-4) 42%, transparent);
   --chatbot-composer-surface: color-mix(in srgb, var(--chatbot-background) 82%, var(--chatbot-chart-2) 18%);
-  --chatbot-header-surface: color-mix(in srgb, var(--chatbot-background) 75%, var(--chatbot-chart-1) 25%);
+  --chatbot-header-surface: linear-gradient(135deg, #2d4a2b 0%, #3d5a3b 100%);
   --chatbot-radius: calc(var(--radius, 0.625rem) + 0.5rem);
   --chatbot-shadow: 0 18px 42px color-mix(in srgb, var(--chatbot-primary) 32%, transparent);
   --chatbot-launcher-foreground: color-mix(in srgb, var(--chatbot-base-foreground) 88%, var(--chatbot-base-background) 12%);
@@ -52,7 +52,7 @@
   --chatbot-user-surface: color-mix(in srgb, var(--chatbot-chart-5) 28%, transparent);
   --chatbot-user-border: color-mix(in srgb, var(--chatbot-chart-5) 48%, transparent);
   --chatbot-composer-surface: color-mix(in srgb, var(--chatbot-background) 78%, var(--chatbot-chart-3) 22%);
-  --chatbot-header-surface: color-mix(in srgb, var(--chatbot-background) 70%, var(--chatbot-chart-2) 30%);
+  --chatbot-header-surface: linear-gradient(135deg, #1f3320 0%, #2c462d 100%);
   --chatbot-primary-strong: color-mix(in srgb, var(--chatbot-primary) 74%, var(--chatbot-base-foreground) 26%);
   --chatbot-shadow: 0 18px 42px color-mix(in srgb, var(--chatbot-primary) 45%, transparent);
   --chatbot-launcher-foreground: color-mix(in srgb, var(--chatbot-base-foreground) 85%, var(--chatbot-background) 15%);
@@ -112,9 +112,78 @@ openai-chatkit::part(container) {
 }
 
 openai-chatkit::part(header) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px 20px 96px;
   background: var(--chatbot-header-surface);
-  color: var(--chatkit-color-text-primary);
-  border-bottom: 1px solid var(--chatbot-divider);
+  color: #ffffff;
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+openai-chatkit::part(header)::before,
+openai-chatkit::part(header)::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+openai-chatkit::part(header)::before {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  z-index: 0;
+}
+
+openai-chatkit::part(header)::after {
+  content: "SynD";
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #2d4a2b;
+  z-index: 1;
+}
+
+openai-chatkit::part(header) > * {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+openai-chatkit::part(header) button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+openai-chatkit::part(header) button:hover,
+openai-chatkit::part(header) button:focus-visible {
+  background: rgba(255, 255, 255, 0.2);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+openai-chatkit::part(header) button svg {
+  width: 20px;
+  height: 20px;
 }
 
 openai-chatkit::part(message-list) {
