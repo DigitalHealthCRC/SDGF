@@ -1,98 +1,70 @@
-import Link from "next/link"
-import { BookOpen, GitBranch, Shield, FileText, Scale, Users, Layers } from "lucide-react"
+import fs from "fs"
+import path from "path"
 
-import ExportAllButton from "@/src/components/ExportAllButton"
+import { AppendicesClient } from "./appendices/appendices-client"
 
-export default function Resources() {
-  const resources = [
-    {
-      title: "Glossary (Appendix 2)",
-      description: "Key terms, definitions, and role descriptions",
-      icon: BookOpen,
-      href: "/resources/appendices/appendix2",
-      color: "from-chart-1/20 to-chart-1/5",
-    },
-    {
-      title: "Lawful Pathways Guide (Appendix 9)",
-      description: "Privacy compliance routes and legal frameworks",
-      icon: Scale,
-      href: "/resources/appendices/appendix9",
-      color: "from-chart-2/20 to-chart-2/5",
-    },
-    {
-      title: "Appendices",
-      description: "Access all supporting templates, guidance, and tools",
-      icon: Layers,
-      href: "/resources/appendices",
-      color: "from-chart-3/20 to-chart-3/5",
-    },
-    {
-      title: "Decision Tree (Appendix 8)",
-      description: "Navigate complex synthetic data scenarios",
-      icon: GitBranch,
-      href: "/resources/appendices/appendix8",
-      color: "from-chart-3/20 to-chart-3/5",
-    },
-    {
-      title: "Five Safes Assessment (Appendix 10)",
-      description: "Risk management approach for data sharing",
-      icon: Shield,
-      href: "/resources/appendices/appendix10",
-      color: "from-chart-4/20 to-chart-4/5",
-    },
-    {
-      title: "Framework Outcomes Form (Appendix 11)",
-      description: "Consolidate approvals and conditions across the framework",
-      icon: FileText,
-      href: "/resources/appendices/appendix11",
-      color: "from-chart-5/20 to-chart-5/5",
-    },
-    {
-      title: "About Synthetic Data (Appendix 1)",
-      description: "Benefits, limitations, and use cases",
-      icon: Users,
-      href: "/resources/appendices/appendix1",
-      color: "from-chart-1/20 to-chart-1/5",
-    },
-  ]
+export const dynamic = "force-static"
 
-  return (
-    <div className="container mx-auto max-w-7xl px-4 py-12">
-      <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h1 className="text-4xl font-bold">Resources</h1>
-          <p className="mt-2 max-w-3xl text-xl text-muted-foreground">
-            Comprehensive guidance, definitions, and tools to support your synthetic health data journey.
-          </p>
-        </div>
-        <ExportAllButton />
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {resources.map((resource) => {
-          const Icon = resource.icon
-          return (
-            <Link key={resource.href} href={resource.href} className="group">
-              <div
-                className={`h-full rounded-lg border-2 bg-gradient-to-br ${resource.color} p-6 transition-all hover:border-primary hover:shadow-lg`}
-              >
-                <div className="mb-4 flex items-start gap-4">
-                  <div className="rounded-lg bg-background/80 p-3">
-                    <Icon className="h-6 w-6" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="mb-2 text-lg font-semibold">{resource.title}</h3>
-                    <p className="text-sm text-muted-foreground">{resource.description}</p>
-                  </div>
-                </div>
-                <div className="inline-block font-medium text-primary transition-transform group-hover:translate-x-1">
-                  Learn more ?
-                </div>
-              </div>
-            </Link>
-          )
-        })}
-      </div>
-    </div>
-  )
+export type AppendixRecord = {
+  id: string
+  number: number
+  title: string
+  purpose: string
+  template?: boolean
+  component?: string
+  type?: string
 }
+
+const APPENDICES_DIR = path.join(process.cwd(), "src/content/appendices")
+
+const parseAppendixId = (value: string | number) => {
+  if (typeof value === "number") return value
+  const numeric = parseInt(value.replace(/\D/g, ""), 10)
+  return Number.isNaN(numeric) ? 0 : numeric
+}
+
+const readAppendices = (): AppendixRecord[] => {
+  if (!fs.existsSync(APPENDICES_DIR)) return []
+
+  const files = fs.readdirSync(APPENDICES_DIR).filter((file) => file.endsWith(".json"))
+
+  return files
+    .map((file) => {
+      const filePath = path.join(APPENDICES_DIR, file)
+      const fallbackId = path.parse(file).name
+
+      try {
+        const raw = JSON.parse(fs.readFileSync(filePath, "utf8"))
+        const candidateId = typeof raw.slug === "string" && raw.slug.trim().length > 0 ? raw.slug : raw.id
+        const id = typeof candidateId === "string" && candidateId.trim().length > 0 ? candidateId : fallbackId
+        const number = typeof raw.id === "number" ? raw.id : parseAppendixId(id)
+
+        return {
+          id,
+          number,
+          title: typeof raw.title === "string" && raw.title.trim().length > 0 ? raw.title : `Appendix ${number}`,
+          purpose: typeof raw.purpose === "string" && raw.purpose.trim().length > 0 ? raw.purpose : "Summary coming soon.",
+          template: Boolean(raw.template),
+          component: typeof raw.component === "string" ? raw.component : undefined,
+          type: typeof raw.type === "string" ? raw.type : undefined,
+        }
+      } catch {
+        const number = parseAppendixId(fallbackId)
+        return {
+          id: fallbackId,
+          number,
+          title: fallbackId,
+          purpose: "Summary coming soon.",
+          template: false,
+        }
+      }
+    })
+    .sort((a, b) => a.number - b.number)
+}
+
+export default function AppendicesIndexPage() {
+  const appendices = readAppendices()
+  return <AppendicesClient appendices={appendices} />
+}
+
+

@@ -9,6 +9,7 @@ import { useProgress } from "@/lib/progress-context"
 import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import stepDataJson from "@/src/content/framework/step2.json"
+import { getAppendixLabelFromHref } from "@/src/lib/appendix-labels"
 
 interface StepContent {
   title: string
@@ -23,12 +24,6 @@ interface StepFormState {
 const stepData = stepDataJson as StepContent
 
 const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Step 2: Prepare Source Data")
-
-const formatAppendixLabel = (href: string) => {
-  const match = href.match(/appendix(\d+)/i)
-  if (match) return `Appendix ${match[1]}`
-  return href.replace(/^\//, "")
-}
 
 export default function Step2Page() {
   const stepNumber = 2
@@ -120,6 +115,19 @@ export default function Step2Page() {
   }
 
   const readMoreLinks = stepData.readMore ?? []
+  const curatedResources = [
+    { href: "/resources/appendices/appendix10", label: "Five Safes Framework (Appendix 10)" },
+    { href: "/resources/appendices/appendix6", label: "Technical Assessment Template (Appendix 6)" },
+  ]
+  const resourceMap = new Map<string, string>()
+  curatedResources.forEach((resource) => {
+    resourceMap.set(resource.href, resource.label)
+  })
+  readMoreLinks.forEach((href) => {
+    const label = getAppendixLabelFromHref(href)
+    if (label) resourceMap.set(href, label)
+  })
+  const combinedResources = Array.from(resourceMap.entries()).map(([href, label]) => ({ href, label }))
   const pageTitle = normaliseTitle(stepData.title)
 
   const leftColumn = (
@@ -298,36 +306,17 @@ export default function Step2Page() {
         </Link>
       </div>
 
-      <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
-        <h3 className="font-semibold text-foreground">Related Resources</h3>
-        <ul className="mt-4 space-y-2 text-sm text-emerald-300">
-          <li>
-            <Link href="/resources/appendices/appendix10" className="hover:underline">
-              Five Safes Framework (Appendix 10)
-            </Link>
-          </li>
-          <li>
-            <Link href="/resources/appendices/appendix6" className="hover:underline">
-              Technical Assessment Template (Appendix 6)
-            </Link>
-          </li>
-        </ul>
-      </div>
-
-      {readMoreLinks.length > 0 && (
+      {combinedResources.length > 0 && (
         <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
-          <h3 className="font-semibold text-foreground">Appendices</h3>
+          <h3 className="font-semibold text-foreground">Resources</h3>
           <ul className="mt-4 space-y-2 text-sm text-emerald-300">
-            {readMoreLinks.map((href) => {
-              const label = formatAppendixLabel(href)
-              return (
-                <li key={href}>
-                  <Link href={href} className="hover:underline">
-                    {label}
-                  </Link>
-                </li>
-              )
-            })}
+            {combinedResources.map(({ href, label }) => (
+              <li key={href}>
+                <Link href={href} className="hover:underline">
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       )}

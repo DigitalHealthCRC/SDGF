@@ -9,6 +9,7 @@ import { useProgress } from "@/lib/progress-context"
 import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import stepDataJson from "@/src/content/framework/step1.json"
+import { getAppendixLabelFromHref } from "@/src/lib/appendix-labels"
 
 interface StepContent {
   title: string
@@ -28,11 +29,7 @@ const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2
 const ensureChecklist = (source: boolean[] | undefined, length: number) =>
   Array.from({ length }, (_, idx) => (Array.isArray(source) ? Boolean(source[idx]) : false))
 
-const formatReadMoreLabel = (href: string) => {
-  const match = href.match(/appendix(\d+)/i)
-  if (match) return `Appendix ${match[1]}`
-  return href.replace(/^\//, "")
-}
+const formatResourceLabel = (href: string) => getAppendixLabelFromHref(href) ?? href.replace(/^\//, "")
 
 export default function Step1Page() {
   const stepNumber = 1
@@ -120,6 +117,20 @@ export default function Step1Page() {
   }
 
   const readMoreLinks = stepData.readMore ?? []
+  const curatedResources = [
+    { href: "/resources/appendices/appendix9", label: "Lawful Pathways Guide (Appendix 9)" },
+    { href: "/resources/appendices/appendix8", label: "Decision Tree for Complex Cases (Appendix 8)" },
+    { href: "/templates", label: "Download Assessment Templates" },
+  ]
+  const resourceMap = new Map<string, string>()
+  curatedResources.forEach((resource) => {
+    resourceMap.set(resource.href, resource.label)
+  })
+  readMoreLinks.forEach((href) => {
+    const label = getAppendixLabelFromHref(href)
+    if (label) resourceMap.set(href, label)
+  })
+  const combinedResources = Array.from(resourceMap.entries()).map(([href, label]) => ({ href, label }))
   const pageTitle = normaliseTitle(stepData.title)
 
   const leftColumn = (
@@ -242,7 +253,7 @@ export default function Step1Page() {
             {readMoreLinks.map((href) => (
               <li key={href}>
                 <Link href={href} className="text-emerald-300 hover:underline">
-                  {formatReadMoreLabel(href)}
+                  {formatResourceLabel(href)}
                 </Link>
               </li>
             ))}
@@ -278,35 +289,14 @@ export default function Step1Page() {
         </Link>
       </div>
 
-      <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
-        <h3 className="font-semibold text-foreground">Related Resources</h3>
-        <ul className="mt-4 space-y-2 text-sm text-emerald-300">
-          <li>
-            <Link href="/resources/appendices/appendix9" className="hover:underline">
-              Lawful Pathways Guide (Appendix 9)
-            </Link>
-          </li>
-          <li>
-            <Link href="/resources/appendices/appendix8" className="hover:underline">
-              Decision Tree for Complex Cases (Appendix 8)
-            </Link>
-          </li>
-          <li>
-            <Link href="/templates" className="hover:underline">
-              Download Assessment Templates
-            </Link>
-          </li>
-        </ul>
-      </div>
-
-      {readMoreLinks.length > 0 && (
+      {combinedResources.length > 0 && (
         <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
-          <h3 className="font-semibold text-foreground">Appendices</h3>
+          <h3 className="font-semibold text-foreground">Resources</h3>
           <ul className="mt-4 space-y-2 text-sm text-emerald-300">
-            {readMoreLinks.map((href) => (
+            {combinedResources.map(({ href, label }) => (
               <li key={href}>
                 <Link href={href} className="hover:underline">
-                  {formatReadMoreLabel(href)}
+                  {label}
                 </Link>
               </li>
             ))}
