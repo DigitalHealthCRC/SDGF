@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useProgress } from "@/lib/progress-context"
 import { usePersona } from "@/lib/persona-context"
-import { CheckCircle2, Lock } from "lucide-react"
+import { CheckCircle2 } from "lucide-react"
 
 export function StepProgress({ currentStep }: { currentStep: number }) {
   const { stepCompletion } = useProgress()
@@ -16,10 +16,6 @@ export function StepProgress({ currentStep }: { currentStep: number }) {
     { num: 4, title: "Re-ID Risk" },
     { num: 5, title: "Safety" },
   ]
-  const isStepAccessible = (stepNum: number) => {
-    if (stepNum === 1) return true
-    return stepCompletion[stepNum - 1]
-  }
 
   return (
     <div className="border-b bg-muted/30">
@@ -28,9 +24,9 @@ export function StepProgress({ currentStep }: { currentStep: number }) {
           {steps.map((step, idx) => {
             const isCompleted = stepCompletion[step.num]
             const isCurrent = step.num === currentStep
-            const isAccessible = isStepAccessible(step.num)
             const isRecommended = isStepVisible(step.num)
             const optional = Boolean(persona && !isRecommended)
+            const isIncomplete = !isCompleted && !isCurrent
 
             let circleClasses = ""
 
@@ -38,20 +34,18 @@ export function StepProgress({ currentStep }: { currentStep: number }) {
               circleClasses = "bg-chart-2 text-white"
             } else if (isCurrent) {
               circleClasses = "bg-primary text-primary-foreground"
-            } else if (!isAccessible) {
-              circleClasses = "bg-muted/50 border-2 border-dashed"
             } else if (optional) {
               circleClasses = "border border-dashed border-muted-foreground/50 bg-transparent text-muted-foreground"
             } else {
-              circleClasses = "bg-muted border-2"
+              circleClasses = "bg-muted border-2 text-muted-foreground"
             }
 
             return (
               <div key={step.num} className="flex items-center flex-1">
                 <Link
-                  href={isAccessible ? `/steps/${step.num}` : "#"}
-                  className={`flex flex-col items-center gap-2 ${
-                    isAccessible ? "cursor-pointer" : "cursor-not-allowed opacity-50"
+                  href={`/steps/${step.num}`}
+                  className={`flex flex-col items-center gap-2 transition-opacity ${
+                    isIncomplete ? "opacity-60 hover:opacity-100" : ""
                   }`}
                 >
                   <div
@@ -59,16 +53,14 @@ export function StepProgress({ currentStep }: { currentStep: number }) {
                       circleClasses
                     }`}
                   >
-                    {isCompleted ? (
-                      <CheckCircle2 className="w-5 h-5" />
-                    ) : !isAccessible ? (
-                      <Lock className="w-5 h-5" />
-                    ) : (
-                      step.num
-                    )}
+                    {isCompleted ? <CheckCircle2 className="w-5 h-5" /> : step.num}
                   </div>
                   <div className="flex flex-col items-center">
-                    <span className={`text-xs font-medium text-center ${isCurrent ? "text-primary" : ""}`}>
+                    <span
+                      className={`text-xs font-medium text-center ${
+                        isCurrent ? "text-primary" : "text-muted-foreground"
+                      }`}
+                    >
                       {step.title}
                     </span>
                     {optional && persona?.label && (
