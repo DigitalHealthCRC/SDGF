@@ -12,14 +12,12 @@ const sections = (appendixData.sections ?? []) as TemplateSection[]
 
 export default function Appendix10Page() {
   const { persona, isAppendixVisible } = usePersona()
+  const personaLabel = persona?.label
+  const showPersonaNotice = Boolean(personaLabel && !isAppendixVisible(appendixNumber))
 
   const sectionLabels = sections
     .map((section) => section.groupLabel ?? section.fields[0]?.label)
     .filter(Boolean) as string[]
-
-  if (persona && !isAppendixVisible(appendixNumber)) {
-    return <RestrictionNotice title="Appendix 10 – Safety Assessment" personaLabel={persona.label} />
-  }
 
   const left = (
     <div className="space-y-4 text-sm text-muted-foreground">
@@ -44,17 +42,22 @@ export default function Appendix10Page() {
   )
 
   return (
-    <TwoColumnLayout
-      title="Appendix 10 - Safety Assessment (Five Safes)"
-      description="Assess the adequacy of controls before releasing synthetic data."
-      left={left}
-      right={
-        <TemplateForm
-          id={(appendixData.exportKey as string) ?? "appendix10-safety-assessment"}
-          exportKey={appendixData.exportKey as string | undefined}
-          sections={sections}
-        />
-      }
-    />
+    <div className="space-y-6">
+      {showPersonaNotice && personaLabel && (
+        <RestrictionNotice title="Appendix 10 – Safety Assessment" personaLabel={personaLabel} />
+      )}
+      <TwoColumnLayout
+        title="Appendix 10 - Safety Assessment (Five Safes)"
+        description="Assess the adequacy of controls before releasing synthetic data."
+        left={left}
+        right={
+          <TemplateForm
+            id={(appendixData.exportKey as string) ?? "appendix10-safety-assessment"}
+            exportKey={appendixData.exportKey as string | undefined}
+            sections={sections}
+          />
+        }
+      />
+    </div>
   )
 }

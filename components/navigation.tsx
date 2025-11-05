@@ -13,7 +13,7 @@ export function Navigation() {
   const [stepsMenuOpen, setStepsMenuOpen] = useState(false)
   const pathname = usePathname()
   const { stepCompletion } = useProgress()
-  const { isStepVisible } = usePersona()
+  const { persona, isStepVisible } = usePersona()
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? process.env.__NEXT_ROUTER_BASEPATH ?? ""
   const logoSrc = `${basePath}/logo.png`
 
@@ -24,7 +24,7 @@ export function Navigation() {
     { num: 4, title: "Assess Re-ID Risks", path: "/steps/4" },
     { num: 5, title: "Manage Residual Risks", path: "/steps/5" },
   ]
-  const visibleSteps = steps.filter((step) => isStepVisible(step.num))
+  const personaLabel = persona?.label
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
@@ -62,7 +62,10 @@ export function Navigation() {
               </button>
               {stepsMenuOpen && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-popover border rounded-lg shadow-lg py-2">
-                  {visibleSteps.map((step) => (
+                  {steps.map((step) => {
+                    const optional = Boolean(persona && !isStepVisible(step.num))
+
+                    return (
                     <Link
                       key={step.num}
                       href={step.path}
@@ -71,14 +74,24 @@ export function Navigation() {
                     >
                       <div
                         className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                          stepCompletion[step.num] ? "bg-chart-2 text-white" : "bg-muted"
+                          stepCompletion[step.num]
+                            ? "bg-chart-2 text-white"
+                            : optional
+                              ? "border border-dashed border-muted-foreground/50 bg-transparent text-muted-foreground"
+                              : "bg-muted"
                         }`}
                       >
                         {step.num}
                       </div>
-                      <span className="text-sm">{step.title}</span>
+                      <div className="flex flex-col">
+                        <span className="text-sm">{step.title}</span>
+                        {optional && personaLabel && (
+                          <span className="text-xs text-muted-foreground/80">{`Optional for ${personaLabel}`}</span>
+                        )}
+                      </div>
                     </Link>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -122,23 +135,36 @@ export function Navigation() {
               </Link>
               <div className="space-y-2">
                 <div className="text-sm font-medium text-muted-foreground">Five Steps</div>
-                {visibleSteps.map((step) => (
+                {steps.map((step) => {
+                  const optional = Boolean(persona && !isStepVisible(step.num))
+
+                  return (
                   <Link
                     key={step.num}
                     href={step.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 pl-4 py-1"
+                    className="flex items-start gap-3 pl-4 py-1"
                   >
                     <div
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                        stepCompletion[step.num] ? "bg-chart-2 text-white" : "bg-muted"
+                        stepCompletion[step.num]
+                          ? "bg-chart-2 text-white"
+                          : optional
+                            ? "border border-dashed border-muted-foreground/50 bg-transparent text-muted-foreground"
+                            : "bg-muted"
                       }`}
                     >
                       {step.num}
                     </div>
-                    <span className="text-sm">{step.title}</span>
+                    <div className="flex flex-col">
+                      <span className="text-sm">{step.title}</span>
+                      {optional && personaLabel && (
+                        <span className="text-xs text-muted-foreground/80">{`Optional for ${personaLabel}`}</span>
+                      )}
+                    </div>
                   </Link>
-                ))}
+                  )
+                })}
               </div>
               <Link href="/resources" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Resources

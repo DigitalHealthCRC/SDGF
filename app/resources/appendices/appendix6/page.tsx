@@ -12,12 +12,10 @@ const sections = (appendixData.sections ?? []) as TemplateSection[]
 
 export default function Appendix6Page() {
   const { persona, isAppendixVisible } = usePersona()
+  const personaLabel = persona?.label
+  const showPersonaNotice = Boolean(personaLabel && !isAppendixVisible(appendixNumber))
 
   const headlineFields = sections.flatMap((section) => section.fields.slice(0, 2).map((field) => field.label))
-
-  if (persona && !isAppendixVisible(appendixNumber)) {
-    return <RestrictionNotice title="Appendix 6 – Technical Assessment" personaLabel={persona.label} />
-  }
 
   const left = (
     <div className="space-y-4 text-sm text-muted-foreground">
@@ -44,17 +42,22 @@ export default function Appendix6Page() {
   )
 
   return (
-    <TwoColumnLayout
-      title="Appendix 6 - Technical Assessment"
-      description="Document dataset quality, representativeness, and readiness indicators."
-      left={left}
-      right={
-        <TemplateForm
-          id={(appendixData.exportKey as string) ?? "appendix6-technical-assessment"}
-          exportKey={appendixData.exportKey as string | undefined}
-          sections={sections}
-        />
-      }
-    />
+    <div className="space-y-6">
+      {showPersonaNotice && personaLabel && (
+        <RestrictionNotice title="Appendix 6 – Technical Assessment" personaLabel={personaLabel} />
+      )}
+      <TwoColumnLayout
+        title="Appendix 6 - Technical Assessment"
+        description="Document dataset quality, representativeness, and readiness indicators."
+        left={left}
+        right={
+          <TemplateForm
+            id={(appendixData.exportKey as string) ?? "appendix6-technical-assessment"}
+            exportKey={appendixData.exportKey as string | undefined}
+            sections={sections}
+          />
+        }
+      />
+    </div>
   )
 }

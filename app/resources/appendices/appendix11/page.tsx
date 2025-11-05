@@ -12,10 +12,8 @@ const sections = (appendixData.sections ?? []) as TemplateSection[]
 
 export default function Appendix11Page() {
   const { persona, isAppendixVisible } = usePersona()
-
-  if (persona && !isAppendixVisible(appendixNumber)) {
-    return <RestrictionNotice title="Appendix 11 – Request & Outcomes Form" personaLabel={persona.label} />
-  }
+  const personaLabel = persona?.label
+  const showPersonaNotice = Boolean(personaLabel && !isAppendixVisible(appendixNumber))
 
   const left = (
     <div className="space-y-4 text-sm text-muted-foreground">
@@ -30,17 +28,22 @@ export default function Appendix11Page() {
   )
 
   return (
-    <TwoColumnLayout
-      title="Appendix 11 - Synthetic Health Data Request & Outcomes"
-      description="Document consolidated results and approvals across all framework steps."
-      left={left}
-      right={
-        <TemplateForm
-          id={(appendixData.exportKey as string) ?? "appendix11-outcomes-form"}
-          exportKey={appendixData.exportKey as string | undefined}
-          sections={sections}
-        />
-      }
-    />
+    <div className="space-y-6">
+      {showPersonaNotice && personaLabel && (
+        <RestrictionNotice title="Appendix 11 – Request & Outcomes Form" personaLabel={personaLabel} />
+      )}
+      <TwoColumnLayout
+        title="Appendix 11 - Synthetic Health Data Request & Outcomes"
+        description="Document consolidated results and approvals across all framework steps."
+        left={left}
+        right={
+          <TemplateForm
+            id={(appendixData.exportKey as string) ?? "appendix11-outcomes-form"}
+            exportKey={appendixData.exportKey as string | undefined}
+            sections={sections}
+          />
+        }
+      />
+    </div>
   )
 }

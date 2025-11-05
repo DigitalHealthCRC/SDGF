@@ -24,10 +24,6 @@ interface AppendicesClientProps {
 export function AppendicesClient({ appendices }: AppendicesClientProps) {
   const { persona, personas, setPersonaById, clearPersona, isAppendixVisible } = usePersona();
 
-  const visibleAppendices = appendices.filter((appendix) => {
-    return isAppendixVisible(appendix.number);
-  });
-
   const personaFilter = persona?.id ?? "all";
   const personaLabel = persona ? persona.label : "All roles";
 
@@ -38,33 +34,6 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
     }
     setPersonaById(value as PersonaId);
   };
-
-  if (persona && visibleAppendices.length === 0) {
-    return (
-      <div className="container mx-auto max-w-5xl px-4 py-12">
-        <div className="rounded-lg border border-dashed border-emerald-400/60 bg-emerald-500/10 p-8 text-center">
-          <h1 className="text-3xl font-semibold text-emerald-700">Appendices</h1>
-          <p className="mt-3 text-emerald-800">
-            The {persona.label} persona does not require any appendices. Switch persona to access the full library.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600"
-            >
-              Change persona <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/resources"
-              className="inline-flex items-center gap-2 rounded-lg border border-emerald-400/60 px-5 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-500/10"
-            >
-              Browse resources
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="container mx-auto max-w-6xl px-4 py-12">
@@ -102,30 +71,53 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
         </DropdownMenu>
       </div>
 
+      {persona && (
+        <div className="mb-10 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100 shadow-sm">
+          <p className="font-medium text-amber-100">
+            Appendices marked as optional are not required for the {persona.label} journey, but you can still use them for
+            additional context.
+          </p>
+        </div>
+      )}
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {visibleAppendices.map((appendix, index) => (
-          <Link key={appendix.id} href={`/resources/appendices/${appendix.id}`} className="group">
-            <div
-              className={`h-full rounded-lg border-2 bg-gradient-to-br ${cardGradients[index % cardGradients.length]} p-6 transition-all hover:border-primary hover:shadow-lg`}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="space-y-2">
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground/80">
-                    Appendix {appendix.number}
-                  </p>
-                  <h3 className="text-lg font-semibold text-foreground">{appendix.title}</h3>
+        {appendices.map((appendix, index) => {
+          const isRecommended = isAppendixVisible(appendix.number);
+          const optional = Boolean(persona && !isRecommended);
+
+          return (
+            <Link key={appendix.id} href={`/resources/appendices/${appendix.id}`} className="group">
+              <div
+                className={`h-full rounded-lg border-2 bg-gradient-to-br ${cardGradients[index % cardGradients.length]} p-6 transition-all hover:border-primary hover:shadow-lg`}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-2">
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground/80">
+                      Appendix {appendix.number}
+                    </p>
+                    <h3 className="text-lg font-semibold text-foreground">{appendix.title}</h3>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    {appendix.template && (
+                      <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-emerald-700">
+                        Template
+                      </span>
+                    )}
+                    {optional && (
+                      <span className="rounded-full border border-amber-400/70 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-200">
+                        Optional
+                      </span>
+                    )}
+                  </div>
                 </div>
-                {appendix.template && (
-                  <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-emerald-700">Template</span>
-                )}
+                <p className="mt-4 text-sm text-muted-foreground">{appendix.purpose}</p>
+                <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary transition group-hover:gap-3">
+                  View appendix <ArrowRight className="h-4 w-4" />
+                </div>
               </div>
-              <p className="mt-4 text-sm text-muted-foreground">{appendix.purpose}</p>
-              <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary transition group-hover:gap-3">
-                View appendix <ArrowRight className="h-4 w-4" />
-              </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
 
       <div className="mt-12 rounded-lg border border-border/60 bg-muted/40 p-6 text-sm text-muted-foreground">

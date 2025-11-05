@@ -17,23 +17,21 @@ export const BackLink = () => (
 )
 
 export const RestrictionNotice = ({ title, personaLabel }: { title: string; personaLabel: string }) => (
-  <main className="mx-auto max-w-3xl space-y-8 p-8">
-    <header className="space-y-2">
-      <h1 className="text-2xl font-semibold">{title}</h1>
-      <p className="text-muted-foreground">
-        This appendix is not part of the {personaLabel} journey. Switch persona to view the full content.
-      </p>
-    </header>
-    <div className="flex flex-wrap gap-3">
-      <Link
-        href="/"
-        className="inline-flex items-center justify-center rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600"
-      >
-        Change Persona
-      </Link>
-      <BackLink />
-    </div>
-  </main>
+  <div className="space-y-3 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100 shadow-md">
+    <p className="font-semibold text-amber-100">
+      {title} is optional for the {personaLabel} journey.
+    </p>
+    <p className="text-amber-100/80">
+      You can still review the complete appendix below if it helps your work. Switch persona if you need the recommended
+      pathway for another role.
+    </p>
+    <Link
+      href="/"
+      className="inline-flex items-center justify-center rounded-md border border-amber-400/60 px-3 py-1 text-xs font-semibold text-amber-100 transition hover:bg-amber-500/20"
+    >
+      Change persona
+    </Link>
+  </div>
 )
 
 const renderTemplateForm = (appendix: AppendixRecord) => {
@@ -106,16 +104,15 @@ const renderBody = (appendix: AppendixRecord, MarkdownRenderer?: ComponentType<a
 export function AppendixDetail({ appendix }: { appendix: AppendixRecord }) {
   const MarkdownRenderer = dynamic(() => import("react-markdown").then((mod) => mod.default), { ssr: false })
   const { persona, isAppendixVisible } = usePersona()
-
-  if (persona && !isAppendixVisible(appendix.number)) {
-    return <RestrictionNotice title={appendix.title} personaLabel={persona.label} />
-  }
+  const personaLabel = persona?.label
+  const showPersonaNotice = Boolean(personaLabel && !isAppendixVisible(appendix.number))
 
   const showTemplate =
     appendix.component === "TemplateForm" || (appendix.template && Array.isArray(appendix.sections))
 
   return (
     <main className="mx-auto max-w-3xl space-y-6 p-8">
+      {showPersonaNotice && personaLabel && <RestrictionNotice title={appendix.title} personaLabel={personaLabel} />}
       <header className="space-y-2">
         <h1 className="text-2xl font-semibold">{appendix.title}</h1>
         <p className="text-muted-foreground">{appendix.purpose}</p>

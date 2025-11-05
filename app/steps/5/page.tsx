@@ -1,6 +1,6 @@
 ﻿"use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { CheckCircle2, Download, PartyPopper, Printer, Save } from "lucide-react"
 
@@ -35,44 +35,11 @@ export default function Step5Page() {
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
   const { persona, isStepVisible } = usePersona()
 
-  const fallbackStep = useMemo(() => {
-    if (!persona) return stepNumber
-    return persona.allowedSteps.find((n) => n > stepNumber) ?? persona.allowedSteps[0] ?? stepNumber
-  }, [persona, stepNumber])
-
-  if (persona && !isStepVisible(stepNumber)) {
-    return (
-      <div className="space-y-6">
-        <StepProgress currentStep={fallbackStep} />
-        <TwoColumnLayout
-          title={`Step ${stepNumber} is not required for ${persona.label}`}
-          description="Residual risk management sits with governance-focused personas. Continue to the recommended step or switch roles."
-          left={
-            <div className="space-y-3 text-sm text-muted-foreground">
-              <p>The {persona.label} persona is not accountable for final residual risk approval.</p>
-              <p>Select another persona if you need to complete governance sign-off activities.</p>
-            </div>
-          }
-          right={
-            <div className="space-y-4">
-              <Link
-                href={`/steps/${fallbackStep}?persona=${persona.id}`}
-                className="inline-flex items-center justify-center rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600"
-              >
-                Go to Step {fallbackStep}
-              </Link>
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center rounded-lg border border-border/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60"
-              >
-                Change persona
-              </Link>
-            </div>
-          }
-        />
-      </div>
-    )
-  }
+  const personaLabel = persona?.label
+  const personaId = persona?.id
+  const showPersonaNotice = Boolean(personaLabel && !isStepVisible(stepNumber))
+  const nextStepForPersona = persona?.allowedSteps.find((n) => n > stepNumber) ?? null
+  const recommendedStep = showPersonaNotice ? nextStepForPersona : null
   const [formData, setFormData] = useState<StepFormState>(() => ({ ...getFormData(stepNumber) }))
   const [showCompleteModal, setShowCompleteModal] = useState(false)
 
@@ -373,6 +340,33 @@ export default function Step5Page() {
   return (
     <div className="space-y-6">
       <StepProgress currentStep={stepNumber} />
+      {showPersonaNotice && personaLabel && (
+        <div className="space-y-3 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100">
+          <p className="font-semibold text-amber-100">Step {stepNumber} is optional for the {personaLabel} journey.</p>
+          <p className="text-amber-100/80">
+            The governance wrap-up below is available if you need it.{` `}
+            {recommendedStep
+              ? `Otherwise, Step ${recommendedStep} remains the suggested next activity for your role.`
+              : "You have unlocked every step recommended for your persona."}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {recommendedStep && personaId && (
+              <Link
+                href={`/steps/${recommendedStep}?persona=${personaId}`}
+                className="inline-flex items-center justify-center rounded-md bg-emerald-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-600"
+              >
+                Go to Step {recommendedStep}
+              </Link>
+            )}
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center rounded-md border border-amber-400/60 px-4 py-2 text-xs font-semibold text-amber-100 transition hover:bg-amber-500/20"
+            >
+              Change persona
+            </Link>
+          </div>
+        </div>
+      )}
       <TwoColumnLayout title={pageTitle} description={stepData.summary} left={leftColumn} right={rightColumn} />
 
       {showCompleteModal && (
@@ -383,7 +377,7 @@ export default function Step5Page() {
               <h3 className="text-xl font-semibold text-foreground">Complete Framework?</h3>
             </div>
             <p className="text-sm text-muted-foreground">
-              You've completed all safeguards and governance requirements. Your synthetic data framework is ready for implementation.
+              You have completed all safeguards and governance requirements. Your synthetic data framework is ready for implementation.
             </p>
             <div className="flex gap-3">
               <button

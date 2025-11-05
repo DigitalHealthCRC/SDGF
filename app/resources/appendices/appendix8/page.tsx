@@ -30,6 +30,8 @@ const startNode = findStartNode(nodes)
 
 export default function Appendix8Page() {
   const { persona, isAppendixVisible } = usePersona()
+  const personaLabel = persona?.label
+  const showPersonaNotice = Boolean(personaLabel && !isAppendixVisible(appendixNumber))
   const [path, setPath] = useState<string[]>(startNode ? [startNode.id] : [])
   const [history, setHistory] = useState<Array<{ id: string; text: string; answer: string }>>([])
 
@@ -38,13 +40,12 @@ export default function Appendix8Page() {
   const currentOptions = currentNode?.options ?? []
   const isTerminal = !currentNode || currentOptions.length === 0
 
-  if (persona && !isAppendixVisible(appendixNumber)) {
-    return <RestrictionNotice title="Appendix 8 - Decision Tree" personaLabel={persona.label} />
-  }
-
   if (!startNode) {
     return (
       <main className="mx-auto max-w-3xl space-y-6 p-8 text-sm text-muted-foreground">
+        {showPersonaNotice && personaLabel && (
+          <RestrictionNotice title="Appendix 8 - Decision Tree" personaLabel={personaLabel} />
+        )}
         <h1 className="text-2xl font-semibold text-foreground">Appendix 8 - Decision Tree</h1>
         <p>Decision tree content is unavailable. Please contact the framework team.</p>
         <BackLink />
@@ -179,12 +180,17 @@ export default function Appendix8Page() {
   )
 
   return (
-    <TwoColumnLayout
-      title="Appendix 8 - Decision Tree for Complex Scenarios"
-      description={appendixData.purpose}
-      left={leftPanel}
-      right={rightPanel}
-    />
+    <div className="space-y-6">
+      {showPersonaNotice && personaLabel && (
+        <RestrictionNotice title="Appendix 8 - Decision Tree" personaLabel={personaLabel} />
+      )}
+      <TwoColumnLayout
+        title="Appendix 8 - Decision Tree for Complex Scenarios"
+        description={appendixData.purpose}
+        left={leftPanel}
+        right={rightPanel}
+      />
+    </div>
   )
 }
 
