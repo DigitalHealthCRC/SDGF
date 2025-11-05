@@ -141,16 +141,22 @@ export default function Home() {
             { num: 5, title: "Manage Residual Risks", desc: "Ensure safe sharing practices" },
           ].map((step) => (
             <div key={step.num} className="text-center">
-              <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg mx-auto mb-3">
-                {step.num}
-              </div>
+              <Link
+                href={`/steps/${step.num}`}
+                className="mb-3 inline-flex items-center justify-center"
+                aria-label={`Go to Step ${step.num}`}
+              >
+                <span className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg transition-colors hover:bg-primary/90">
+                  {step.num}
+                </span>
+              </Link>
               <h3 className="font-semibold mb-1 text-sm">{step.title}</h3>
               <p className="text-xs text-muted-foreground">{step.desc}</p>
             </div>
           ))}
         </div>
         <p className="text-sm text-muted-foreground mt-6 text-center">
-          Each step must be completed before the next unlocks. All assessments are exportable as JSON or PDF.
+          Track your progress as you complete each step; unfinished steps stay muted. All assessments are exportable as JSON or PDF.
         </p>
       </div>
 

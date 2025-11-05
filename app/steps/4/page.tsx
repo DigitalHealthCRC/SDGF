@@ -350,29 +350,31 @@ export default function Step4Page() {
     <div className="space-y-6">
       <StepProgress currentStep={stepNumber} />
       {showPersonaNotice && personaLabel && (
-        <div className="space-y-3 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100">
-          <p className="font-semibold text-amber-100">Step {stepNumber} is optional for the {personaLabel} journey.</p>
-          <p className="text-amber-100/80">
-            The detailed re-identification workflow below remains available when needed.{` `}
-            {recommendedStep
-              ? `Otherwise, proceed with Step ${recommendedStep}, which is the next recommended activity for your role.`
-              : "All required activities for your persona are already unlocked."}
-          </p>
-          <div className="flex flex-wrap gap-3">
-            {recommendedStep && personaId && (
+        <div className="mx-auto w-full max-w-screen-2xl px-4 lg:px-8">
+          <div className="space-y-3 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100">
+            <p className="font-semibold text-amber-100">Step {stepNumber} is optional for the {personaLabel} journey.</p>
+            <p className="text-amber-100/80">
+              The detailed re-identification workflow below remains available when needed.{` `}
+              {recommendedStep
+                ? `Otherwise, proceed with Step ${recommendedStep}, which is the next recommended activity for your role.`
+                : "All required activities for your persona are already unlocked."}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {recommendedStep && personaId && (
+                <Link
+                  href={`/steps/${recommendedStep}?persona=${personaId}`}
+                  className="inline-flex items-center justify-center rounded-md bg-emerald-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-600"
+                >
+                  Go to Step {recommendedStep}
+                </Link>
+              )}
               <Link
-                href={`/steps/${recommendedStep}?persona=${personaId}`}
-                className="inline-flex items-center justify-center rounded-md bg-emerald-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-600"
+                href="/"
+                className="inline-flex items-center justify-center rounded-md border border-amber-400/60 px-4 py-2 text-xs font-semibold text-amber-100 transition hover:bg-amber-500/20"
               >
-                Go to Step {recommendedStep}
+                Change persona
               </Link>
-            )}
-            <Link
-              href="/"
-              className="inline-flex items-center justify-center rounded-md border border-amber-400/60 px-4 py-2 text-xs font-semibold text-amber-100 transition hover:bg-amber-500/20"
-            >
-              Change persona
-            </Link>
+            </div>
           </div>
         </div>
       )}
