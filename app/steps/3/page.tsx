@@ -305,8 +305,11 @@ export default function Step3Page() {
             <span className="font-medium text-foreground">Utility Preservation:</span> Maintaining statistical properties of source data.
           </li>
         </ul>
-        <Link href="/resources/glossary" className="mt-4 inline-flex text-sm text-emerald-300 hover:underline">
-          View Full Glossary ?
+        <Link
+          href="/resources/appendices/appendix2"
+          className="mt-4 inline-flex text-sm text-emerald-300 hover:underline"
+        >
+          View Glossary (Appendix 2)
         </Link>
       </div>
 
@@ -314,8 +317,8 @@ export default function Step3Page() {
         <h3 className="font-semibold text-foreground">Related Resources</h3>
         <ul className="mt-4 space-y-2 text-sm text-emerald-300">
           <li>
-            <Link href="/resources/about-synthetic-data" className="hover:underline">
-              About Synthetic Data
+            <Link href="/resources/appendices/appendix1" className="hover:underline">
+              About Synthetic Data (Appendix 1)
             </Link>
           </li>
           <li>

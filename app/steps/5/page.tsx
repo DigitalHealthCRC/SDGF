@@ -24,6 +24,12 @@ const stepData = stepDataJson as StepContent
 
 const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Step 5: Manage Residual Risks")
 
+const formatAppendixLabel = (href: string) => {
+  const match = href.match(/appendix(\d+)/i)
+  if (match) return `Appendix ${match[1]}`
+  return href.replace(/^\//, "")
+}
+
 export default function Step5Page() {
   const stepNumber = 5
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
@@ -306,8 +312,11 @@ export default function Step5Page() {
             <span className="font-medium text-foreground">Five Safes:</span> Framework for managing access risks across people, projects, data, settings, and outputs.
           </li>
         </ul>
-        <Link href="/resources/glossary" className="mt-4 inline-flex text-sm text-emerald-300 hover:underline">
-          View Full Glossary ?
+        <Link
+          href="/resources/appendices/appendix2"
+          className="mt-4 inline-flex text-sm text-emerald-300 hover:underline"
+        >
+          View Glossary (Appendix 2)
         </Link>
       </div>
 
@@ -315,13 +324,13 @@ export default function Step5Page() {
         <h3 className="font-semibold text-foreground">Related Resources</h3>
         <ul className="mt-4 space-y-2 text-sm text-emerald-300">
           <li>
-            <Link href="/resources/five-safes" className="hover:underline">
-              Five Safes Framework
+            <Link href="/resources/appendices/appendix10" className="hover:underline">
+              Five Safes Framework (Appendix 10)
             </Link>
           </li>
           <li>
-            <Link href="/resources/agreements" className="hover:underline">
-              Data Agreement Templates
+            <Link href="/resources/appendices/appendix11" className="hover:underline">
+              Framework Outcomes Form (Appendix 11)
             </Link>
           </li>
           <li>
@@ -336,13 +345,16 @@ export default function Step5Page() {
         <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
           <h3 className="font-semibold text-foreground">Appendices</h3>
           <ul className="mt-4 space-y-2 text-sm text-emerald-300">
-            {readMoreLinks.map((href) => (
-              <li key={href}>
-                <Link href={href} className="hover:underline">
-                  {href.replace(/^\//, "")}
-                </Link>
-              </li>
-            ))}
+            {readMoreLinks.map((href) => {
+              const label = formatAppendixLabel(href)
+              return (
+                <li key={href}>
+                  <Link href={href} className="hover:underline">
+                    {label}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
         </div>
       )}

@@ -6,17 +6,17 @@ import ExportAllButton from "@/src/components/ExportAllButton"
 export default function Resources() {
   const resources = [
     {
-      title: "Glossary",
+      title: "Glossary (Appendix 2)",
       description: "Key terms, definitions, and role descriptions",
       icon: BookOpen,
-      href: "/resources/glossary",
+      href: "/resources/appendices/appendix2",
       color: "from-chart-1/20 to-chart-1/5",
     },
     {
-      title: "Lawful Pathways",
+      title: "Lawful Pathways Guide (Appendix 9)",
       description: "Privacy compliance routes and legal frameworks",
       icon: Scale,
-      href: "/resources/lawful-pathways",
+      href: "/resources/appendices/appendix9",
       color: "from-chart-2/20 to-chart-2/5",
     },
     {
@@ -27,31 +27,31 @@ export default function Resources() {
       color: "from-chart-3/20 to-chart-3/5",
     },
     {
-      title: "Decision Tree",
+      title: "Decision Tree (Appendix 8)",
       description: "Navigate complex synthetic data scenarios",
       icon: GitBranch,
-      href: "/resources/decision-tree",
+      href: "/resources/appendices/appendix8",
       color: "from-chart-3/20 to-chart-3/5",
     },
     {
-      title: "Five Safes Framework",
+      title: "Five Safes Assessment (Appendix 10)",
       description: "Risk management approach for data sharing",
       icon: Shield,
-      href: "/resources/five-safes",
+      href: "/resources/appendices/appendix10",
       color: "from-chart-4/20 to-chart-4/5",
     },
     {
-      title: "Data Agreements",
-      description: "DSA and DUA templates and guidance",
+      title: "Framework Outcomes Form (Appendix 11)",
+      description: "Consolidate approvals and conditions across the framework",
       icon: FileText,
-      href: "/resources/agreements",
+      href: "/resources/appendices/appendix11",
       color: "from-chart-5/20 to-chart-5/5",
     },
     {
-      title: "About Synthetic Data",
+      title: "About Synthetic Data (Appendix 1)",
       description: "Benefits, limitations, and use cases",
       icon: Users,
-      href: "/resources/about-synthetic-data",
+      href: "/resources/appendices/appendix1",
       color: "from-chart-1/20 to-chart-1/5",
     },
   ]

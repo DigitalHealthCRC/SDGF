@@ -310,8 +310,11 @@ export default function Step1Page() {
             <dd>Re-identification is so impractical there's almost no likelihood.</dd>
           </div>
         </dl>
-        <Link href="/resources/glossary" className="mt-4 inline-flex text-sm text-emerald-300 hover:underline">
-          View Full Glossary ?
+        <Link
+          href="/resources/appendices/appendix2"
+          className="mt-4 inline-flex text-sm text-emerald-300 hover:underline"
+        >
+          View Glossary (Appendix 2)
         </Link>
       </div>
 
@@ -319,13 +322,13 @@ export default function Step1Page() {
         <h3 className="font-semibold text-foreground">Related Resources</h3>
         <ul className="mt-4 space-y-2 text-sm text-emerald-300">
           <li>
-            <Link href="/resources/lawful-pathways" className="hover:underline">
-              Lawful Pathways Guide
+            <Link href="/resources/appendices/appendix9" className="hover:underline">
+              Lawful Pathways Guide (Appendix 9)
             </Link>
           </li>
           <li>
-            <Link href="/resources/decision-tree" className="hover:underline">
-              Decision Tree for Complex Cases
+            <Link href="/resources/appendices/appendix8" className="hover:underline">
+              Decision Tree for Complex Cases (Appendix 8)
             </Link>
           </li>
           <li>
@@ -372,8 +375,7 @@ export default function Step1Page() {
           <div className="w-full max-w-md space-y-6 rounded-xl border border-border/60 bg-background p-6 shadow-2xl">
             <h3 className="text-xl font-semibold text-foreground">Complete Step 1?</h3>
             <p className="text-sm text-muted-foreground">
-              You've completed all required assessments for Step 1. Marking this step complete will unlock Step 2 and
-              save your progress.
+              You've completed all required assessments for Step 1. Marking this step complete will save your progress.
             </p>
             <div className="flex gap-3">
               <button
@@ -397,6 +399,5 @@ export default function Step1Page() {
     </div>
   )
 }
-
 
 

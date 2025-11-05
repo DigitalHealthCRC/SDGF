@@ -45,6 +45,13 @@ export function Navigation() {
               Home
             </Link>
 
+            <Link
+              href="/about"
+              className={`text-sm font-medium hover:text-primary transition-colors ${pathname === "/about" ? "text-primary" : ""}`}
+            >
+              About SynD framework
+            </Link>
+
             {/* Steps Dropdown */}
             <div className="relative">
               <button
@@ -95,13 +102,6 @@ export function Navigation() {
             >
               Templates
             </Link>
-
-            <Link
-              href="/about"
-              className={`text-sm font-medium hover:text-primary transition-colors ${pathname === "/about" ? "text-primary" : ""}`}
-            >
-              About SynD
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -116,6 +116,9 @@ export function Navigation() {
             <div className="flex flex-col gap-4">
               <Link href="/" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Home
+              </Link>
+              <Link href="/about" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
+                About SynD framework
               </Link>
               <div className="space-y-2">
                 <div className="text-sm font-medium text-muted-foreground">Five Steps</div>
@@ -145,9 +148,6 @@ export function Navigation() {
               </Link>
               <Link href="/templates" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Templates
-              </Link>
-              <Link href="/about" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                About SynD
               </Link>
             </div>
           </div>

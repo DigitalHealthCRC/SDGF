@@ -24,6 +24,12 @@ const stepData = stepDataJson as StepContent
 
 const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Step 2: Prepare Source Data")
 
+const formatAppendixLabel = (href: string) => {
+  const match = href.match(/appendix(\d+)/i)
+  if (match) return `Appendix ${match[1]}`
+  return href.replace(/^\//, "")
+}
+
 export default function Step2Page() {
   const stepNumber = 2
  const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
@@ -317,8 +323,11 @@ export default function Step2Page() {
             <span className="font-medium text-foreground">Representativeness:</span> How well data reflects the target population.
           </li>
         </ul>
-        <Link href="/resources/glossary" className="mt-4 inline-flex text-sm text-emerald-300 hover:underline">
-          View Full Glossary ?
+        <Link
+          href="/resources/appendices/appendix2"
+          className="mt-4 inline-flex text-sm text-emerald-300 hover:underline"
+        >
+          View Glossary (Appendix 2)
         </Link>
       </div>
 
@@ -326,13 +335,13 @@ export default function Step2Page() {
         <h3 className="font-semibold text-foreground">Related Resources</h3>
         <ul className="mt-4 space-y-2 text-sm text-emerald-300">
           <li>
-            <Link href="/resources/five-safes" className="hover:underline">
-              Five Safes Framework
+            <Link href="/resources/appendices/appendix10" className="hover:underline">
+              Five Safes Framework (Appendix 10)
             </Link>
           </li>
           <li>
-            <Link href="/templates" className="hover:underline">
-              Data Quality Templates
+            <Link href="/resources/appendices/appendix6" className="hover:underline">
+              Technical Assessment Template (Appendix 6)
             </Link>
           </li>
         </ul>
@@ -342,13 +351,16 @@ export default function Step2Page() {
         <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
           <h3 className="font-semibold text-foreground">Appendices</h3>
           <ul className="mt-4 space-y-2 text-sm text-emerald-300">
-            {readMoreLinks.map((href) => (
-              <li key={href}>
-                <Link href={href} className="hover:underline">
-                  {href.replace(/^\//, "")}
-                </Link>
-              </li>
-            ))}
+            {readMoreLinks.map((href) => {
+              const label = formatAppendixLabel(href)
+              return (
+                <li key={href}>
+                  <Link href={href} className="hover:underline">
+                    {label}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
         </div>
       )}
@@ -398,6 +410,5 @@ export default function Step2Page() {
     </div>
   )
 }
-
 
 
