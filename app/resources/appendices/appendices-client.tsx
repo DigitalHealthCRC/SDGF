@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadio
 import { usePersona } from "@/lib/persona-context";
 import type { PersonaId } from "@/lib/persona-context";
 
-import type { AppendixRecord } from "./page";
+import type { AppendixRecord } from "../page";
 
 const cardGradients = [
   "from-chart-1/20 to-chart-1/5",
