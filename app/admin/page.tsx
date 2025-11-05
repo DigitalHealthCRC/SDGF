@@ -16,31 +16,31 @@ export default function AdminDashboard() {
 
   const recentActivity = [
     {
-      user: "Dr. Sarah Chen",
-      persona: "Data Custodian",
+      user: "Dr. Mel Haines",
+      persona: "Data Requestor",
       action: "Completed Step 3",
       project: "Emergency Department Synthetic Data",
       time: "2 hours ago",
     },
     {
-      user: "Prof. Michael Torres",
+      user: "MS. Keren Pointon",
       persona: "Data Requestor",
       action: "Started Framework",
       project: "Mental Health Research Dataset",
       time: "5 hours ago",
     },
     {
-      user: "Dr. Emma Wilson",
+      user: "Dr. Amir Marashi",
       persona: "Data Scientist",
       action: "Completed Risk Assessment",
       project: "Diabetes Patient Cohort",
       time: "1 day ago",
     },
     {
-      user: "Dr. James Park",
+      user: "Prof. James Boyd",
       persona: "Data Custodian",
       action: "Approved Data Sharing",
-      project: "Cancer Registry Synthetic Data",
+      project: "CKD Registry Synthetic Data",
       time: "2 days ago",
     },
   ]
