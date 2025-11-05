@@ -214,6 +214,41 @@ openai-chatkit::part(composer) {
   color: var(--chatkit-color-text-primary);
 }
 
+openai-chatkit::part(composer-button),
+openai-chatkit::part(composer-primary-button),
+openai-chatkit::part(composer-send-button),
+openai-chatkit::part(composer-submit-button) {
+  background: linear-gradient(135deg, var(--chatbot-launcher-gradient-outer), var(--chatbot-launcher-gradient-inner));
+  color: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--chatbot-border) 65%, rgba(255, 214, 153, 0.65));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--chatbot-border) 40%, transparent),
+    0 10px 20px color-mix(in srgb, var(--chatbot-primary) 35%, transparent);
+}
+
+openai-chatkit::part(composer-button):hover,
+openai-chatkit::part(composer-primary-button):hover,
+openai-chatkit::part(composer-send-button):hover,
+openai-chatkit::part(composer-submit-button):hover,
+openai-chatkit::part(composer-button):focus-visible,
+openai-chatkit::part(composer-primary-button):focus-visible,
+openai-chatkit::part(composer-send-button):focus-visible,
+openai-chatkit::part(composer-submit-button):focus-visible {
+  background: linear-gradient(135deg, var(--chatbot-launcher-gradient-inner), var(--chatbot-launcher-gradient-outer));
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--chatbot-border) 55%, transparent),
+    0 12px 24px color-mix(in srgb, var(--chatbot-primary) 45%, transparent);
+  outline: none;
+}
+
+openai-chatkit::part(composer-button) svg,
+openai-chatkit::part(composer-primary-button) svg,
+openai-chatkit::part(composer-send-button) svg,
+openai-chatkit::part(composer-submit-button) svg {
+  color: currentColor;
+  fill: currentColor;
+}
+
 .synd-chat-launcher {
   position: fixed;
   bottom: 32px;
@@ -221,10 +256,12 @@ openai-chatkit::part(composer) {
   width: 58px;
   height: 58px;
   border-radius: 999px;
-  border: none;
-  background: #23472a;
+  border: 1px solid color-mix(in srgb, var(--chatbot-border) 85%, rgba(255, 214, 153, 0.75));
+  background: linear-gradient(135deg, var(--chatbot-launcher-gradient-outer), var(--chatbot-launcher-gradient-inner));
   color: #ffffff;
-  box-shadow: var(--chatbot-launcher-shadow);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--chatbot-border) 45%, transparent),
+    var(--chatbot-launcher-shadow);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -236,7 +273,9 @@ openai-chatkit::part(composer) {
 .synd-chat-launcher:hover,
 .synd-chat-launcher:focus-visible {
   transform: translateY(-3px);
-  box-shadow: var(--chatbot-launcher-shadow-hover);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--chatbot-border) 55%, transparent),
+    var(--chatbot-launcher-shadow-hover);
   outline: none;
 }
 
@@ -257,8 +296,10 @@ openai-chatkit::part(composer) {
 
 openai-chatkit[data-open="true"] ~ .synd-chat-launcher,
 openai-chatkit[data-open="true"] + .synd-chat-launcher {
-  background: #1c3821;
-  box-shadow: 0 10px 22px rgba(17, 54, 29, 0.45);
+  background: linear-gradient(140deg, var(--chatbot-launcher-gradient-inner), var(--chatbot-launcher-gradient-outer));
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--chatbot-border) 65%, transparent),
+    0 12px 28px color-mix(in srgb, var(--chatbot-primary) 45%, transparent);
 }
 
 openai-chatkit[data-open="true"] ~ .synd-chat-launcher .synd-chat-launcher__icon,
