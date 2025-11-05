@@ -1,0 +1,7 @@
+BROKEN LINKS REPORT
+================================================================================
+
+No broken internal links found!
+
+Total broken links: 0
+Total HTML files checked: 24
