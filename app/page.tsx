@@ -156,22 +156,31 @@ export default function Home() {
 
       {/* Quick Links */}
       <div className="grid md:grid-cols-4 gap-4">
-        <Link href="/resources/glossary" className="p-4 rounded-lg border hover:border-primary transition-colors">
+        <Link
+          href="https://digitalhealthcrc.github.io/SDGF/resources/appendices/appendix2"
+          className="p-4 rounded-lg border hover:border-primary transition-colors"
+        >
           <h3 className="font-semibold mb-2">Glossary</h3>
           <p className="text-sm text-muted-foreground">Key terms and definitions</p>
         </Link>
         <Link
-          href="/resources/lawful-pathways"
+          href="https://digitalhealthcrc.github.io/SDGF/resources/appendices/appendix9"
           className="p-4 rounded-lg border hover:border-primary transition-colors"
         >
           <h3 className="font-semibold mb-2">Lawful Pathways</h3>
           <p className="text-sm text-muted-foreground">Privacy compliance routes</p>
         </Link>
-        <Link href="/resources/decision-tree" className="p-4 rounded-lg border hover:border-primary transition-colors">
+        <Link
+          href="https://digitalhealthcrc.github.io/SDGF/resources/appendices/appendix8"
+          className="p-4 rounded-lg border hover:border-primary transition-colors"
+        >
           <h3 className="font-semibold mb-2">Decision Tree</h3>
           <p className="text-sm text-muted-foreground">Navigate complex scenarios</p>
         </Link>
-        <Link href="/resources/five-safes" className="p-4 rounded-lg border hover:border-primary transition-colors">
+        <Link
+          href="https://digitalhealthcrc.github.io/SDGF/resources/appendices/appendix10"
+          className="p-4 rounded-lg border hover:border-primary transition-colors"
+        >
           <h3 className="font-semibold mb-2">Five Safes</h3>
           <p className="text-sm text-muted-foreground">Risk management framework</p>
         </Link>
