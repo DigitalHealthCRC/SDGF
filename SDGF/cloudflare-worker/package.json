@@ -1,0 +1,23 @@
+{
+  "name": "synd-dgf-chatkit-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for secure OpenAI ChatKit token generation",
+  "main": "worker.js",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "tail": "wrangler tail",
+    "test": "wrangler dev --test-scheduled"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "openai",
+    "chatkit"
+  ],
+  "author": "SynD-DGF Team",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^4.43.0"
+  }
+}
