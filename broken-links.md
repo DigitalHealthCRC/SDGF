@@ -1,24 +1,9 @@
-# Broken Links
+# Broken Links Status
 
-These need to be fixed:
+Checked 5 November 2025.
 
-- `out/SDGF/_next/static/media/68d403cf9f2c68c5-s.p.f9f15f61.woff2` (404)
-- `out/SDGF/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2` (404)
-- `out/SDGF/_next/static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2` (404)
-- `out/SDGF/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2` (404)
-- `out/SDGF/_next/static/chunks/4a13fc675c3c055d.css` (404)
-- `out/SDGF/_next/static/chunks/58e45d4f177e378e.css` (404)
-- `out/SDGF/_next/static/chunks/9b5e03585a355de0.js` (404)
-- `out/SDGF/_next/static/chunks/c518a733bdcf3dee.js` (404)
-- `out/SDGF/_next/static/chunks/58e77fc17acbf1e7.js` (404)
-- `out/SDGF/_next/static/chunks/243d9185eb7d32c6.js` (404)
-- `out/SDGF/_next/static/chunks/turbopack-146c1fcfb8b0329a.js` (404)
-- `out/SDGF/_next/static/chunks/b93bbc31d818e629.js` (404)
-- `out/SDGF/_next/static/chunks/ff1a16fafef87110.js` (404)
-- `out/SDGF/_next/static/chunks/926350dec3317ae7.js` (404)
-- `out/SDGF/_next/static/chunks/2cb176b3a63aeeba.js` (404)
-- `out/SDGF/print.css` (404)
-- `out/SDGF/assets/chatbot/chatbot-theme.css` (404)
-- `out/SDGF/_next/static/chunks/a6dad97d9634a72d.js` (404)
-- `out/SDGF/assets/chatbot/chatkit.js` (404)
-- `https://cdn.jsdelivr.net/npm/@openai/chatkit@latest/dist/chatkit.umd.js` (404)
+- All static assets now exist under `out/SDGF/...` after the export copy step (`scripts/post-export.mjs`).
+- Current build produces new chunk names, so previously reported hashed filenames are obsolete.
+- Chatbot bundle now loads from `https://cdn.platform.openai.com/deployments/chatkit/chatkit.js`; the old jsDelivr URL is no longer referenced.
+
+No broken links are currently known. Re-run `npm run build` to regenerate the export and refresh the copied assets before deploying.
