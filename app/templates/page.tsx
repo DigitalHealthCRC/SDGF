@@ -101,9 +101,7 @@ export default function Templates() {
 
       <div className="mt-12 p-6 bg-muted/50 rounded-lg">
         <h2 className="text-xl font-semibold mb-2">Need Custom Templates?</h2>
-        <p className="text-muted-foreground mb-4">
-          Contact our team to discuss custom template development for your organization's specific needs.
-        </p>
+        <p className="text-muted-foreground mb-4">Contact our team to discuss custom template development tailored to your organisation.</p>
         <button className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium">
           Contact Us
         </button>

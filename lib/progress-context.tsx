@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, startTransition, type ReactNode } from "react"
 
 type Persona = "requestor" | "custodian" | "scientist" | null
 
@@ -27,9 +27,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     const savedCompletion = localStorage.getItem("synd-completion")
     const savedFormData = localStorage.getItem("synd-form-data")
 
-    if (savedPersona) setPersonaState(savedPersona as Persona)
-    if (savedCompletion) setStepCompletion(JSON.parse(savedCompletion))
-    if (savedFormData) setFormData(JSON.parse(savedFormData))
+    startTransition(() => {
+      if (savedPersona) setPersonaState(savedPersona as Persona)
+      if (savedCompletion) setStepCompletion(JSON.parse(savedCompletion))
+      if (savedFormData) setFormData(JSON.parse(savedFormData))
+    })
   }, [])
 
   const setPersona = (p: Persona) => {

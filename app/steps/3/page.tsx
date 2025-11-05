@@ -1,6 +1,6 @@
 ﻿"use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { AlertCircle, CheckCircle2, Download, Printer, Save } from "lucide-react"
 
@@ -50,36 +50,29 @@ export default function Step3Page() {
   }))
   const [showCompleteModal, setShowCompleteModal] = useState(false)
 
-  const checklistEntries = useMemo(
-    () => stepData.checklist.map((label, index) => ({ index, label })),
-    [stepData.checklist],
-  )
+  const checklistEntries = stepData.checklist.map((label, index) => ({ index, label }))
 
-  const sections = useMemo(() => {
-    const splitIndex = Math.min(4, checklistEntries.length)
-    const primary = checklistEntries.slice(0, splitIndex)
-    const secondary = checklistEntries.slice(splitIndex)
+  const splitIndex = Math.min(4, checklistEntries.length)
+  const primary = checklistEntries.slice(0, splitIndex)
+  const secondary = checklistEntries.slice(splitIndex)
 
-    const result: Array<{ title: string; description: string; items: { index: number; label: string }[] }> = []
+  const sections: Array<{ title: string; description: string; items: { index: number; label: string }[] }> = []
 
-    if (primary.length > 0) {
-      result.push({
-        title: "Synthesis Approach",
-        description: "Document method selection, configuration, and validation planning for transparency.",
-        items: primary,
-      })
-    }
+  if (primary.length > 0) {
+    sections.push({
+      title: "Synthesis Approach",
+      description: "Document method selection, configuration, and validation planning for transparency.",
+      items: primary,
+    })
+  }
 
-    if (secondary.length > 0) {
-      result.push({
-        title: "Documentation Requirements",
-        description: "Capture artefacts required to evidence reproducibility and audit trails.",
-        items: secondary,
-      })
-    }
-
-    return result
-  }, [checklistEntries])
+  if (secondary.length > 0) {
+    sections.push({
+      title: "Documentation Requirements",
+      description: "Capture artefacts required to evidence reproducibility and audit trails.",
+      items: secondary,
+    })
+  }
 
   const updateChecklist = (next: boolean[]) => {
     const state = { checklist: next }
