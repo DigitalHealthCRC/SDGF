@@ -162,31 +162,19 @@ export default function Home() {
 
       {/* Quick Links */}
       <div className="grid md:grid-cols-4 gap-4">
-        <Link
-          href="/resources/appendices/appendix2"
-          className="p-4 rounded-lg border hover:border-primary transition-colors"
-        >
+        <Link href="/resources/appendix2" className="p-4 rounded-lg border hover:border-primary transition-colors">
           <h3 className="font-semibold mb-2">Glossary (Appendix 2)</h3>
           <p className="text-sm text-muted-foreground">Key terms and definitions</p>
         </Link>
-        <Link
-          href="/resources/appendices/appendix9"
-          className="p-4 rounded-lg border hover:border-primary transition-colors"
-        >
+        <Link href="/resources/appendix9" className="p-4 rounded-lg border hover:border-primary transition-colors">
           <h3 className="font-semibold mb-2">Lawful Pathways (Appendix 9)</h3>
           <p className="text-sm text-muted-foreground">Privacy compliance routes</p>
         </Link>
-        <Link
-          href="/resources/appendices/appendix8"
-          className="p-4 rounded-lg border hover:border-primary transition-colors"
-        >
+        <Link href="/resources/appendix8" className="p-4 rounded-lg border hover:border-primary transition-colors">
           <h3 className="font-semibold mb-2">Decision Tree (Appendix 8)</h3>
           <p className="text-sm text-muted-foreground">Navigate complex scenarios</p>
         </Link>
-        <Link
-          href="/resources/appendices/appendix10"
-          className="p-4 rounded-lg border hover:border-primary transition-colors"
-        >
+        <Link href="/resources/appendix10" className="p-4 rounded-lg border hover:border-primary transition-colors">
           <h3 className="font-semibold mb-2">Five Safes (Appendix 10)</h3>
           <p className="text-sm text-muted-foreground">Risk management framework</p>
         </Link>

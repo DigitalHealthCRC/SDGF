@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 
-import { AppendicesClient } from "./appendices/appendices-client"
+import { AppendicesClient } from "./(appendices)/appendices-client"
 
 export const dynamic = "force-static"
 

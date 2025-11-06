@@ -118,8 +118,8 @@ export default function Step1Page() {
 
   const readMoreLinks = stepData.readMore ?? []
   const curatedResources = [
-    { href: "/resources/appendices/appendix9", label: "Lawful Pathways Guide (Appendix 9)" },
-    { href: "/resources/appendices/appendix8", label: "Decision Tree for Complex Cases (Appendix 8)" },
+    { href: "/resources/appendix9", label: "Lawful Pathways Guide (Appendix 9)" },
+    { href: "/resources/appendix8", label: "Decision Tree for Complex Cases (Appendix 8)" },
     { href: "/templates", label: "Download Assessment Templates" },
   ]
   const resourceMap = new Map<string, string>()
@@ -282,7 +282,7 @@ export default function Step1Page() {
           </div>
         </dl>
         <Link
-          href="/resources/appendices/appendix2"
+          href="/resources/appendix2"
           className="mt-4 inline-flex text-sm text-emerald-300 hover:underline"
         >
           View Glossary (Appendix 2)

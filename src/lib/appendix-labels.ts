@@ -1,4 +1,4 @@
-const appendixPattern = /\/resources\/appendices\/appendix(\d+)/i
+const appendixPattern = /\/resources\/appendix(\d+)/i
 
 const APPENDIX_LABELS: Record<number, string> = {
   1: "About Synthetic Data (Appendix 1)",

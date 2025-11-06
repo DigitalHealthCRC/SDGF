@@ -116,8 +116,8 @@ export default function Step4Page() {
 
   const readMoreLinks = stepData.readMore ?? []
   const curatedResources = [
-    { href: "/resources/appendices/appendix10", label: "Five Safes Framework (Appendix 10)" },
-    { href: "/resources/appendices/appendix9", label: "Privacy Compliance Pathways (Appendix 9)" },
+    { href: "/resources/appendix10", label: "Five Safes Framework (Appendix 10)" },
+    { href: "/resources/appendix9", label: "Privacy Compliance Pathways (Appendix 9)" },
     { href: "/templates", label: "Risk Assessment Templates" },
   ]
   const resourceMap = new Map<string, string>()
@@ -298,7 +298,7 @@ export default function Step4Page() {
           </li>
         </ul>
         <Link
-          href="/resources/appendices/appendix2"
+          href="/resources/appendix2"
           className="mt-4 inline-flex text-sm text-emerald-300 hover:underline"
         >
           View Glossary (Appendix 2)

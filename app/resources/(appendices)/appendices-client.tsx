@@ -86,7 +86,7 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
           const optional = Boolean(persona && !isRecommended);
 
           return (
-            <Link key={appendix.id} href={`/resources/appendices/${appendix.id}`} className="group">
+            <Link key={appendix.id} href={`/resources/${appendix.id}`} className="group">
               <div
                 className={`h-full rounded-lg border-2 bg-gradient-to-br ${cardGradients[index % cardGradients.length]} p-6 transition-all hover:border-primary hover:shadow-lg`}
               >

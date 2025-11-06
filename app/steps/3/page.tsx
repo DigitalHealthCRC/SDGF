@@ -117,7 +117,7 @@ export default function Step3Page() {
 
   const readMoreLinks = stepData.readMore ?? []
   const curatedResources = [
-    { href: "/resources/appendices/appendix1", label: "About Synthetic Data (Appendix 1)" },
+    { href: "/resources/appendix1", label: "About Synthetic Data (Appendix 1)" },
     { href: "/templates", label: "Synthesis Documentation Templates" },
   ]
   const resourceMap = new Map<string, string>()
@@ -276,7 +276,7 @@ export default function Step3Page() {
           </li>
         </ul>
         <Link
-          href="/resources/appendices/appendix2"
+          href="/resources/appendix2"
           className="mt-4 inline-flex text-sm text-emerald-300 hover:underline"
         >
           View Glossary (Appendix 2)

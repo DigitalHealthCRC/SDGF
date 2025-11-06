@@ -98,17 +98,10 @@ export function Navigation() {
 
             <Link
               href="/resources"
-              className={`text-sm font-medium hover:text-primary transition-colors ${pathname === "/resources" ? "text-primary" : ""}`}
+              className={`text-sm font-medium hover:text-primary transition-colors ${pathname?.startsWith("/resources") ? "text-primary" : ""}`}
             >
               Resources
             </Link>
-            <Link
-              href="/resources/appendices"
-              className={`text-sm font-medium hover:text-primary transition-colors ${pathname.startsWith("/resources/appendices") ? "text-primary" : ""}`}
-            >
-              Appendices
-            </Link>
-
             <Link
               href="/templates"
               className={`text-sm font-medium hover:text-primary transition-colors ${pathname === "/templates" ? "text-primary" : ""}`}
@@ -168,9 +161,6 @@ export function Navigation() {
               </div>
               <Link href="/resources" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Resources
-              </Link>
-              <Link href="/resources/appendices" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Appendices
               </Link>
               <Link href="/templates" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Templates

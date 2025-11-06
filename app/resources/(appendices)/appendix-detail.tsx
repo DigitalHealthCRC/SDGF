@@ -10,9 +10,9 @@ import TemplateForm from "@/src/components/TemplateForm"
 import type { AppendixRecord } from "./[id]/page"
 
 export const BackLink = () => (
-  <Link href="/resources/appendices" className="inline-flex items-center gap-2 text-emerald-300 hover:underline">
+  <Link href="/resources" className="inline-flex items-center gap-2 text-emerald-300 hover:underline">
     <span aria-hidden="true">{"\u2190"}</span>
-    <span>Back to Appendices</span>
+    <span>Back to Resources</span>
   </Link>
 )
 
