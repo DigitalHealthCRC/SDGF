@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main          # build whenever main is updated
+      - feature/plan-redesign
   workflow_dispatch:   # allow manual runs
 
 permissions:
@@ -34,3 +35,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
           publish_branch: gh-pages
+          destination_dir: previews/feature-plan-redesign
+          keep_files: true
