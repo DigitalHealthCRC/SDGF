@@ -1,0 +1,33 @@
+name = "synd-dgf-chatkit-token"
+main = "worker.js"
+compatibility_date = "2025-10-15"
+
+# Cloudflare Workers configuration for ChatKit token generation
+# This worker runs on Cloudflare's edge network for low latency
+
+[vars]
+# Runtime configuration for the default (production) deployment
+DEBUG = "false" # Temporarily set to "true" for troubleshooting
+# Default requests per minute per origin (fallback)
+DEFAULT_ORIGIN_QUOTA = "60"
+# Optional per-client (browser) requests per minute cap
+CLIENT_PER_MIN_LIMIT = "20"
+# JSON mapping for per-origin quotas (host -> rpm)
+ORIGIN_QUOTAS_JSON = "{\"digitalhealthcrc.github.io\":30,\"localhost:8000\":15,\"127.0.0.1:8000\":15}"
+
+# KV namespace for global rate limiting (set your IDs)
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "25e88fac190f471ab84fb380ff902ae5"
+preview_id = "393a877400fc4b7995db3e4bde9d86b3"
+
+# Optional environment sections can be re-added when needed
+
+# Deployment configuration
+[build]
+command = ""
+
+# Routes configuration (optional - if you want a custom domain)
+# routes = [
+#   { pattern = "chat.yourdomain.com/*", zone_name = "yourdomain.com" }
+# ]
