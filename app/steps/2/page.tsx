@@ -128,6 +128,21 @@ export default function Step2Page() {
     if (label) resourceMap.set(href, label)
   })
   const combinedResources = Array.from(resourceMap.entries()).map(([href, label]) => ({ href, label }))
+  const resourcesSection =
+    combinedResources.length > 0 ? (
+      <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
+        <h3 className="text-lg font-semibold text-foreground">Resources</h3>
+        <ul className="space-y-2 text-sm text-emerald-300">
+          {combinedResources.map(({ href, label }) => (
+            <li key={href}>
+              <Link href={href} className="hover:underline">
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null
   const pageTitle = normaliseTitle(stepData.title)
 
   const leftColumn = (
@@ -159,6 +174,23 @@ export default function Step2Page() {
         Synthetic data can only be as reliable as the inputs. Address data quality issues before continuing to synthesis.
       </div>
     </div>
+  )
+
+  const notesSection = (
+    <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
+      <h3 className="text-lg font-semibold text-foreground">Notes & next steps</h3>
+      <p className="text-sm text-muted-foreground">Document required remediation before you proceed.</p>
+      <textarea
+        value={(formData.notes as string) || ""}
+        onChange={(event) => {
+          const next = { ...formData, notes: event.target.value }
+          setFormData(next)
+          saveFormData(stepNumber, next)
+        }}
+        placeholder="List data quality issues, remediation actions, and responsible owners..."
+        className="h-32 w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
+      />
+    </section>
   )
 
   const checklistSection = (
@@ -208,20 +240,14 @@ export default function Step2Page() {
         </div>
       </section>
 
-      <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
-        <h3 className="text-lg font-semibold text-foreground">Notes & next steps</h3>
-        <p className="text-sm text-muted-foreground">Document required remediation before you proceed.</p>
-        <textarea
-          value={(formData.notes as string) || ""}
-          onChange={(event) => {
-            const next = { ...formData, notes: event.target.value }
-            setFormData(next)
-            saveFormData(stepNumber, next)
-          }}
-          placeholder="List data quality issues, remediation actions, and responsible owners..."
-          className="h-32 w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
-        />
-      </section>
+      {resourcesSection ? (
+        <div className="grid gap-6 lg:grid-cols-2">
+          {notesSection}
+          {resourcesSection}
+        </div>
+      ) : (
+        notesSection
+      )}
 
       <div className="flex flex-wrap gap-3">
         <button
@@ -282,53 +308,9 @@ export default function Step2Page() {
     </div>
   )
 
-  const supportColumn = (
-    <div className="space-y-6">
-      <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
-        <h3 className="font-semibold text-foreground">Key Terms</h3>
-        <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-          <li>
-            <span className="font-medium text-foreground">Data Quality:</span> Fitness of data for intended use across
-            multiple dimensions.
-          </li>
-          <li>
-            <span className="font-medium text-foreground">Data Lineage:</span> Documentation of data origins and transformations.
-          </li>
-          <li>
-            <span className="font-medium text-foreground">Representativeness:</span> How well data reflects the target population.
-          </li>
-        </ul>
-        <Link
-          href="/resources/appendix2"
-          className="mt-4 inline-flex text-sm text-emerald-300 hover:underline"
-        >
-          View Glossary (Appendix 2)
-        </Link>
-      </div>
-
-      {combinedResources.length > 0 && (
-        <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
-          <h3 className="font-semibold text-foreground">Resources</h3>
-          <ul className="mt-4 space-y-2 text-sm text-emerald-300">
-            {combinedResources.map(({ href, label }) => (
-              <li key={href}>
-                <Link href={href} className="hover:underline">
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  )
-
   const rightColumn = (
     <div className="space-y-8">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-        <div className="space-y-8">{checklistSection}</div>
-        <div className="space-y-6">{supportColumn}</div>
-      </div>
+      {checklistSection}
     </div>
   )
 

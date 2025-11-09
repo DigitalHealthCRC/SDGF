@@ -246,61 +246,36 @@ export default function Step1Page() {
         </Link>
       )}
 
-      {readMoreLinks.length > 0 && (
-        <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 text-sm">
-          <h3 className="font-semibold text-foreground">Read more</h3>
-          <ul className="list-disc list-inside space-y-1">
-            {readMoreLinks.map((href) => (
-              <li key={href}>
-                <Link href={href} className="text-emerald-300 hover:underline">
-                  {formatResourceLabel(href)}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </div>
-  )
-
-  const supportColumn = (
-    <div className="space-y-6">
-      <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
-        <h3 className="font-semibold text-foreground">Key Terms</h3>
-        <dl className="mt-4 space-y-3 text-sm text-muted-foreground">
-          <div>
-            <dt className="font-medium text-foreground">De-identified</dt>
-            <dd>Data where identity is no longer apparent or reasonably ascertainable.</dd>
-          </div>
-          <div>
-            <dt className="font-medium text-foreground">Personal Information</dt>
-            <dd>Information about an identifiable individual.</dd>
-          </div>
-          <div>
-            <dt className="font-medium text-foreground">Very Low Risk</dt>
-            <dd>Re-identification is so impractical there is almost no likelihood.</dd>
-          </div>
-        </dl>
-        <Link
-          href="/resources/appendix2"
-          className="mt-4 inline-flex text-sm text-emerald-300 hover:underline"
-        >
-          View Glossary (Appendix 2)
-        </Link>
-      </div>
-
-      {combinedResources.length > 0 && (
-        <div className="rounded-xl border border-border/60 bg-card/70 p-5 shadow-md">
-          <h3 className="font-semibold text-foreground">Resources</h3>
-          <ul className="mt-4 space-y-2 text-sm text-emerald-300">
-            {combinedResources.map(({ href, label }) => (
-              <li key={href}>
-                <Link href={href} className="hover:underline">
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+      {(readMoreLinks.length > 0 || combinedResources.length > 0) && (
+        <div className={`grid gap-6 ${readMoreLinks.length > 0 && combinedResources.length > 0 ? "lg:grid-cols-2" : ""}`}>
+          {readMoreLinks.length > 0 && (
+            <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 text-sm">
+              <h3 className="font-semibold text-foreground">Read more</h3>
+              <ul className="list-disc list-inside space-y-1">
+                {readMoreLinks.map((href) => (
+                  <li key={href}>
+                    <Link href={href} className="text-emerald-300 hover:underline">
+                      {formatResourceLabel(href)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {combinedResources.length > 0 && (
+            <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 text-sm">
+              <h3 className="font-semibold text-foreground">Resources</h3>
+              <ul className="space-y-2 text-emerald-300">
+                {combinedResources.map(({ href, label }) => (
+                  <li key={href}>
+                    <Link href={href} className="hover:underline">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </div>
       )}
     </div>
@@ -308,10 +283,7 @@ export default function Step1Page() {
 
   const rightColumn = (
     <div className="space-y-8">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-        <div className="space-y-8">{checklistContent}</div>
-        <div className="space-y-6">{supportColumn}</div>
-      </div>
+      {checklistContent}
     </div>
   )
 
