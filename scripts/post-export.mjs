@@ -4,6 +4,7 @@ import nextConfig from "../next.config.mjs"
 
 const basePath = nextConfig?.basePath ?? process.env.NEXT_PUBLIC_BASE_PATH ?? process.env.__NEXT_ROUTER_BASEPATH ?? ""
 const normalizedBasePath = basePath.replace(/^\/+|\/+$/g, "")
+const basePathRoot = normalizedBasePath.split("/")[0] ?? ""
 
 if (!normalizedBasePath) {
   process.exit(0)
@@ -26,7 +27,7 @@ await mkdir(targetDir, { recursive: true })
 const entries = await readdir(exportDir)
 
 for (const entry of entries) {
-  if (entry === normalizedBasePath) continue
+  if (entry === normalizedBasePath || (basePathRoot && entry === basePathRoot)) continue
 
   const source = path.join(exportDir, entry)
   const destination = path.join(targetDir, entry)
