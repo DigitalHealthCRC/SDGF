@@ -138,6 +138,14 @@ export default function Step4Page() {
         </ul>
       </section>
     ) : null
+  const supplementarySection = resourcesSection ? (
+    <div className="grid gap-6 lg:grid-cols-2">
+      {resourcesSection}
+      {notesSection}
+    </div>
+  ) : (
+    notesSection
+  )
   const pageTitle = normaliseTitle(stepData.title)
 
   const leftColumn = (
@@ -234,15 +242,6 @@ export default function Step4Page() {
         </div>
       </section>
 
-      {resourcesSection ? (
-        <div className="grid gap-6 lg:grid-cols-2">
-          {notesSection}
-          {resourcesSection}
-        </div>
-      ) : (
-        notesSection
-      )}
-
       <div className="flex flex-wrap gap-3">
         <button
           type="button"
@@ -299,6 +298,8 @@ export default function Step4Page() {
           Continue to Step 5 ?
         </Link>
       )}
+
+      {supplementarySection}
     </div>
   )
 
