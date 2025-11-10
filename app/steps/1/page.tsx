@@ -29,8 +29,6 @@ const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2
 const ensureChecklist = (source: boolean[] | undefined, length: number) =>
   Array.from({ length }, (_, idx) => (Array.isArray(source) ? Boolean(source[idx]) : false))
 
-const formatResourceLabel = (href: string) => getAppendixLabelFromHref(href) ?? href.replace(/^\//, "")
-
 export default function Step1Page() {
   const stepNumber = 1
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
@@ -131,6 +129,21 @@ export default function Step1Page() {
     if (label) resourceMap.set(href, label)
   })
   const combinedResources = Array.from(resourceMap.entries()).map(([href, label]) => ({ href, label }))
+  const resourcesSection =
+    combinedResources.length > 0 ? (
+      <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 text-sm">
+        <h3 className="font-semibold text-foreground">Resources</h3>
+        <ul className="space-y-2 text-emerald-300">
+          {combinedResources.map(({ href, label }) => (
+            <li key={href}>
+              <Link href={href} className="hover:underline">
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null
   const pageTitle = normaliseTitle(stepData.title)
 
   const leftColumn = (
@@ -246,38 +259,7 @@ export default function Step1Page() {
         </Link>
       )}
 
-      {(readMoreLinks.length > 0 || combinedResources.length > 0) && (
-        <div className={`grid gap-6 ${readMoreLinks.length > 0 && combinedResources.length > 0 ? "lg:grid-cols-2" : ""}`}>
-          {readMoreLinks.length > 0 && (
-            <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 text-sm">
-              <h3 className="font-semibold text-foreground">Read more</h3>
-              <ul className="list-disc list-inside space-y-1">
-                {readMoreLinks.map((href) => (
-                  <li key={href}>
-                    <Link href={href} className="text-emerald-300 hover:underline">
-                      {formatResourceLabel(href)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-          {combinedResources.length > 0 && (
-            <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 text-sm">
-              <h3 className="font-semibold text-foreground">Resources</h3>
-              <ul className="space-y-2 text-emerald-300">
-                {combinedResources.map(({ href, label }) => (
-                  <li key={href}>
-                    <Link href={href} className="hover:underline">
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-        </div>
-      )}
+      {resourcesSection}
     </div>
   )
 

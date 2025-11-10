@@ -9,7 +9,6 @@ import { useProgress } from "@/lib/progress-context"
 import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import stepDataJson from "@/src/content/framework/step4.json"
-import { getAppendixLabelFromHref } from "@/src/lib/appendix-labels"
 
 interface StepContent {
   title: string
@@ -114,7 +113,6 @@ export default function Step4Page() {
     URL.revokeObjectURL(url)
   }
 
-  const readMoreLinks = stepData.readMore ?? []
   const curatedResources = [
     { href: "/resources/appendix10", label: "Five Safes Framework (Appendix 10)" },
     { href: "/resources/appendix9", label: "Privacy Compliance Pathways (Appendix 9)" },
@@ -123,10 +121,6 @@ export default function Step4Page() {
   const resourceMap = new Map<string, string>()
   curatedResources.forEach((resource) => {
     resourceMap.set(resource.href, resource.label)
-  })
-  readMoreLinks.forEach((href) => {
-    const label = getAppendixLabelFromHref(href)
-    if (label) resourceMap.set(href, label)
   })
   const combinedResources = Array.from(resourceMap.entries()).map(([href, label]) => ({ href, label }))
   const resourcesSection =
