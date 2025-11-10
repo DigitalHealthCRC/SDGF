@@ -145,6 +145,57 @@ export default function Step1Page() {
       </section>
     ) : null
   const pageTitle = normaliseTitle(stepData.title)
+  const frameworkHighlights = [
+    {
+      title: "Structured & risk-based",
+      description:
+        "Guides custodians, health organisations, researchers, and collaborators through a consistent, risk-weighted path for present and future synthetic data use cases.",
+    },
+    {
+      title: "Strengthens existing governance",
+      description:
+        "Works alongside the policies you already rely on, focusing solely on the creation, use, and handling of synthetic data rather than other de-identification techniques like redaction or masking.",
+    },
+    {
+      title: "Benefits with safeguards",
+      description:
+        "Each stage embeds privacy, ethical, and legal guardrails so value can be unlocked only once the Framework’s assessments are satisfied and approvals are recorded.",
+    },
+  ]
+  const frameworkIntroSection = (
+    <section className="mx-auto w-full max-w-screen-2xl px-4 lg:px-8">
+      <div className="space-y-6 overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-background/95 to-background/90 p-6 shadow-2xl shadow-emerald-900/20 lg:p-10">
+        <div className="space-y-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-emerald-200">Framework overview</p>
+          <h2 className="text-3xl font-semibold text-foreground">Synthetic Health Data Governance Framework</h2>
+          <p className="max-w-4xl text-base text-muted-foreground">
+            The Framework gives you a structured, risk-based process to safely and lawfully create and use synthetic health
+            data. It is designed to complement (not replace) your broader governance arrangements by zeroing in on the
+            synthetic data lifecycle—from creation through to ongoing use and stewardship. By sequencing clear assessments,
+            it helps every stakeholder realise the benefits of synthetic data while actively managing privacy, ethical, and
+            legal obligations.
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {frameworkHighlights.map((highlight) => (
+            <div
+              key={highlight.title}
+              className="rounded-2xl border border-border/60 bg-background/70 p-5 shadow-inner shadow-black/20 backdrop-blur"
+            >
+              <span className="mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300">
+                <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <h3 className="text-base font-semibold text-foreground">{highlight.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{highlight.description}</p>
+            </div>
+          ))}
+        </div>
+        <p className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 text-sm font-medium text-emerald-50">
+          All stages of the Framework must be completed—and recorded—before any access to synthetic health data is approved.
+        </p>
+      </div>
+    </section>
+  )
 
   const leftColumn = (
     <div className="space-y-6 text-sm">
@@ -301,6 +352,7 @@ export default function Step1Page() {
           </div>
         </div>
       )}
+      {frameworkIntroSection}
       <TwoColumnLayout title={pageTitle} description={stepData.summary} left={leftColumn} right={rightColumn} />
 
       {showCompleteModal && (

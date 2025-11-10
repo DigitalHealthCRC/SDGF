@@ -27,12 +27,19 @@ export function Navigation() {
   const personaLabel = persona?.label
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
+    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b py-3">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 font-semibold text-lg">
-            <Image src={logoSrc} alt="SynD Framework logo" width={54} height={54} priority className="h-[54px] w-[54px] rounded-md object-contain" />
+            <Image
+              src={logoSrc}
+              alt="SynD Framework logo"
+              width={162}
+              height={162}
+              priority
+              className="h-[162px] w-[162px] rounded-md object-contain"
+            />
             <span className="hidden sm:inline">SynD Framework</span>
           </Link>
 

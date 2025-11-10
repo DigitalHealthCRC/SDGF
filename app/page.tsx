@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Users, Shield, FlaskConical, CheckCircle2, HeartPulse, Database, Building2, Microscope, Scale } from "lucide-react"
 
 import { usePersona, type PersonaId } from "@/lib/persona-context"
+import { AuroraBackground } from "@/components/aurora-background"
 
 const personaMeta: Record<
   PersonaId,
@@ -60,12 +61,16 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-7xl">
       {/* Hero Section */}
-      <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Synthetic Health Data Governance Framework</h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
-          A comprehensive governance framework for safely generating and using synthetic health data in Australia.
-        </p>
-      </div>
+      <section className="relative mb-16 overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-b from-background via-slate-950/90 to-background text-white shadow-emerald-900/20 shadow-2xl">
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-emerald-600/10" />
+        <AuroraBackground className="opacity-70" />
+        <div className="relative z-10 text-center px-6 py-16 md:py-20">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Synthetic Health Data Governance Framework</h1>
+          <p className="text-xl text-white/80 max-w-3xl mx-auto text-pretty">
+            A comprehensive governance framework for safely generating and using synthetic health data in Australia.
+          </p>
+        </div>
+      </section>
       <section className="mb-16 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-background/95 to-background/90 p-10 shadow-xl shadow-emerald-900/10">
         <div className="space-y-6 text-pretty">
           <h2 className="text-3xl font-bold text-balance">Overview</h2>
