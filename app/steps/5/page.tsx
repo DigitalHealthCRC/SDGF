@@ -129,6 +129,23 @@ export default function Step5Page() {
     if (label) resourceMap.set(href, label)
   })
   const combinedResources = Array.from(resourceMap.entries()).map(([href, label]) => ({ href, label }))
+  const notesSection = (
+    <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
+      <h3 className="text-lg font-semibold text-foreground">Notes & follow-up</h3>
+      <p className="text-sm text-muted-foreground">Outline communications, agreement clauses, and monitoring actions.</p>
+      <textarea
+        value={(formData.notes as string) || ""}
+        onChange={(event) => {
+          const next = { ...formData, notes: event.target.value }
+          setFormData(next)
+          saveFormData(stepNumber, next)
+        }}
+        placeholder="Record responsibilities, monitoring schedules, and outstanding actions..."
+        className="h-32 w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
+      />
+    </section>
+  )
+
   const resourcesSection =
     combinedResources.length > 0 ? (
       <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
@@ -144,6 +161,7 @@ export default function Step5Page() {
         </ul>
       </section>
     ) : null
+
   const supplementarySection = resourcesSection ? (
     <div className="grid gap-6 lg:grid-cols-2">
       {resourcesSection}
@@ -182,23 +200,6 @@ export default function Step5Page() {
         After completing this step, your synthetic data environment will be ready for safe, compliant sharing.
       </div>
     </div>
-  )
-
-  const notesSection = (
-    <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-foreground">Notes & follow-up</h3>
-      <p className="text-sm text-muted-foreground">Outline communications, agreement clauses, and monitoring actions.</p>
-      <textarea
-        value={(formData.notes as string) || ""}
-        onChange={(event) => {
-          const next = { ...formData, notes: event.target.value }
-          setFormData(next)
-          saveFormData(stepNumber, next)
-        }}
-        placeholder="Record responsibilities, monitoring schedules, and outstanding actions..."
-        className="h-32 w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
-      />
-    </section>
   )
 
   const checklistSection = (
