@@ -1,20 +1,15 @@
 "use client"
 
-import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import TemplateForm, { type TemplateSection } from "@/src/components/TemplateForm"
 import appendixData from "@/src/content/appendices/appendix4.json"
 
-import { BackLink, RestrictionNotice } from "../appendix-detail"
+import { BackLink } from "../appendix-detail"
 
 const appendixNumber = typeof appendixData.id === "number" ? appendixData.id : 4
 const sections = (appendixData.sections ?? []) as TemplateSection[]
 
 export default function Appendix4Page() {
-  const { persona, isAppendixVisible } = usePersona()
-  const personaLabel = persona?.label
-  const showPersonaNotice = Boolean(personaLabel && !isAppendixVisible(appendixNumber))
-
   const overview = sections.map((section) => ({
     label: section.groupLabel,
     firstField: section.fields[0]?.label,
@@ -47,9 +42,6 @@ export default function Appendix4Page() {
 
   return (
     <div className="space-y-6">
-      {showPersonaNotice && personaLabel && (
-        <RestrictionNotice title="Appendix 4 – Use Case Assessment" personaLabel={personaLabel} />
-      )}
       <TwoColumnLayout
         title="Appendix 4 - Use Case Assessment"
         description="Assess the proposed synthetic data use case for benefit, suitability, and governance readiness."

@@ -1,12 +1,10 @@
 "use client"
 
 import { useState } from "react"
-
-import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import appendixData from "@/src/content/appendices/appendix8.json"
 
-import { BackLink, RestrictionNotice } from "../appendix-detail"
+import { BackLink } from "../appendix-detail"
 
 type WizardOption = { label: string; next: string }
 type WizardNode = { id: string; text: string; options?: WizardOption[] }
@@ -29,9 +27,6 @@ const nodesById = nodes.reduce<Record<string, WizardNode>>((acc, node) => {
 const startNode = findStartNode(nodes)
 
 export default function Appendix8Page() {
-  const { persona, isAppendixVisible } = usePersona()
-  const personaLabel = persona?.label
-  const showPersonaNotice = Boolean(personaLabel && !isAppendixVisible(appendixNumber))
   const [path, setPath] = useState<string[]>(startNode ? [startNode.id] : [])
   const [history, setHistory] = useState<Array<{ id: string; text: string; answer: string }>>([])
 
@@ -43,9 +38,6 @@ export default function Appendix8Page() {
   if (!startNode) {
     return (
       <main className="mx-auto max-w-3xl space-y-6 p-8 text-sm text-muted-foreground">
-        {showPersonaNotice && personaLabel && (
-          <RestrictionNotice title="Appendix 8 - Decision Tree" personaLabel={personaLabel} />
-        )}
         <h1 className="text-2xl font-semibold text-foreground">Appendix 8 - Decision Tree</h1>
         <p>Decision tree content is unavailable. Please contact the framework team.</p>
         <BackLink />
@@ -181,9 +173,6 @@ export default function Appendix8Page() {
 
   return (
     <div className="space-y-6">
-      {showPersonaNotice && personaLabel && (
-        <RestrictionNotice title="Appendix 8 - Decision Tree" personaLabel={personaLabel} />
-      )}
       <TwoColumnLayout
         title="Appendix 8 - Decision Tree for Complex Scenarios"
         description={appendixData.purpose}

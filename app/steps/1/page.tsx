@@ -6,7 +6,6 @@ import { AlertCircle, CheckCircle2, Download, Printer, Save } from "lucide-react
 
 import { StepProgress } from "@/components/step-progress"
 import { useProgress } from "@/lib/progress-context"
-import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import stepDataJson from "@/src/content/framework/step1.json"
 import { getAppendixLabelFromHref } from "@/src/lib/appendix-labels"
@@ -32,13 +31,6 @@ const ensureChecklist = (source: boolean[] | undefined, length: number) =>
 export default function Step1Page() {
   const stepNumber = 1
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
-  const { persona, isStepVisible } = usePersona()
-
-  const personaLabel = persona?.label
-  const personaId = persona?.id
-  const showPersonaNotice = Boolean(personaLabel && !isStepVisible(stepNumber))
-  const nextStepForPersona = persona?.allowedSteps.find((n) => n > stepNumber) ?? null
-  const recommendedStep = showPersonaNotice ? nextStepForPersona : null
 
   const saved = (getFormData(stepNumber) as StepFormState) || { checklist: [] }
   const [formState, setFormState] = useState<StepFormState>(() => ({
@@ -323,35 +315,6 @@ export default function Step1Page() {
   return (
     <div className="space-y-6">
       <StepProgress currentStep={stepNumber} />
-      {showPersonaNotice && personaLabel && (
-        <div className="mx-auto w-full max-w-screen-2xl px-4 lg:px-8">
-          <div className="space-y-3 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100">
-            <p className="font-semibold text-amber-100">Step {stepNumber} is optional for the {personaLabel} journey.</p>
-            <p className="text-amber-100/80">
-              Feel free to work through the guidance below if it helps.{" "}
-              {recommendedStep
-                ? `We recommend moving on to Step ${recommendedStep} for your persona once you are ready.`
-                : "All core activities for your persona remain available."}
-            </p>
-            <div className="flex flex-wrap gap-3">
-              {recommendedStep && personaId && (
-                <Link
-                  href={`/steps/${recommendedStep}?persona=${personaId}`}
-                  className="inline-flex items-center justify-center rounded-md bg-emerald-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-600"
-                >
-                  Go to Step {recommendedStep}
-                </Link>
-              )}
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center rounded-md border border-amber-400/60 px-4 py-2 text-xs font-semibold text-amber-100 transition hover:bg-amber-500/20"
-              >
-                Change persona
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
       {frameworkIntroSection}
       <TwoColumnLayout title={pageTitle} description={stepData.summary} left={leftColumn} right={rightColumn} />
 

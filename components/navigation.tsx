@@ -6,14 +6,12 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X, ChevronDown } from "lucide-react"
 import { useProgress } from "@/lib/progress-context"
-import { usePersona } from "@/lib/persona-context"
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [stepsMenuOpen, setStepsMenuOpen] = useState(false)
   const pathname = usePathname()
   const { stepCompletion } = useProgress()
-  const { persona, isStepVisible } = usePersona()
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? process.env.__NEXT_ROUTER_BASEPATH ?? ""
   const logoSrc = `${basePath}/logo.png`
 
@@ -24,14 +22,13 @@ export function Navigation() {
     { num: 4, title: "Assess Re-ID Risks", path: "/steps/4" },
     { num: 5, title: "Manage Residual Risks", path: "/steps/5" },
   ]
-  const personaLabel = persona?.label
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b py-3">
+    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between gap-6">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 font-semibold text-lg">
+          <Link href="/" className="flex items-center font-semibold text-lg">
             <Image
               src={logoSrc}
               alt="SynD Framework logo"
@@ -40,8 +37,11 @@ export function Navigation() {
               priority
               className="h-[162px] w-[162px] rounded-md object-contain"
             />
-            <span className="hidden sm:inline">SynD Framework</span>
           </Link>
+
+          <span className="hidden sm:inline text-center text-[120%]">
+            Synthetic Data Governance Framework (SynDGFM)
+          </span>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
@@ -56,7 +56,7 @@ export function Navigation() {
               href="/about"
               className={`text-sm font-medium hover:text-primary transition-colors ${pathname === "/about" ? "text-primary" : ""}`}
             >
-              About SynD framework
+              The Framework
             </Link>
 
             {/* Steps Dropdown */}
@@ -69,10 +69,7 @@ export function Navigation() {
               </button>
               {stepsMenuOpen && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-popover border rounded-lg shadow-lg py-2">
-                  {steps.map((step) => {
-                    const optional = Boolean(persona && !isStepVisible(step.num))
-
-                    return (
+                  {steps.map((step) => (
                     <Link
                       key={step.num}
                       href={step.path}
@@ -83,22 +80,16 @@ export function Navigation() {
                         className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                           stepCompletion[step.num]
                             ? "bg-chart-2 text-white"
-                            : optional
-                              ? "border border-dashed border-muted-foreground/50 bg-transparent text-muted-foreground"
-                              : "bg-muted"
+                            : "bg-muted"
                         }`}
                       >
                         {step.num}
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm">{step.title}</span>
-                        {optional && personaLabel && (
-                          <span className="text-xs text-muted-foreground/80">{`Optional for ${personaLabel}`}</span>
-                        )}
                       </div>
                     </Link>
-                    )
-                  })}
+                  ))}
                 </div>
               )}
             </div>
@@ -131,14 +122,11 @@ export function Navigation() {
                 Home
               </Link>
               <Link href="/about" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                About SynD framework
+                The framework
               </Link>
               <div className="space-y-2">
                 <div className="text-sm font-medium text-muted-foreground">Five Steps</div>
-                {steps.map((step) => {
-                  const optional = Boolean(persona && !isStepVisible(step.num))
-
-                  return (
+                {steps.map((step) => (
                   <Link
                     key={step.num}
                     href={step.path}
@@ -149,22 +137,16 @@ export function Navigation() {
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                         stepCompletion[step.num]
                           ? "bg-chart-2 text-white"
-                          : optional
-                            ? "border border-dashed border-muted-foreground/50 bg-transparent text-muted-foreground"
-                            : "bg-muted"
+                          : "bg-muted"
                       }`}
                     >
                       {step.num}
                     </div>
                     <div className="flex flex-col">
                       <span className="text-sm">{step.title}</span>
-                      {optional && personaLabel && (
-                        <span className="text-xs text-muted-foreground/80">{`Optional for ${personaLabel}`}</span>
-                      )}
                     </div>
                   </Link>
-                  )
-                })}
+                ))}
               </div>
               <Link href="/resources" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Resources

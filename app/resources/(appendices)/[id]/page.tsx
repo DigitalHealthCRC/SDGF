@@ -19,7 +19,6 @@ export type AppendixRecord = {
   exportKey?: string
   sections?: TemplateSection[]
   nodes?: Array<{ id: string; text: string; options: Array<{ label: string; next: string }> }>
-  personaVisibility?: string[]
 }
 
 const APPENDICES_DIR = path.join(process.cwd(), "src/content/appendices")
@@ -68,7 +67,6 @@ const loadAppendix = (slug: string): AppendixRecord | null => {
       exportKey: typeof raw.exportKey === "string" ? raw.exportKey : undefined,
       sections: Array.isArray(raw.sections) ? (raw.sections as TemplateSection[]) : undefined,
       nodes: Array.isArray(raw.nodes) ? raw.nodes : undefined,
-      personaVisibility: Array.isArray(raw.personaVisibility) ? raw.personaVisibility : undefined,
     }
   } catch {
     return null

@@ -2,12 +2,10 @@
 
 import Link from "next/link"
 import { useProgress } from "@/lib/progress-context"
-import { usePersona } from "@/lib/persona-context"
 import { CheckCircle2 } from "lucide-react"
 
 export function StepProgress({ currentStep }: { currentStep: number }) {
   const { stepCompletion } = useProgress()
-  const { persona, isStepVisible } = usePersona()
 
   const steps = [
     { num: 1, title: "Use Case" },
@@ -24,8 +22,6 @@ export function StepProgress({ currentStep }: { currentStep: number }) {
           {steps.map((step, idx) => {
             const isCompleted = stepCompletion[step.num]
             const isCurrent = step.num === currentStep
-            const isRecommended = isStepVisible(step.num)
-            const optional = Boolean(persona && !isRecommended)
             const isIncomplete = !isCompleted && !isCurrent
 
             let circleClasses = ""
@@ -34,8 +30,6 @@ export function StepProgress({ currentStep }: { currentStep: number }) {
               circleClasses = "bg-chart-2 text-white"
             } else if (isCurrent) {
               circleClasses = "bg-primary text-primary-foreground"
-            } else if (optional) {
-              circleClasses = "border border-dashed border-muted-foreground/50 bg-transparent text-muted-foreground"
             } else {
               circleClasses = "bg-muted border-2 text-muted-foreground"
             }
@@ -63,11 +57,6 @@ export function StepProgress({ currentStep }: { currentStep: number }) {
                     >
                       {step.title}
                     </span>
-                    {optional && persona?.label && (
-                      <span className="text-[11px] font-normal text-muted-foreground/80">
-                        Optional for {persona.label}
-                      </span>
-                    )}
                   </div>
                 </Link>
                 {idx < steps.length - 1 && (

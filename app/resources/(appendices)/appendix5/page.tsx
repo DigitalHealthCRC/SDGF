@@ -1,20 +1,15 @@
 "use client"
 
-import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import TemplateForm, { type TemplateSection } from "@/src/components/TemplateForm"
 import appendixData from "@/src/content/appendices/appendix5.json"
 
-import { BackLink, RestrictionNotice } from "../appendix-detail"
+import { BackLink } from "../appendix-detail"
 
 const appendixNumber = typeof appendixData.id === "number" ? appendixData.id : 5
 const sections = (appendixData.sections ?? []) as TemplateSection[]
 
 export default function Appendix5Page() {
-  const { persona, isAppendixVisible } = usePersona()
-  const personaLabel = persona?.label
-  const showPersonaNotice = Boolean(personaLabel && !isAppendixVisible(appendixNumber))
-
   const fieldSummary = sections.flatMap((section) => section.fields.map((field) => field.label))
 
   const left = (
@@ -43,9 +38,6 @@ export default function Appendix5Page() {
 
   return (
     <div className="space-y-6">
-      {showPersonaNotice && personaLabel && (
-        <RestrictionNotice title="Appendix 5 – Impact Assessment" personaLabel={personaLabel} />
-      )}
       <TwoColumnLayout
         title="Appendix 5 - Impact Assessment"
         description="Evaluate expected benefits, harms, and mitigation actions before progressing."

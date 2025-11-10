@@ -1,20 +1,15 @@
 "use client"
 
-import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import TemplateForm, { type TemplateSection } from "@/src/components/TemplateForm"
 import appendixData from "@/src/content/appendices/appendix10.json"
 
-import { BackLink, RestrictionNotice } from "../appendix-detail"
+import { BackLink } from "../appendix-detail"
 
 const appendixNumber = typeof appendixData.id === "number" ? appendixData.id : 10
 const sections = (appendixData.sections ?? []) as TemplateSection[]
 
 export default function Appendix10Page() {
-  const { persona, isAppendixVisible } = usePersona()
-  const personaLabel = persona?.label
-  const showPersonaNotice = Boolean(personaLabel && !isAppendixVisible(appendixNumber))
-
   const sectionLabels = sections
     .map((section) => section.groupLabel ?? section.fields[0]?.label)
     .filter(Boolean) as string[]
@@ -43,9 +38,6 @@ export default function Appendix10Page() {
 
   return (
     <div className="space-y-6">
-      {showPersonaNotice && personaLabel && (
-        <RestrictionNotice title="Appendix 10 – Safety Assessment" personaLabel={personaLabel} />
-      )}
       <TwoColumnLayout
         title="Appendix 10 - Safety Assessment (Five Safes)"
         description="Assess the adequacy of controls before releasing synthetic data."

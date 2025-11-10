@@ -3,20 +3,11 @@
 import Link from "next/link"
 import { Users, Shield, FlaskConical, CheckCircle2, HeartPulse, Database, Building2, Microscope, Scale } from "lucide-react"
 
-import { usePersona, type PersonaId } from "@/lib/persona-context"
 import { AuroraBackground } from "@/components/aurora-background"
 
-const personaMeta: Record<
-  PersonaId,
+const personaCards = [
   {
-    title: string
-    icon: typeof Users
-    description: string
-    tasks: string[]
-    color: string
-  }
-> = {
-  requestor: {
+    id: "requestor",
     title: "Data Requestor / End User",
     icon: Users,
     description: "I need synthetic health data for research, education, or development.",
@@ -28,7 +19,8 @@ const personaMeta: Record<
     ],
     color: "from-chart-1/20 to-chart-1/5",
   },
-  custodian: {
+  {
+    id: "custodian",
     title: "Data Custodian / Provider",
     icon: Shield,
     description: "I manage and govern synthetic health data generation and sharing.",
@@ -41,7 +33,8 @@ const personaMeta: Record<
     ],
     color: "from-chart-2/20 to-chart-2/5",
   },
-  scientist: {
+  {
+    id: "scientist",
     title: "Data Scientist / Ethics Committee",
     icon: FlaskConical,
     description: "I provide technical expertise or ethical oversight.",
@@ -53,11 +46,9 @@ const personaMeta: Record<
     ],
     color: "from-chart-3/20 to-chart-3/5",
   },
-}
+]
 
 export default function Home() {
-  const { personas } = usePersona()
-
   return (
     <div className="container mx-auto px-4 py-12 max-w-7xl">
       {/* Hero Section */}
@@ -71,6 +62,7 @@ export default function Home() {
           </p>
         </div>
       </section>
+      
       <section className="mb-16 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-background/95 to-background/90 p-10 shadow-xl shadow-emerald-900/10">
         <div className="space-y-6 text-pretty">
           <h2 className="text-3xl font-bold text-balance">Overview</h2>
@@ -106,26 +98,24 @@ export default function Home() {
         <div className="mb-16">
           <h2 className="text-2xl font-semibold mb-6 text-center">Who Is This For?</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {personas.map((personaConfig) => {
-              const meta = personaMeta[personaConfig.id]
-              if (!meta) return null
-              const Icon = meta.icon
+            {personaCards.map((persona) => {
+              const Icon = persona.icon
               return (
-                <div key={personaConfig.id} className="group text-left">
+                <div key={persona.id} className="group text-left">
                   <div
-                    className={`h-full rounded-lg border-2 bg-gradient-to-br ${meta.color} transition-all hover:border-primary hover:shadow-lg border-border`}
+                    className={`h-full rounded-lg border-2 bg-gradient-to-br ${persona.color} transition-all hover:border-primary hover:shadow-lg border-border`}
                   >
                     <div className="flex items-start gap-4 p-6 pb-4">
                       <div className="p-3 rounded-lg bg-background/80">
                         <Icon className="w-6 h-6" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-lg mb-2">{meta.title}</h3>
-                        <p className="text-sm text-muted-foreground">{personaConfig.description ?? meta.description}</p>
+                        <h3 className="font-semibold text-lg mb-2">{persona.title}</h3>
+                        <p className="text-sm text-muted-foreground">{persona.description}</p>
                       </div>
                     </div>
                     <ul className="space-y-2 px-6 pb-6">
-                      {meta.tasks.map((task, idx) => (
+                      {persona.tasks.map((task, idx) => (
                         <li key={idx} className="flex items-start gap-2 text-sm text-foreground/90">
                           <CheckCircle2 className="w-4 h-4 mt-0.5 text-chart-2 flex-shrink-0" />
                           <span>{task}</span>
@@ -224,9 +214,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-
-
 
       {/* Benefits */}
       <section className="mb-16">

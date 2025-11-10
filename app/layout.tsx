@@ -5,7 +5,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { ProgressProvider } from "@/lib/progress-context";
-import { PersonaProvider } from "@/lib/persona-context";
 import {
   Inter,
   Geist as V0_Font_Geist,
@@ -46,10 +45,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <ProgressProvider>
           <Suspense fallback={null}>
-            <PersonaProvider>
-              <Navigation />
-              <main className="min-h-screen">{children}</main>
-            </PersonaProvider>
+            <Navigation />
+            <main className="min-h-screen">{children}</main>
           </Suspense>
         </ProgressProvider>
         <link rel="stylesheet" href={assetPath("/assets/chatbot/chatbot-theme.css")} />

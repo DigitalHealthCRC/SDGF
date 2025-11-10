@@ -1,20 +1,15 @@
 "use client"
 
-import { usePersona } from "@/lib/persona-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import TemplateForm, { type TemplateSection } from "@/src/components/TemplateForm"
 import appendixData from "@/src/content/appendices/appendix11.json"
 
-import { BackLink, RestrictionNotice } from "../appendix-detail"
+import { BackLink } from "../appendix-detail"
 
 const appendixNumber = typeof appendixData.id === "number" ? appendixData.id : 11
 const sections = (appendixData.sections ?? []) as TemplateSection[]
 
 export default function Appendix11Page() {
-  const { persona, isAppendixVisible } = usePersona()
-  const personaLabel = persona?.label
-  const showPersonaNotice = Boolean(personaLabel && !isAppendixVisible(appendixNumber))
-
   const left = (
     <div className="space-y-4 text-sm text-muted-foreground">
       <p>{appendixData.purpose}</p>
@@ -29,9 +24,6 @@ export default function Appendix11Page() {
 
   return (
     <div className="space-y-6">
-      {showPersonaNotice && personaLabel && (
-        <RestrictionNotice title="Appendix 11 – Request & Outcomes Form" personaLabel={personaLabel} />
-      )}
       <TwoColumnLayout
         title="Appendix 11 - Synthetic Health Data Request & Outcomes"
         description="Document consolidated results and approvals across all framework steps."
