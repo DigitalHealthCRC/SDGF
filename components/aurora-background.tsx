@@ -18,16 +18,18 @@ export function AuroraBackground({ className }: AuroraBackgroundProps) {
     <div className={cn("pointer-events-none absolute inset-0 -z-10 overflow-hidden", className)}>
       <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-background" />
       {layers.map((layer, index) => (
+        // Vary blur, opacity, and timing so each layer feels more dynamic
         <div
           key={layer}
           className={cn(
-            "absolute rounded-[999px] bg-gradient-to-br blur-3xl",
-            "animate-[spin_80s_linear_infinite]",
-            index % 2 === 0 ? "opacity-80" : "opacity-60",
+            "absolute rounded-[999px] bg-gradient-to-br blur-2xl mix-blend-screen",
+            "animate-[spin_24s_linear_infinite]",
+            index % 2 === 0 ? "opacity-90" : "opacity-70",
             layer,
           )}
           style={{
-            animationDelay: `${index * 8}s`,
+            animationDelay: `${index * 2}s`,
+            animationDuration: `${28 - index * 4}s`,
             animationDirection: index % 2 === 0 ? "normal" : "reverse",
           }}
         />
