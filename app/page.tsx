@@ -59,11 +59,18 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-7xl">
+      {/* Hero Section */}
+      <div className="text-center mb-16">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Synthetic Health Data Governance Framework</h1>
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
+          A comprehensive governance framework for safely generating and using synthetic health data in Australia.
+        </p>
+      </div>
       <section className="mb-16 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-background/95 to-background/90 p-10 shadow-xl shadow-emerald-900/10">
         <div className="space-y-6 text-pretty">
-          <h1 className="text-4xl md:text-5xl font-bold text-balance">Overview</h1>
+          <h2 className="text-3xl font-bold text-balance">Overview</h2>
           <p className="text-base text-muted-foreground max-w-5xl">
-            The Synthetic Health Data Governance Framework (SynDFFM) provides a structured, evidence-based approach to generating and using synthetic
+            The Synthetic Health Data Governance Framework (SynDGFM) provides a structured, evidence-based approach to generating and using synthetic
             health data while protecting privacy, ensuring legal compliance, and maximising public benefit. It enables the safe, lawful, and efficient
             use of synthetic data for health research, education, and system improvement.
           </p>
@@ -77,13 +84,105 @@ export default function Home() {
             legal safeguards are satisfied. All stages must be completed and recorded before access to synthetic health data is approved.
           </p>
         </div>
+        <div className="flex justify-center pt-6">
+          <Link
+            href="/about"
+            className="inline-flex items-center rounded-full bg-gradient-to-r from-emerald-500 to-sky-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:-translate-y-0.5 hover:shadow-emerald-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-400"
+          >
+            Explore The Framework
+          </Link>
+        </div>
+      </section>
+
+
+      
+      {/*Who */}
+      <section className="mb-16 rounded-3xl border border-sky-500/30 bg-gradient-to-br from-sky-500/20 via-background/95 to-background/90 p-8 shadow-xl shadow-sky-900/10">
+        <div className="mb-16">
+          <h2 className="text-2xl font-semibold mb-6 text-center">Who Is This For?</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {personas.map((personaConfig) => {
+              const meta = personaMeta[personaConfig.id]
+              if (!meta) return null
+              const Icon = meta.icon
+              return (
+                <div key={personaConfig.id} className="group text-left">
+                  <div
+                    className={`h-full rounded-lg border-2 bg-gradient-to-br ${meta.color} transition-all hover:border-primary hover:shadow-lg border-border`}
+                  >
+                    <div className="flex items-start gap-4 p-6 pb-4">
+                      <div className="p-3 rounded-lg bg-background/80">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg mb-2">{meta.title}</h3>
+                        <p className="text-sm text-muted-foreground">{personaConfig.description ?? meta.description}</p>
+                      </div>
+                    </div>
+                    <ul className="space-y-2 px-6 pb-6">
+                      {meta.tasks.map((task, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-sm text-foreground/90">
+                          <CheckCircle2 className="w-4 h-4 mt-0.5 text-chart-2 flex-shrink-0" />
+                          <span>{task}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Framework How */}
+      <section className="mb-16 rounded-3xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/20 via-background/95 to-background/90 p-8 shadow-xl shadow-indigo-900/10">
+        <div className="space-y-4 text-pretty">
+          <h2 className="text-2xl font-semibold mb-6 text-foreground">How It Was Built</h2>
+          <p className="text-base text-muted-foreground max-w-5xl">
+            The SynDGFM was developed through extensive collaboration between the{" "}
+            <Link href="https://digitalhealthcrc.com/" className="text-primary underline underline-offset-2" target="_blank" rel="noreferrer">
+              Digital Health CRC (DHCRC)
+            </Link>
+            , the{" "}
+            <Link
+              href="https://digitalhealthcrc.com/synthetic-data-community-of-practice-synd/"
+              className="text-primary underline underline-offset-2"
+              target="_blank"
+              rel="noreferrer"
+            >
+              SynD Community of Practice
+            </Link>
+            , and a national network of data custodians, privacy experts, researchers, and community representatives. It builds on recognised models
+            such as the{" "}
+            <Link
+              href="https://www.abs.gov.au/about/data-services/data-confidentiality-guide/five-safes-framework"
+              className="text-primary underline underline-offset-2"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Five Safes
+            </Link>
+            , the{" "}
+            <Link
+              href="https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/handling-personal-information/de-identification-and-the-privacy-act"
+              className="text-primary underline underline-offset-2"
+              target="_blank"
+              rel="noreferrer"
+            >
+              OAIC De-identification Guidelines
+            </Link>
+            , and international best practices in synthetic data governance. Designed to be practical, scalable, and adaptable, the Framework can be
+            applied across diverse health-data contexts while maintaining rigorous privacy and ethical standards.
+          </p>
+        </div>
       </section>
 
       {/* Guiding Principles */}
-      <section className="mb-16 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-background/95 to-background/90 p-8 shadow-xl shadow-emerald-900/10">
+      <section className="mb-16 rounded-3xl border border-amber-500/30 bg-gradient-to-br from-amber-500/20 via-background/95 to-background/90 p-8 shadow-xl shadow-amber-900/10">
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <h2 className="text-2xl font-semibold">Guiding Principles</h2>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <h2 className="text-2xl font-semibold text-center">Main Principles</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="p-4 bg-card border rounded-lg">
@@ -121,66 +220,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Framework How */}
-      <section className="mb-16 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-background/95 to-background/90 p-8 shadow-xl shadow-emerald-900/10">
-        <div className="space-y-4 text-pretty">
-          <h2 className="text-2xl font-semibold mb-6 text-foreground">How It Was Built</h2>
-          <p className="text-base text-muted-foreground max-w-5xl">
-            The <span className="font-semibold">SynD Framework</span> was developed through extensive consultation with{" "}
-            <span className="font-semibold">data custodians, privacy experts, researchers, and community representatives</span>. It builds on
-            recognised models such as the <span className="font-semibold">Five Safes</span>,{" "}
-            <span className="font-semibold">OAIC De-identification Guidelines</span>, and{" "}
-            <span className="font-semibold">international best practices</span> in synthetic-data governance. Designed to be{" "}
-            <span className="font-semibold">practical, scalable, and adaptable</span>, the Framework can be applied across diverse health-data
-            contexts while maintaining rigorous privacy and ethical standards.
-          </p>
-        </div>
-      </section>
 
-      {/*Who */}
-      <section className="mb-16 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-background/95 to-background/90 p-8 shadow-xl shadow-emerald-900/10">
-        <div className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6 text-center">Who is this for?</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {personas.map((personaConfig) => {
-              const meta = personaMeta[personaConfig.id]
-              if (!meta) return null
-              const Icon = meta.icon
-              return (
-                <div key={personaConfig.id} className="group text-left">
-                  <div
-                    className={`h-full rounded-lg border-2 bg-gradient-to-br ${meta.color} transition-all hover:border-primary hover:shadow-lg border-border`}
-                  >
-                    <div className="flex items-start gap-4 p-6 pb-4">
-                      <div className="p-3 rounded-lg bg-background/80">
-                        <Icon className="w-6 h-6" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-lg mb-2">{meta.title}</h3>
-                        <p className="text-sm text-muted-foreground">{personaConfig.description ?? meta.description}</p>
-                      </div>
-                    </div>
-                    <ul className="space-y-2 px-6 pb-6">
-                      {meta.tasks.map((task, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm text-foreground/90">
-                          <CheckCircle2 className="w-4 h-4 mt-0.5 text-chart-2 flex-shrink-0" />
-                          <span>{task}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
 
 
       {/* Benefits */}
       <section className="mb-16">
         <h2 className="text-2xl font-semibold mb-6 text-center">Benefits of Synthetic Health Data</h2>
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-5">
           {[
             {
               icon: HeartPulse,
@@ -274,7 +320,14 @@ export default function Home() {
 
       {/* How This Site Works */}
       <div className="bg-muted/50 rounded-lg p-8 mb-12">
-        <h2 className="text-2xl font-semibold mb-6">How This Site Works</h2>
+        <div className="flex justify-center mb-6">
+          <Link
+            href="/about"
+            className="inline-flex items-center rounded-full bg-gradient-to-r from-emerald-500 to-sky-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:-translate-y-0.5 hover:shadow-emerald-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-400"
+          >
+            Explore The Framework
+          </Link>
+        </div>
         <div className="grid md:grid-cols-5 gap-4">
           {[
             { num: 1, title: "Assess Use Case", desc: "Confirm eligibility and public benefit" },
@@ -299,7 +352,7 @@ export default function Home() {
           ))}
         </div>
         <p className="text-sm text-muted-foreground mt-6 text-center">
-          Track your progress as you complete each step; unfinished steps stay muted. All assessments are exportable as JSON or PDF.
+          
         </p>
       </div>
 
@@ -325,3 +378,5 @@ export default function Home() {
     </div>
   )
 }
+
+
