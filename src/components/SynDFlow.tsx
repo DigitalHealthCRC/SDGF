@@ -251,12 +251,14 @@ const buildGraph = (collapsedPhases: Set<number>, activePhase?: number) => {
         decision.options.forEach((option, optionIndex) => {
           const targetPhase =
             coercePhaseNumber(option.next_phase) ??
-            coercePhaseNumber(option.resume_to_phase) ??
-            coercePhaseNumber(option.loop_to_phase)
+            ("resume_to_phase" in option ? coercePhaseNumber(option.resume_to_phase) : null) ??
+            ("loop_to_phase" in option ? coercePhaseNumber(option.loop_to_phase) : null)
 
           const answerLabel = option.answer?.trim() ?? "Option"
           const description = option.action?.trim()
-          const requiresStage = Boolean(option.pause || option.terminate || description)
+          const isPause = "pause" in option && Boolean(option.pause)
+          const isTerminate = "terminate" in option && Boolean(option.terminate)
+          const requiresStage = Boolean(isPause || isTerminate || description)
           const terminalId = `${decisionId}-terminal-${optionIndex}`
           const terminalY = decisionY + optionIndex * optionSpacing
 
@@ -268,7 +270,7 @@ const buildGraph = (collapsedPhases: Set<number>, activePhase?: number) => {
               data: {
                 label: answerLabel,
                 description,
-                kind: option.terminate ? "terminate" : option.pause ? "pause" : "action",
+                kind: isTerminate ? "terminate" : isPause ? "pause" : "action",
                 actsAsSource: targetPhase !== null,
               },
             })
@@ -279,7 +281,12 @@ const buildGraph = (collapsedPhases: Set<number>, activePhase?: number) => {
               target: terminalId,
               type: "smoothstep",
               markerEnd: { type: MarkerType.ArrowClosed },
-              style: option.terminate ? STOP_EDGE_STYLE : REVIEW_EDGE_STYLE,
+              style:
+                isTerminate || isPause
+                  ? isTerminate
+                    ? STOP_EDGE_STYLE
+                    : REVIEW_EDGE_STYLE
+                  : EDGE_STYLE,
               label: answerLabel,
               labelBgStyle,
               labelStyle,
@@ -293,7 +300,7 @@ const buildGraph = (collapsedPhases: Set<number>, activePhase?: number) => {
                 type: "smoothstep",
                 markerEnd: { type: MarkerType.ArrowClosed },
                 style: EDGE_STYLE,
-                label: option.pause ? "Resume" : "Continue",
+                label: isPause ? "Resume" : "Continue",
                 labelBgStyle,
                 labelStyle,
               })
@@ -383,26 +390,36 @@ const TimelineDecisionBlock = ({ phase }: { phase: FlowPhase }) => {
             </div>
             <p className="mt-1 text-base font-semibold text-white">{decision.question}</p>
             <div className="mt-3 space-y-2">
-              {decision.options.map((option, optionIdx) => (
-                <div
-                  key={option.answer + optionIdx}
-                  className={`rounded-2xl border px-3 py-2 text-xs ${answerToneClasses(option.answer ?? "Option")}`}
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="font-semibold uppercase tracking-wide">{option.answer}</span>
-                    {option.next_phase !== undefined && (
-                      <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white">{`→ Phase ${option.next_phase}`}</span>
-                    )}
-                    {option.loop_to_phase !== undefined && !option.terminate && (
-                      <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white">{`↺ Phase ${option.loop_to_phase}`}</span>
-                    )}
-                    {option.terminate && (
-                      <span className="rounded-full bg-rose-500/20 px-2 py-0.5 text-[10px] text-rose-100">Terminate</span>
-                    )}
+              {decision.options.map((option, optionIdx) => {
+                const hasNext = "next_phase" in option && option.next_phase !== undefined && option.next_phase !== null
+                const hasLoop = "loop_to_phase" in option && option.loop_to_phase !== undefined && option.loop_to_phase !== null
+                const doesTerminate = "terminate" in option && Boolean(option.terminate)
+
+                return (
+                  <div
+                    key={option.answer + optionIdx}
+                    className={`rounded-2xl border px-3 py-2 text-xs ${answerToneClasses(option.answer ?? "Option")}`}
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="font-semibold uppercase tracking-wide">{option.answer}</span>
+                      {hasNext && (
+                        <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white">{`→ Phase ${
+                          (option as { next_phase?: number | string }).next_phase
+                        }`}</span>
+                      )}
+                      {hasLoop && !doesTerminate && (
+                        <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white">{`↺ Phase ${
+                          (option as { loop_to_phase?: number | string }).loop_to_phase
+                        }`}</span>
+                      )}
+                      {doesTerminate && (
+                        <span className="rounded-full bg-rose-500/20 px-2 py-0.5 text-[10px] text-rose-100">Terminate</span>
+                      )}
+                    </div>
+                    {option.action && <p className="mt-1 text-[11px] text-slate-200">{option.action}</p>}
                   </div>
-                  {option.action && <p className="mt-1 text-[11px] text-slate-200">{option.action}</p>}
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         ))}
