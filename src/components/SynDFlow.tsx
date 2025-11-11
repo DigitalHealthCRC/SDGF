@@ -67,7 +67,7 @@ const renderWithAppendixLinks = (text?: string) => {
     nodes.push(
       <span key={`appendix-${offset}`} className="inline-flex flex-wrap items-center gap-1">
         <span>{prefix}</span>
-        {numbers.map((num, idx) => {
+        {numbers.map((num: string, idx: number) => {
           const pathNumber = Number.parseInt(num, 10)
           const separator = idx > 0 ? <span key={`sep-${offset}-${idx}`}>/</span> : null
 
