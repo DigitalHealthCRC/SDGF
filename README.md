@@ -9,14 +9,16 @@ A public website for exploring the Synthetic Data Governance Framework (SynDGFM)
 - Provide a narrative overview of SynDGFM and who it serves.
 - Step practitioners through the five governance stages with interactive checklists that persist progress locally.
 - Centralise appendices, templates, and background resources that underpin each stage of the framework.
-- Offer a lightweight admin surface for curating content before publishing to the static site.
+- (Future steps) Offer a lightweight admin surface for curating content before publishing to the static site.
 
 ## Highlights
-- **Persona-driven landing page** that routes data requestors, custodians, and reviewers into the right guidance.
 - **Five-step governance journey** (`app/steps/[1-5]`) with contextual help, appendix links, completion tracking, and export options (print/save/download bundles via `JSZip`).
 - **Resource and appendix library** (`app/resources/(appendices)`) that organises evidence, lawful pathways, and controls referenced throughout the framework.
 - **Template catalogue** (`app/templates`) with ready-to-use documents for risk assessments, approvals, and implementation plans.
 - **About & background** storytelling (`app/about`) to anchor the framework in policy, ethics, and SynD program goals.
+
+## Chatbot Integration
+The site includes an OpenAI ChatKit-powered AI assistant on all pages.
 
 ## Architecture & Tech Stack
 - **Next.js 16 App Router** + **React 19** with **TypeScript** for type-safe, server/client component composition.
@@ -43,7 +45,7 @@ scripts/post-export.mjs# Adjusts static export paths for GitHub Pages
 .github/workflows/     # `deploy.yml` builds main and publishes /out to gh-pages
 ```
 
-## Getting Started
+## Getting Started Locally
 1. **Prerequisites:** Node 18.18+ (workflow uses Node 20) and npm 10.
 2. **Install dependencies:** `npm install`
 3. **Run locally:** `npm run dev` (served at `http://localhost:3000`, with hot reload + App Router).
@@ -68,4 +70,4 @@ This runs `next build` then `scripts/post-export.mjs` to massage asset paths for
 4. Use the PR template (if provided) to capture testing + screenshots so reviewers can validate UI updates quickly.
 
 ## Support & Feedback
-Have questions about SynDGFM or the site? Raise an issue, or reach the SynD program team via the Digital Health CRC Slack/Teams channels. Contributions that clarify the framework, add new templates, or improve the user journey are especially welcome.
+Have questions about SynDGFM or the site? Raise an issue, or reach the SynD program team via the Digital Health CRC channels. Contributions that clarify the framework, add new templates, or improve the user journey are especially welcome.
