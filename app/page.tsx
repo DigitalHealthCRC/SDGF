@@ -58,7 +58,7 @@ export default function Home() {
         <div className="relative z-10 text-center px-6 py-16 md:py-20">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Synthetic Health Data Governance Framework</h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto text-pretty">
-            A comprehensive governance framework for safely generating and using synthetic health data in Australia.
+            A comprehensive governance framework for safely, legally, and ethically generating and using synthetic health data in Australia.
           </p>
         </div>
       </section>
@@ -184,7 +184,7 @@ export default function Home() {
               <h3 className="font-semibold mb-2">Privacy and Legal Integrity</h3>
               <p className="text-sm text-muted-foreground">
                 Every synthetic-data activity begins with a commitment to privacy. Rigorous re-identification risk assessment, lawful handling,
-                and compliance with Australian privacy, ethics, and data-protection standards ensure individuals' information remains fully
+                and compliance with Australian privacy, ethics, and data-protection standards ensure individuals&rsquo; information remains fully
                 protected at all times.
               </p>
             </div>

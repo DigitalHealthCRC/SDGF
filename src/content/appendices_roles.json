@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "title": "Definitions and Key Concepts",
+    "summary": "Establishes consistent terminology and scope across the Framework.",
+    "dp": ["Ensure consistent interpretation in decisions and communications."],
+    "dr": ["Use correct definitions when preparing requests."],
+    "ds": ["Apply terms consistently in documentation and reporting."]
+  },
+  {
+    "id": 2,
+    "title": "Scope and Exclusions",
+    "summary": "Defines what is covered and excluded (e.g., mock/test data not in scope).",
+    "dp": ["Confirm the request falls within Framework scope."],
+    "dr": ["Verify intended use is eligible before submission."],
+    "ds": ["Check synthesis methods align with in-scope definitions."]
+  },
+  {
+    "id": 3,
+    "title": "Legal and Policy Framework",
+    "summary": "Outlines applicable privacy and health-data regulations and guidance.",
+    "dp": ["Lead compliance and legal consultation."],
+    "dr": ["Understand obligations for lawful data use."],
+    "ds": ["Respect legal constraints when designing synthesis pipelines."]
+  },
+  {
+    "id": 4,
+    "title": "Use-Case Assessment Form",
+    "summary": "Evaluates purpose, ethics, and public benefit for synthetic-data use.",
+    "dp": ["Review, verify, and approve ethical and public-benefit claims."],
+    "dr": ["Complete and justify use case and benefits."],
+    "ds": []
+  },
+  {
+    "id": 5,
+    "title": "Impact Assessment Form",
+    "summary": "Assesses ethical, social, and organisational impacts of proposed use.",
+    "dp": ["Review and decide on acceptability or mitigation."],
+    "dr": ["Provide impact responses and supporting evidence."],
+    "ds": ["Supply quantitative impact metrics if applicable."]
+  },
+  {
+    "id": 6,
+    "title": "Technical Assessment",
+    "summary": "Evaluates data readiness and technical suitability for synthesis.",
+    "dp": ["Verify data ownership and quality for lawful processing."],
+    "dr": ["Provide metadata and dataset context."],
+    "ds": ["Conduct data profiling, quality checks, and readiness reporting."]
+  },
+  {
+    "id": 7,
+    "title": "De-Identification Techniques Guide",
+    "summary": "Provides technical guidance to reduce re-identification risk.",
+    "dp": ["Approve appropriate de-identification method."],
+    "dr": [],
+    "ds": ["Implement, test, and document privacy-preserving transformations."]
+  },
+  {
+    "id": 8,
+    "title": "Decision Tree for Complex Requests",
+    "summary": "Guides decision-making for borderline or multi-party cases.",
+    "dp": ["Apply escalation logic to complex cases."],
+    "dr": ["Provide additional context and clarifications when requested."],
+    "ds": ["Contribute technical detail for decision rationale."]
+  },
+  {
+    "id": 9,
+    "title": "Lawful Pathways for Synthetic Data Use",
+    "summary": "Maps legal pathways and data-sharing approvals for each use type.",
+    "dp": ["Determine lawful basis and ensure compliance."],
+    "dr": ["Align project with correct lawful category."],
+    "ds": ["Ensure technical handling honours the chosen legal pathway."]
+  },
+  {
+    "id": 10,
+    "title": "Safety Assessment (Five Safes)",
+    "summary": "Confirms privacy and security safeguards across five domains.",
+    "dp": ["Complete and approve overall Safety Assessment."],
+    "dr": ["Supply Safe-People and Safe-Projects evidence."],
+    "ds": ["Document Safe-Data and Safe-Settings technical controls."]
+  },
+  {
+    "id": 11,
+    "title": "Request & Assessment Outcomes Form",
+    "summary": "Records results of each assessment and final approval.",
+    "dp": ["Complete, sign, and archive final decision."],
+    "dr": ["Provide inputs and retain outcome copy."],
+    "ds": ["Attach supporting technical evidence from Steps 2–5."]
+  }
+]
