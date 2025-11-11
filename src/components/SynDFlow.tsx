@@ -1,6 +1,7 @@
 "use client"
 
-import { useMemo, useState, useCallback } from "react"
+import Link from "next/link"
+import { useMemo, useState, useCallback, useRef } from "react"
 import ReactFlow, {
   Background,
   Controls,
@@ -43,6 +44,64 @@ type TerminalNodeData = {
 }
 
 const PHASE_ACCENTS = ["#34d399", "#a78bfa", "#fb923c", "#f87171", "#fbbf24", "#4ade80", "#2dd4bf", "#60a5fa"]
+const SHOW_FLOW = false
+const APPENDIX_REGEX = /(Appx|Appendix)\s*(\d+(?:[\/,]\s?\d+)*)/gi
+const appendicesBasePath = "/resources/appendix"
+
+const renderWithAppendixLinks = (text?: string) => {
+  if (!text) return text ?? ""
+
+  const nodes: React.ReactNode[] = []
+  let lastIndex = 0
+
+  text.replace(APPENDIX_REGEX, (match, prefix, numbersPart, offset) => {
+    if (offset > lastIndex) {
+      nodes.push(text.slice(lastIndex, offset))
+    }
+
+    const numbers = numbersPart
+      .split(/[\/,]/)
+      .map((value: string) => value.trim())
+      .filter(Boolean)
+
+    nodes.push(
+      <span key={`appendix-${offset}`} className="inline-flex flex-wrap items-center gap-1">
+        <span>{prefix}</span>
+        {numbers.map((num, idx) => {
+          const pathNumber = Number.parseInt(num, 10)
+          const separator = idx > 0 ? <span key={`sep-${offset}-${idx}`}>/</span> : null
+
+          if (Number.isNaN(pathNumber)) {
+            return (
+              <span key={`${offset}-${num}-${idx}`} className="font-semibold">
+                {separator}
+                {num}
+              </span>
+            )
+          }
+
+          return (
+            <span key={`${offset}-${num}-${idx}`} className="inline-flex items-center gap-1">
+              {separator}
+              <Link href={`${appendicesBasePath}${pathNumber}`} className="text-emerald-300 underline-offset-4 hover:text-emerald-200">
+                {num}
+              </Link>
+            </span>
+          )
+        })}
+      </span>,
+    )
+
+    lastIndex = offset + match.length
+    return match
+  })
+
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex))
+  }
+
+  return nodes.length > 0 ? nodes : text
+}
 
 const getAccent = (phaseNumber: number) => PHASE_ACCENTS[phaseNumber % PHASE_ACCENTS.length]
 
@@ -87,7 +146,7 @@ const PhaseNode = ({ data }: NodeProps<PhaseNodeData>) => (
       <span style={{ color: data.accent }}>DP Flow</span>
     </div>
     <h3 className="mt-2 text-xl font-semibold text-white">{data.title}</h3>
-    <p className="mt-3 text-[13px] leading-relaxed text-slate-300">{data.intent}</p>
+    <p className="mt-3 text-[13px] leading-relaxed text-slate-300">{renderWithAppendixLinks(data.intent)}</p>
     <dl className="mt-4 space-y-1 text-xs">
       <div>
         <dt className="font-semibold uppercase tracking-wide text-slate-400">Accountable</dt>
@@ -373,8 +432,40 @@ const summarizeText = (text: string | undefined, maxCharacters = 160) => {
   return `${text.slice(0, maxCharacters).trim()}…`
 }
 
-const TimelineDecisionBlock = ({ phase }: { phase: FlowPhase }) => {
+const TimelineDecisionBlock = ({
+  phase,
+  onNavigatePhase,
+}: {
+  phase: FlowPhase
+  onNavigatePhase?: (phaseNumber: number) => void
+}) => {
   if (!phase.decisions.length) return null
+
+  const renderPhaseChip = (options: {
+    symbol: string
+    rawValue: unknown
+    phaseNumber: number | null
+    label?: string
+  }) => {
+    if (options.rawValue === undefined || options.rawValue === null) return null
+    const labelText = `${options.symbol} ${options.label ?? "Phase"} ${options.rawValue}`
+    const classes =
+      "rounded-full border border-white/20 bg-white/10 px-2.5 py-0.5 text-[10px] text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/70 focus-visible:outline-offset-1"
+
+    if (options.phaseNumber !== null && onNavigatePhase) {
+      return (
+        <button
+          type="button"
+          onClick={() => onNavigatePhase(options.phaseNumber as number)}
+          className={classes}
+        >
+          {labelText}
+        </button>
+      )
+    }
+
+    return <span className={classes}>{labelText}</span>
+  }
 
   return (
     <div className="mt-5 space-y-4 rounded-3xl border border-slate-800/60 bg-slate-900/60 p-4">
@@ -388,11 +479,15 @@ const TimelineDecisionBlock = ({ phase }: { phase: FlowPhase }) => {
               <span>Role</span>
               <RoleBadge role={decision.role} />
             </div>
-            <p className="mt-1 text-base font-semibold text-white">{decision.question}</p>
+            <p className="mt-1 text-base font-semibold text-white">{renderWithAppendixLinks(decision.question)}</p>
             <div className="mt-3 space-y-2">
               {decision.options.map((option, optionIdx) => {
-                const hasNext = "next_phase" in option && option.next_phase !== undefined && option.next_phase !== null
-                const hasLoop = "loop_to_phase" in option && option.loop_to_phase !== undefined && option.loop_to_phase !== null
+                const nextValue = "next_phase" in option ? option.next_phase : undefined
+                const loopValue = "loop_to_phase" in option ? option.loop_to_phase : undefined
+                const resumeValue = "resume_to_phase" in option ? option.resume_to_phase : undefined
+                const nextPhaseNumber = nextValue !== undefined ? coercePhaseNumber(nextValue) : null
+                const loopPhaseNumber = loopValue !== undefined ? coercePhaseNumber(loopValue) : null
+                const resumePhaseNumber = resumeValue !== undefined ? coercePhaseNumber(resumeValue) : null
                 const doesTerminate = "terminate" in option && Boolean(option.terminate)
 
                 return (
@@ -402,21 +497,22 @@ const TimelineDecisionBlock = ({ phase }: { phase: FlowPhase }) => {
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-semibold uppercase tracking-wide">{option.answer}</span>
-                      {hasNext && (
-                        <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white">{`→ Phase ${
-                          (option as { next_phase?: number | string }).next_phase
-                        }`}</span>
-                      )}
-                      {hasLoop && !doesTerminate && (
-                        <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white">{`↺ Phase ${
-                          (option as { loop_to_phase?: number | string }).loop_to_phase
-                        }`}</span>
-                      )}
+                      {renderPhaseChip({ symbol: "→", rawValue: nextValue, phaseNumber: nextPhaseNumber })}
+                      {!doesTerminate &&
+                        renderPhaseChip({ symbol: "↺", rawValue: loopValue, phaseNumber: loopPhaseNumber })}
+                      {renderPhaseChip({
+                        symbol: "↻",
+                        rawValue: resumeValue,
+                        phaseNumber: resumePhaseNumber,
+                        label: "Resume Phase",
+                      })}
                       {doesTerminate && (
                         <span className="rounded-full bg-rose-500/20 px-2 py-0.5 text-[10px] text-rose-100">Terminate</span>
                       )}
                     </div>
-                    {option.action && <p className="mt-1 text-[11px] text-slate-200">{option.action}</p>}
+                    {option.action && (
+                      <p className="mt-1 text-[11px] text-slate-200">{renderWithAppendixLinks(option.action)}</p>
+                    )}
                   </div>
                 )
               })}
@@ -428,7 +524,15 @@ const TimelineDecisionBlock = ({ phase }: { phase: FlowPhase }) => {
   )
 }
 
-const PhaseModal = ({ phase, onClose }: { phase: FlowPhase; onClose: () => void }) => (
+const PhaseModal = ({
+  phase,
+  onClose,
+  onNavigatePhase,
+}: {
+  phase: FlowPhase
+  onClose: () => void
+  onNavigatePhase?: (phaseNumber: number) => void
+}) => (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm">
     <div className="max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-slate-800 bg-slate-950 shadow-2xl">
       <div className="flex items-start justify-between border-b border-slate-800 px-8 py-6">
@@ -461,12 +565,12 @@ const PhaseModal = ({ phase, onClose }: { phase: FlowPhase; onClose: () => void 
         </div>
         <div>
           <h4 className="text-xs uppercase tracking-[0.3em] text-slate-500">Governance Intent</h4>
-          <p className="mt-2 text-base leading-relaxed text-white">{phase.governance_intent}</p>
+          <p className="mt-2 text-base leading-relaxed text-white">{renderWithAppendixLinks(phase.governance_intent)}</p>
         </div>
         {phase.outcome && (
           <div>
             <h4 className="text-xs uppercase tracking-[0.3em] text-slate-500">Outcome</h4>
-            <p className="mt-2 text-base leading-relaxed text-white">{phase.outcome}</p>
+            <p className="mt-2 text-base leading-relaxed text-white">{renderWithAppendixLinks(phase.outcome)}</p>
           </div>
         )}
         <div>
@@ -474,22 +578,23 @@ const PhaseModal = ({ phase, onClose }: { phase: FlowPhase; onClose: () => void 
           <ul className="mt-2 space-y-2 text-base">
             {phase.operational_evidence.map((evidence) => (
               <li key={evidence} className="rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-2 text-slate-100">
-                {evidence}
+                {renderWithAppendixLinks(evidence)}
               </li>
             ))}
           </ul>
         </div>
-        <TimelineDecisionBlock phase={phase} />
+          <TimelineDecisionBlock phase={phase} onNavigatePhase={onNavigatePhase} />
+        </div>
       </div>
     </div>
-  </div>
-)
+  )
 
 export default function SynDFlow() {
   const [expandedTimeline, setExpandedTimeline] = useState<Set<number>>(new Set([flowData[0]?.phase ?? 0]))
   const [selectedPhase, setSelectedPhase] = useState<FlowPhase | null>(flowData[0] ?? null)
   const [modalPhase, setModalPhase] = useState<FlowPhase | null>(null)
   const [collapsedFlowPhases] = useState<Set<number>>(new Set())
+  const phaseRefs = useRef<Record<number, HTMLDivElement | null>>({})
 
   const { nodes, edges } = useMemo(
     () => buildGraph(collapsedFlowPhases, selectedPhase?.phase),
@@ -504,17 +609,31 @@ export default function SynDFlow() {
     })
   }, [])
 
-  const focusPhase = useCallback((phaseNumber: number) => {
-    const phase = flowData.find((item) => item.phase === phaseNumber)
-    if (phase) {
-      setSelectedPhase(phase)
-      setExpandedTimeline((prev) => {
-        const next = new Set(prev)
-        next.add(phaseNumber)
-        return next
-      })
+  const scrollToPhase = useCallback((phaseNumber: number) => {
+    const element = phaseRefs.current[phaseNumber]
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center" })
     }
   }, [])
+
+  const focusPhase = useCallback(
+    (phaseNumber: number) => {
+      const phase = flowData.find((item) => item.phase === phaseNumber)
+      if (phase) {
+        setSelectedPhase(phase)
+        setExpandedTimeline((prev) => {
+          const next = new Set(prev)
+          next.add(phaseNumber)
+          return next
+        })
+
+        if (typeof window !== "undefined") {
+          window.requestAnimationFrame(() => scrollToPhase(phaseNumber))
+        }
+      }
+    },
+    [scrollToPhase],
+  )
 
   const handleNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
     const phaseNumber = (node.data as { phase?: number })?.phase
@@ -536,7 +655,7 @@ export default function SynDFlow() {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-6 lg:grid-cols-[360px,1fr]">
+      <div className={SHOW_FLOW ? "grid gap-6 lg:grid-cols-[360px,1fr]" : "flex justify-center"}>
         <div className="flex flex-col items-center space-y-4">
           {flowData.map((phase) => {
             const accent = getAccent(phase.phase)
@@ -544,13 +663,20 @@ export default function SynDFlow() {
             const isActive = selectedPhase?.phase === phase.phase
 
             return (
-              <div
-                key={phase.phase}
-                className={`w-full max-w-[810px] rounded-[30px] border bg-slate-950/80 p-5 text-slate-200 transition ${
-                  isActive ? "ring-2 ring-emerald-300/70" : ""
-                }`}
-                style={{ borderColor: `${accent}55` }}
-              >
+                <div
+                  key={phase.phase}
+                  className={`w-full max-w-[810px] rounded-[30px] border bg-slate-950/80 p-5 text-slate-200 transition ${
+                    isActive ? "ring-2 ring-emerald-300/70" : ""
+                  }`}
+                  style={{ borderColor: `${accent}55` }}
+                  ref={(el) => {
+                    if (el) {
+                      phaseRefs.current[phase.phase] = el
+                    } else {
+                      delete phaseRefs.current[phase.phase]
+                    }
+                  }}
+                >
                 <button
                   type="button"
                   onClick={() => {
@@ -597,17 +723,21 @@ export default function SynDFlow() {
                       {phase.decisions.length} decisions • {phase.operational_evidence.length} evidence items
                     </span>
                   </div>
-                  <p className="mt-2 text-sm text-slate-100">{summarizeText(phase.governance_intent, 180)}</p>
+                  <p className="mt-2 text-sm text-slate-100">{renderWithAppendixLinks(summarizeText(phase.governance_intent, 180))}</p>
                   {phase.operational_evidence[0] && (
                     <p className="mt-2 text-[11px] uppercase tracking-wide text-slate-500">
                       Key Evidence ·{" "}
-                      <span className="normal-case text-slate-200">{phase.operational_evidence[0]}</span>
+                      <span className="normal-case text-slate-200">
+                        {renderWithAppendixLinks(phase.operational_evidence[0])}
+                      </span>
                     </p>
                   )}
                   {phase.decisions[0] && (
                     <p className="mt-1 text-[11px] uppercase tracking-wide text-slate-500">
                       Primary Decision ·{" "}
-                      <span className="normal-case text-slate-200">{phase.decisions[0].question}</span>
+                      <span className="normal-case text-slate-200">
+                        {renderWithAppendixLinks(phase.decisions[0].question)}
+                      </span>
                     </p>
                   )}
                 </div>
@@ -616,12 +746,12 @@ export default function SynDFlow() {
                   <div className="mt-4 space-y-4 text-sm leading-relaxed text-slate-100">
                     <div>
                       <h4 className="text-xs uppercase tracking-[0.3em] text-slate-500">Governance Intent</h4>
-                      <p className="mt-1 text-slate-200">{phase.governance_intent}</p>
+                      <p className="mt-1 text-slate-200">{renderWithAppendixLinks(phase.governance_intent)}</p>
                     </div>
                     {phase.outcome && (
                       <div>
                         <h4 className="text-xs uppercase tracking-[0.3em] text-slate-500">Outcome</h4>
-                        <p className="mt-1 text-slate-200">{phase.outcome}</p>
+                        <p className="mt-1 text-slate-200">{renderWithAppendixLinks(phase.outcome)}</p>
                       </div>
                     )}
                     <div>
@@ -629,12 +759,12 @@ export default function SynDFlow() {
                       <ul className="mt-1 space-y-1 text-slate-200">
                         {phase.operational_evidence.map((item) => (
                           <li key={item} className="rounded-2xl border border-slate-800/60 bg-slate-900/60 px-3 py-2 text-xs">
-                            {item}
+                            {renderWithAppendixLinks(item)}
                           </li>
                         ))}
                       </ul>
                     </div>
-                    <TimelineDecisionBlock phase={phase} />
+                    <TimelineDecisionBlock phase={phase} onNavigatePhase={focusPhase} />
                     <button
                       className="text-xs font-semibold uppercase tracking-wide text-cyan-200 underline underline-offset-4"
                       onClick={() => setModalPhase(phase)}
@@ -648,54 +778,56 @@ export default function SynDFlow() {
           })}
         </div>
 
-        <div className="relative min-h-[1100px] rounded-3xl border border-emerald-400/30 bg-slate-900/20 p-6 backdrop-blur">
-          <div className="absolute right-6 top-6 z-10 space-x-3 text-xs uppercase tracking-[0.3em] text-slate-400">
-            <span className="inline-flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full" style={{ backgroundColor: "#34d399" }} />
-              Phase
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-cyan-400" />
-              Decision
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-amber-300" />
-              Pause
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-rose-400" />
-              Stop
-            </span>
-          </div>
+        {SHOW_FLOW && (
+          <div className="relative min-h-[1100px] rounded-3xl border border-emerald-400/30 bg-slate-900/20 p-6 backdrop-blur">
+            <div className="absolute right-6 top-6 z-10 space-x-3 text-xs uppercase tracking-[0.3em] text-slate-400">
+              <span className="inline-flex items-center gap-2">
+                <span className="h-3 w-3 rounded-full" style={{ backgroundColor: "#34d399" }} />
+                Phase
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span className="h-3 w-3 rounded-full bg-cyan-400" />
+                Decision
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span className="h-3 w-3 rounded-full bg-amber-300" />
+                Pause
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span className="h-3 w-3 rounded-full bg-rose-400" />
+                Stop
+              </span>
+            </div>
 
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            fitView
-            minZoom={0.25}
-            maxZoom={1.5}
-            nodeTypes={nodeTypes}
-            defaultEdgeOptions={defaultEdgeOptions}
-            onNodeClick={handleNodeClick}
-            onNodeDoubleClick={handleNodeDoubleClick}
-            className="[&_.react-flow__renderer]:text-sm"
-          >
-            <Background gap={24} size={1} color="rgba(45,212,191,0.2)" />
-            <MiniMap
-              pannable
-              zoomable
-              nodeColor={(node) => {
-                if (node.type === "phase") return "#34d399"
-                if (node.type === "decision") return "#0ea5e9"
-                return node.data?.kind === "terminate" ? "#f87171" : "#facc15"
-              }}
-            />
-            <Controls />
-          </ReactFlow>
-        </div>
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              fitView
+              minZoom={0.25}
+              maxZoom={1.5}
+              nodeTypes={nodeTypes}
+              defaultEdgeOptions={defaultEdgeOptions}
+              onNodeClick={handleNodeClick}
+              onNodeDoubleClick={handleNodeDoubleClick}
+              className="[&_.react-flow__renderer]:text-sm"
+            >
+              <Background gap={24} size={1} color="rgba(45,212,191,0.2)" />
+              <MiniMap
+                pannable
+                zoomable
+                nodeColor={(node) => {
+                  if (node.type === "phase") return "#34d399"
+                  if (node.type === "decision") return "#0ea5e9"
+                  return node.data?.kind === "terminate" ? "#f87171" : "#facc15"
+                }}
+              />
+              <Controls />
+            </ReactFlow>
+          </div>
+        )}
       </div>
 
-      {modalPhase && <PhaseModal phase={modalPhase} onClose={() => setModalPhase(null)} />}
+      {modalPhase && <PhaseModal phase={modalPhase} onClose={() => setModalPhase(null)} onNavigatePhase={focusPhase} />}
     </div>
   )
 }
