@@ -54,6 +54,8 @@ const renderWithAppendixLinks = (text?: string) => {
   const nodes: React.ReactNode[] = []
   let lastIndex = 0
 
+  APPENDIX_REGEX.lastIndex = 0
+
   text.replace(APPENDIX_REGEX, (match, prefix, numbersPart, offset) => {
     if (offset > lastIndex) {
       nodes.push(text.slice(lastIndex, offset))
