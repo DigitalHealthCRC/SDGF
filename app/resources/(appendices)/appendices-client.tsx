@@ -23,7 +23,7 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
       <div className="mb-12">
         <h1 className="text-4xl font-bold">Appendices</h1>
         <p className="mt-2 max-w-3xl text-lg text-muted-foreground">
-          Templates, checklists, and reference notes that support each step of the SynD Synthetic Data Governance Framework.
+          Templates, checklists, and reference notes that support each step of the SynD Synthetic Health Data Governance Framework.
           Choose the appendix that matches the task you are tackling today.
         </p>
       </div>

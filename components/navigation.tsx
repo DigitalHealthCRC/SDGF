@@ -40,7 +40,7 @@ export function Navigation() {
           </Link>
 
           <span className="hidden sm:inline text-center text-[120%]">
-            Synthetic Data Governance Framework (SynDGFM)
+            Synthetic Health Data Governance Framework (SHDGF)
           </span>
 
           {/* Desktop Navigation */}

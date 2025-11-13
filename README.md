@@ -1,12 +1,12 @@
-# Synthetic Data Governance Framework Explorer
+# Synthetic Health Data Governance Framework Explorer
 
-A public website for exploring the Synthetic Data Governance Framework (SynDGFM) so teams can plan, assess, and document the safe use of synthetic health data in Australia. The site distils the framework into guided workflows, resources, and downloadable templates that make governance tangible for data custodians, requestors, and reviewers.
+A public website for exploring the Synthetic Health Data Governance Framework (SHDGF) so teams can plan, assess, and document the safe use of synthetic health data in Australia. The site distils the framework into guided workflows, resources, and downloadable templates that make governance tangible for data custodians, requestors, and reviewers.
 
 - **Live site:** https://digitalhealthcrc.github.io/SDGF/
 - **Maintained by:** Digital Health CRC / SynD program
 
 ## Purpose
-- Provide a narrative overview of SynDGFM and who it serves.
+- Provide a narrative overview of SHDGF and who it serves.
 - Step practitioners through the five governance stages with interactive checklists that persist progress locally.
 - Centralise appendices, templates, and background resources that underpin each stage of the framework.
 - (Future steps) Offer a lightweight admin surface for curating content before publishing to the static site.
@@ -32,7 +32,7 @@ The site includes an OpenAI ChatKit-powered AI assistant on all pages.
 ```text
 app/
   page.tsx             # Landing page & persona routing
-  about/page.tsx       # Background on SynDGFM and its stakeholders
+  about/page.tsx       # Background on SHDGF and its stakeholders
   steps/1-5/page.tsx   # Guided governance stages with saved checklists
   templates/page.tsx   # Template library with download helpers
   resources/(appendices)/page.tsx  # Appendix navigation and reference materials
@@ -70,4 +70,4 @@ This runs `next build` then `scripts/post-export.mjs` to massage asset paths for
 4. Use the PR template (if provided) to capture testing + screenshots so reviewers can validate UI updates quickly.
 
 ## Support & Feedback
-Have questions about SynDGFM or the site? Raise an issue, or reach the SynD program team via the Digital Health CRC channels. Contributions that clarify the framework, add new templates, or improve the user journey are especially welcome.
+Have questions about SHDGF or the site? Raise an issue, or reach the SynD program team via the Digital Health CRC channels. Contributions that clarify the framework, add new templates, or improve the user journey are especially welcome.

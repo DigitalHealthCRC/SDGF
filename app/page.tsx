@@ -67,7 +67,7 @@ export default function Home() {
         <div className="space-y-6 text-pretty">
           <h2 className="text-3xl font-bold text-balance">Overview</h2>
           <p className="text-base text-muted-foreground max-w-5xl">
-            The Synthetic Health Data Governance Framework (SynDGFM) provides a structured, evidence-based approach to generating and using synthetic
+            The Synthetic Health Data Governance Framework (SHDGF) provides a structured, evidence-based approach to generating and using synthetic
             health data while protecting privacy, ensuring legal compliance, and maximising public benefit. It enables the safe, lawful, and efficient
             use of synthetic data for health research, education, and system improvement.
           </p>
@@ -135,7 +135,7 @@ export default function Home() {
         <div className="space-y-4 text-pretty">
           <h2 className="text-2xl font-semibold mb-6 text-foreground">How It Was Built</h2>
           <p className="text-base text-muted-foreground max-w-5xl">
-            The SynDGFM was developed through extensive collaboration between the{" "}
+            The SHDGF was developed through extensive collaboration between the{" "}
             <Link href="https://digitalhealthcrc.com/" className="text-primary underline underline-offset-2" target="_blank" rel="noreferrer">
               Digital Health CRC (DHCRC)
             </Link>
