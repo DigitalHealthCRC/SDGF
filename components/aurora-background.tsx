@@ -5,9 +5,10 @@ interface AuroraBackgroundProps {
 }
 
 const layers = [
-  "top-[-10%] left-[10%] h-[55%] w-[45%] from-emerald-400/40 via-cyan-400/20 to-transparent",
-  "top-[30%] left-[40%] h-[60%] w-[50%] from-sky-500/30 via-violet-400/20 to-transparent",
-  "top-[-15%] right-[-5%] h-[65%] w-[40%] from-teal-300/40 via-emerald-400/20 to-transparent",
+  "top-[-12%] left-[6%] h-[60%] w-[46%] from-emerald-300/50 via-teal-200/30 via-cyan-200/30 to-transparent",
+  "top-[18%] left-[32%] h-[68%] w-[55%] from-sky-400/40 via-indigo-300/35 via-fuchsia-300/25 to-transparent",
+  "bottom-[-18%] right-[-12%] h-[72%] w-[48%] from-rose-300/35 via-amber-200/30 via-lime-200/25 to-transparent",
+  "top-[-20%] right-[8%] h-[58%] w-[38%] from-blue-300/35 via-cyan-200/30 via-purple-200/25 to-transparent",
 ]
 
 /**
@@ -22,7 +23,7 @@ export function AuroraBackground({ className }: AuroraBackgroundProps) {
         <div
           key={layer}
           className={cn(
-            "absolute rounded-[999px] bg-gradient-to-br blur-2xl mix-blend-screen",
+            "absolute rounded-[999px] bg-gradient-to-br blur-2xl mix-blend-screen filter saturate-150",
             "animate-[spin_24s_linear_infinite]",
             index % 2 === 0 ? "opacity-90" : "opacity-70",
             layer,
