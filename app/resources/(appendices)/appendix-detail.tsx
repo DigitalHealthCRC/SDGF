@@ -6,6 +6,7 @@ import Link from "next/link"
 import TemplateForm from "@/src/components/TemplateForm"
 
 import type { AppendixRecord } from "./[id]/page"
+import { PageShell } from "@/components/page-shell"
 
 export const BackLink = () => (
   <Link href="/resources" className="inline-flex items-center gap-2 text-emerald-300 hover:underline">
@@ -88,7 +89,7 @@ export function AppendixDetail({ appendix }: { appendix: AppendixRecord }) {
     appendix.component === "TemplateForm" || (appendix.template && Array.isArray(appendix.sections))
 
   return (
-    <main className="mx-auto max-w-3xl space-y-6 p-8">
+    <PageShell variant="narrow" className="space-y-6 py-10">
       <header className="space-y-2">
         <h1 className="text-2xl font-semibold">{appendix.title}</h1>
         <p className="text-muted-foreground">{appendix.purpose}</p>
@@ -97,6 +98,6 @@ export function AppendixDetail({ appendix }: { appendix: AppendixRecord }) {
       {showTemplate ? renderTemplateForm(appendix) : renderBody(appendix, MarkdownRenderer)}
 
       <BackLink />
-    </main>
+    </PageShell>
   )
 }

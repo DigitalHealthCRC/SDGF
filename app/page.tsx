@@ -48,13 +48,15 @@ const personaCards = [
   },
 ]
 
+import { PageShell } from "@/components/page-shell"
+
 export default function Home() {
   return (
-    <div className="container mx-auto px-4 py-12 max-w-7xl">
+    <PageShell className="py-12">
       {/* Hero Section */}
-      <section className="relative mb-16 overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-b from-background via-slate-950/90 to-background text-white shadow-emerald-900/20 shadow-2xl">
+      <section className="relative mb-16 overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-900/40 via-slate-950/90 to-blue-950/80 text-white shadow-emerald-900/20 shadow-2xl">
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-emerald-600/10" />
-        <AuroraBackground className="opacity-70" />
+        <AuroraBackground />
         <div className="relative z-10 text-center px-6 py-16 md:py-20">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Synthetic Health Data Governance Framework</h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto text-pretty">
@@ -207,7 +209,7 @@ export default function Home() {
               <h3 className="font-semibold mb-2">Structured, Risk-Based, and Complementary Governance</h3>
               <p className="text-sm text-muted-foreground">
                 The Framework provides a consistent, stepwise process that scales with project risk. It strengthens -- not replaces -- existing
-                organisational governance, embedding privacy safeguards, ethical review, and operational evidence into every phase of synthetic-data
+                organisational governance, embedding privacy safeguards, ethical review, and operational evidence into every step of synthetic-data
                 workflows.
               </p>
             </div>
@@ -367,7 +369,7 @@ export default function Home() {
           <p className="text-sm text-muted-foreground">Risk management framework</p>
         </Link>
       </div>
-    </div>
+    </PageShell>
   )
 }
 

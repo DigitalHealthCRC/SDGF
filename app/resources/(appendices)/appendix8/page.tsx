@@ -5,6 +5,7 @@ import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import appendixData from "@/src/content/appendices/appendix8.json"
 
 import { BackLink } from "../appendix-detail"
+import { PageShell } from "@/components/page-shell"
 
 type WizardOption = { label: string; next: string }
 type WizardNode = { id: string; text: string; options?: WizardOption[] }
@@ -37,11 +38,11 @@ export default function Appendix8Page() {
 
   if (!startNode) {
     return (
-      <main className="mx-auto max-w-3xl space-y-6 p-8 text-sm text-muted-foreground">
+      <PageShell variant="narrow" className="space-y-6 py-10 text-sm text-muted-foreground">
         <h1 className="text-2xl font-semibold text-foreground">Appendix 8 - Decision Tree</h1>
         <p>Decision tree content is unavailable. Please contact the framework team.</p>
         <BackLink />
-      </main>
+      </PageShell>
     )
   }
 

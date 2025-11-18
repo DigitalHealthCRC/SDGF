@@ -48,6 +48,8 @@ const SHOW_FLOW = false
 const APPENDIX_REGEX = /(Appx|Appendix)\s*(\d+(?:[\/,]\s?\d+)*)/gi
 const appendicesBasePath = "/resources/appendix"
 
+const APPENDIX_LABEL = "Appx"
+
 const renderWithAppendixLinks = (text?: string) => {
   if (!text) return text ?? ""
 
@@ -56,7 +58,7 @@ const renderWithAppendixLinks = (text?: string) => {
 
   APPENDIX_REGEX.lastIndex = 0
 
-  text.replace(APPENDIX_REGEX, (match, prefix, numbersPart, offset) => {
+  text.replace(APPENDIX_REGEX, (match, _prefix, numbersPart, offset) => {
     if (offset > lastIndex) {
       nodes.push(text.slice(lastIndex, offset))
     }
@@ -66,33 +68,46 @@ const renderWithAppendixLinks = (text?: string) => {
       .map((value: string) => value.trim())
       .filter(Boolean)
 
-    nodes.push(
+    const group = (
       <span key={`appendix-${offset}`} className="inline-flex flex-wrap items-center gap-1">
-        <span>{prefix}</span>
         {numbers.map((num: string, idx: number) => {
-          const pathNumber = Number.parseInt(num, 10)
-          const separator = idx > 0 ? <span key={`sep-${offset}-${idx}`}>/</span> : null
+          const trimmed = num.trim()
+          if (!trimmed) return null
+
+          const label = `${APPENDIX_LABEL} ${trimmed}`
+          const separator = idx > 0 ? (
+            <span key={`sep-${offset}-${idx}`} className="text-slate-400">
+              /
+            </span>
+          ) : null
+
+          const pathNumber = Number.parseInt(trimmed, 10)
 
           if (Number.isNaN(pathNumber)) {
             return (
-              <span key={`${offset}-${num}-${idx}`} className="font-semibold">
+              <span key={`${offset}-${trimmed}-${idx}`} className="font-semibold text-emerald-200">
                 {separator}
-                {num}
+                {label}
               </span>
             )
           }
 
           return (
-            <span key={`${offset}-${num}-${idx}`} className="inline-flex items-center gap-1">
+            <span key={`${offset}-${trimmed}-${idx}`} className="inline-flex items-center gap-1">
               {separator}
-              <Link href={`${appendicesBasePath}${pathNumber}`} className="text-emerald-300 underline-offset-4 hover:text-emerald-200">
-                {num}
+              <Link
+                href={`${appendicesBasePath}${pathNumber}`}
+                className="text-emerald-300 underline-offset-4 hover:text-emerald-200"
+              >
+                {label}
               </Link>
             </span>
           )
         })}
-      </span>,
+      </span>
     )
+
+    nodes.push(group)
 
     lastIndex = offset + match.length
     return match
@@ -144,7 +159,7 @@ const PhaseNode = ({ data }: NodeProps<PhaseNodeData>) => (
   >
     <Handle type="target" position={Position.Top} />
     <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.4em] text-slate-400">
-      <span>Phase {data.phase}</span>
+      <span>Step {data.phase}</span>
       <span style={{ color: data.accent }}>DP Flow</span>
     </div>
     <h3 className="mt-2 text-xl font-semibold text-white">{data.title}</h3>
@@ -450,7 +465,7 @@ const TimelineDecisionBlock = ({
     label?: string
   }) => {
     if (options.rawValue === undefined || options.rawValue === null) return null
-    const labelText = `${options.symbol} ${options.label ?? "Phase"} ${options.rawValue}`
+    const labelText = `${options.symbol} ${options.label ?? "Step"} ${options.rawValue}`
     const classes =
       "rounded-full border border-white/20 bg-white/10 px-2.5 py-0.5 text-[10px] text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/70 focus-visible:outline-offset-1"
 
@@ -506,7 +521,7 @@ const TimelineDecisionBlock = ({
                         symbol: "↻",
                         rawValue: resumeValue,
                         phaseNumber: resumePhaseNumber,
-                        label: "Resume Phase",
+                        label: "Resume Step",
                       })}
                       {doesTerminate && (
                         <span className="rounded-full bg-rose-500/20 px-2 py-0.5 text-[10px] text-rose-100">Terminate</span>
@@ -539,7 +554,7 @@ const PhaseModal = ({
     <div className="max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-slate-800 bg-slate-950 shadow-2xl">
       <div className="flex items-start justify-between border-b border-slate-800 px-8 py-6">
         <div>
-          <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Phase {phase.phase}</p>
+          <p className="text-xs uppercase tracking-[0.4em] text-slate-500">Step {phase.phase}</p>
           <h3 className="mt-1 text-2xl font-semibold text-white">{phase.title}</h3>
         </div>
         <button
@@ -592,7 +607,7 @@ const PhaseModal = ({
   )
 
 export default function SynDFlow() {
-  const [expandedTimeline, setExpandedTimeline] = useState<Set<number>>(new Set([flowData[0]?.phase ?? 0]))
+  const [expandedTimeline, setExpandedTimeline] = useState<Set<number>>(new Set())
   const [selectedPhase, setSelectedPhase] = useState<FlowPhase | null>(flowData[0] ?? null)
   const [modalPhase, setModalPhase] = useState<FlowPhase | null>(null)
   const [collapsedFlowPhases] = useState<Set<number>>(new Set())
@@ -698,7 +713,7 @@ export default function SynDFlow() {
                       {phase.phase}
                     </span>
                     <div>
-                      <div className="text-xs uppercase tracking-[0.4em] text-slate-500">Phase</div>
+                      <div className="text-xs uppercase tracking-[0.4em] text-slate-500">Step</div>
                       <h3 className="text-lg font-semibold text-white">{phase.title}</h3>
                     </div>
                   </div>
@@ -771,7 +786,7 @@ export default function SynDFlow() {
                       className="text-xs font-semibold uppercase tracking-wide text-cyan-200 underline underline-offset-4"
                       onClick={() => setModalPhase(phase)}
                     >
-                      View full phase dossier
+                      View full step dossier
                     </button>
                   </div>
                 )}
@@ -785,7 +800,7 @@ export default function SynDFlow() {
             <div className="absolute right-6 top-6 z-10 space-x-3 text-xs uppercase tracking-[0.3em] text-slate-400">
               <span className="inline-flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full" style={{ backgroundColor: "#34d399" }} />
-                Phase
+                Step
               </span>
               <span className="inline-flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-cyan-400" />

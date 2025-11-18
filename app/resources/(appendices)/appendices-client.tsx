@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import type { AppendixRecord } from "../page";
+import { PageShell } from "@/components/page-shell";
 
 const cardGradients = [
   "from-chart-1/20 to-chart-1/5",
@@ -19,7 +20,7 @@ interface AppendicesClientProps {
 
 export function AppendicesClient({ appendices }: AppendicesClientProps) {
   return (
-    <div className="container mx-auto max-w-6xl px-4 py-12">
+    <PageShell className="py-12">
       <div className="mb-12">
         <h1 className="text-4xl font-bold">Appendices</h1>
         <p className="mt-2 max-w-3xl text-lg text-muted-foreground">
@@ -63,6 +64,6 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
           or browse the home page for additional guidance and quick links.
         </p>
       </div>
-    </div>
+    </PageShell>
   );
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import { Download, FileText, FileSpreadsheet, FileCode } from "lucide-react"
+import { PageShell } from "@/components/page-shell"
 
 export default function Templates() {
   const templates = [
@@ -63,7 +64,7 @@ export default function Templates() {
   ]
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-7xl">
+    <PageShell className="py-12">
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-4">Templates & Downloads</h1>
         <p className="text-xl text-muted-foreground max-w-3xl">
@@ -106,6 +107,6 @@ export default function Templates() {
           Contact Us
         </button>
       </div>
-    </div>
+    </PageShell>
   )
 }

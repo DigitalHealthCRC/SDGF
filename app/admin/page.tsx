@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Users, Shield, FlaskConical, TrendingUp, CheckCircle2, Clock, AlertCircle } from "lucide-react"
 import Link from "next/link"
+import { PageShell } from "@/components/page-shell"
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<"overview" | "users" | "analytics">("overview")
@@ -54,7 +55,7 @@ export default function AdminDashboard() {
   ]
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <PageShell className="py-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">Admin Dashboard</h1>
@@ -264,6 +265,6 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
-    </div>
+    </PageShell>
   )
 }
