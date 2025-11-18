@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 
 import "vis-network/styles/vis-network.css"
 import {
@@ -12,6 +13,9 @@ import {
 } from "vis-network/standalone/esm/vis-network.js"
 
 type GraphNode = Node & { node_type?: string }
+interface GovernanceGraphProps {
+  onSelectStep?: (phaseNumber: number) => void
+}
 
 const GRAPH_NODES: GraphNode[] = [
   {
@@ -479,9 +483,30 @@ const NETWORK_OPTIONS: Options = {
   },
 }
 
-export function GovernanceGraph() {
+const NODE_STEP_MAP: Record<string, number> = {
+  start: 0,
+  step1: 1,
+  step2: 2,
+  step3: 3,
+  step4: 4,
+  step5: 5,
+}
+
+const NODE_APPENDIX_MAP: Record<string, string> = {
+  app4: "/resources/appendix4",
+  app5: "/resources/appendix5",
+  app6: "/resources/appendix6",
+  app7: "/resources/appendix7",
+  app8: "/resources/appendix8",
+  app9: "/resources/appendix9",
+  app10: "/resources/appendix10",
+  app11: "/resources/appendix11",
+}
+
+export function GovernanceGraph({ onSelectStep }: GovernanceGraphProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const networkRef = useRef<Network | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
     const container = containerRef.current
@@ -511,13 +536,31 @@ export function GovernanceGraph() {
         : null
     observer?.observe(container)
 
+    const handleClick = (params: { nodes?: string[] }) => {
+      const nodeId = params.nodes?.[0]
+      if (!nodeId) return
+
+      if (nodeId in NODE_STEP_MAP) {
+        onSelectStep?.(NODE_STEP_MAP[nodeId])
+        return
+      }
+
+      const appendixPath = NODE_APPENDIX_MAP[nodeId]
+      if (appendixPath) {
+        router.push(appendixPath)
+      }
+    }
+
+    network.on("click", handleClick)
+
     return () => {
       window.removeEventListener("resize", handleResize)
       observer?.disconnect()
+      network.off("click", handleClick)
       network.destroy()
       networkRef.current = null
     }
-  }, [])
+  }, [onSelectStep, router])
 
   return (
     <section className="flex h-full w-full flex-col rounded-3xl border border-emerald-500/30 bg-black/80 p-4">

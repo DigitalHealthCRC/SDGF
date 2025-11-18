@@ -1,12 +1,19 @@
 "use client"
 
 import Link from "next/link"
+import { useCallback, useRef } from "react"
 
 import GovernanceGraph from "@/src/components/GovernanceGraph"
-import SynDFlow from "@/src/components/SynDFlow"
+import SynDFlow, { SynDFlowHandle } from "@/src/components/SynDFlow"
 import { PageShell } from "@/components/page-shell"
 
 export default function About() {
+  const flowRef = useRef<SynDFlowHandle | null>(null)
+
+  const handleSelectStep = useCallback((phaseNumber: number) => {
+    flowRef.current?.focusPhase(phaseNumber)
+  }, [])
+
   return (
     <PageShell variant="wide" className="py-12 space-y-10">
       <header className="text-pretty space-y-6 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-background via-slate-950/80 to-background p-8 shadow-emerald-900/20 shadow-xl">
@@ -40,10 +47,10 @@ export default function About() {
 
       <section className="grid gap-8 lg:grid-cols-[minmax(0,_1.3fr)_minmax(0,_1.7fr)] lg:items-stretch xl:grid-cols-[minmax(0,_1.2fr)_minmax(0,_1.9fr)]">
         <div className="h-full">
-          <SynDFlow />
+          <SynDFlow ref={flowRef} />
         </div>
         <div className="h-full">
-          <GovernanceGraph />
+          <GovernanceGraph onSelectStep={handleSelectStep} />
         </div>
       </section>
 
@@ -67,7 +74,7 @@ export default function About() {
       <div className="rounded-3xl border border-chart-1/40 bg-gradient-to-br from-chart-1/20 to-chart-1/5 p-8 text-center">
         <h2 className="text-2xl font-semibold text-white">Ready to Get Started?</h2>
         <Link
-          href="/"
+          href="/steps/1"
           className="mt-5 inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
         >
           Start Framework

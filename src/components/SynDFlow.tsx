@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useMemo, useState, useCallback, useRef } from "react"
+import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react"
 import ReactFlow, {
   Background,
   Controls,
@@ -606,7 +606,11 @@ const PhaseModal = ({
     </div>
   )
 
-export default function SynDFlow() {
+export type SynDFlowHandle = {
+  focusPhase: (phaseNumber: number) => void
+}
+
+const SynDFlow = forwardRef<SynDFlowHandle, Record<string, never>>(function SynDFlow(_props, ref) {
   const [expandedTimeline, setExpandedTimeline] = useState<Set<number>>(new Set())
   const [selectedPhase, setSelectedPhase] = useState<FlowPhase | null>(flowData[0] ?? null)
   const [modalPhase, setModalPhase] = useState<FlowPhase | null>(null)
@@ -650,6 +654,14 @@ export default function SynDFlow() {
       }
     },
     [scrollToPhase],
+  )
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      focusPhase,
+    }),
+    [focusPhase],
   )
 
   const handleNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
@@ -847,4 +859,8 @@ export default function SynDFlow() {
       {modalPhase && <PhaseModal phase={modalPhase} onClose={() => setModalPhase(null)} onNavigatePhase={focusPhase} />}
     </div>
   )
-}
+})
+
+SynDFlow.displayName = "SynDFlow"
+
+export default SynDFlow
