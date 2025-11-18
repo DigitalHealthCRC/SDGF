@@ -16,6 +16,7 @@ import ReactFlow, {
 import "reactflow/dist/style.css"
 
 import flowData from "@/src/content/framework/end_to_end_flow.json"
+import { RoleBadge } from "./RoleBadge"
 
 type FlowPhase = (typeof flowData)[number]
 
@@ -121,31 +122,6 @@ const renderWithAppendixLinks = (text?: string) => {
 }
 
 const getAccent = (phaseNumber: number) => PHASE_ACCENTS[phaseNumber % PHASE_ACCENTS.length]
-
-const ROLE_BADGE_STYLES: Record<
-  string,
-  { background: string; text: string; border: string }
-> = {
-  DP: { background: "linear-gradient(135deg,#1d4ed8,#2563eb)", text: "#e0f2fe", border: "rgba(59,130,246,0.6)" },
-  DR: { background: "linear-gradient(135deg,#047857,#059669)", text: "#d1fae5", border: "rgba(16,185,129,0.7)" },
-  DS: { background: "linear-gradient(135deg,#b45309,#d97706)", text: "#fef3c7", border: "rgba(234,179,8,0.7)" },
-  GC: { background: "linear-gradient(135deg,#7c3aed,#a855f7)", text: "#ede9fe", border: "rgba(167,139,250,0.7)" },
-  DEFAULT: { background: "rgba(30,41,59,0.9)", text: "#f1f5f9", border: "rgba(148,163,184,0.6)" },
-}
-
-const RoleBadge = ({ role }: { role: string }) => {
-  const normalized = (role ?? "").trim().toUpperCase()
-  const theme = ROLE_BADGE_STYLES[normalized] ?? ROLE_BADGE_STYLES.DEFAULT
-
-  return (
-    <span
-      className="inline-flex min-h-[24px] min-w-[40px] items-center justify-center rounded-full px-2 text-[10px] font-semibold uppercase tracking-wide shadow-md shadow-slate-900/40"
-      style={{ background: theme.background, color: theme.text, border: `1px solid ${theme.border}` }}
-    >
-      {normalized || role}
-    </span>
-  )
-}
 
 const PhaseNode = ({ data }: NodeProps<PhaseNodeData>) => (
   <div

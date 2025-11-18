@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 import type { AppendixRecord } from "../page";
 import { PageShell } from "@/components/page-shell";
+import { RoleBadge } from "@/src/components/RoleBadge";
 
 const cardGradients = [
   "from-chart-1/20 to-chart-1/5",
@@ -41,6 +42,14 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
                     Appendix {appendix.number}
                   </p>
                   <h3 className="text-lg font-semibold text-foreground">{appendix.title}</h3>
+                  {appendix.roles.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {appendix.roles.map((role) => {
+                        const detail = appendix.roleDetails[role]?.join("; ")
+                        return <RoleBadge key={`${appendix.id}-${role}`} role={role} title={detail} />
+                      })}
+                    </div>
+                  )}
                 </div>
                 {appendix.template && (
                   <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-emerald-700">Template</span>
