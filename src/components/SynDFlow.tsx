@@ -610,7 +610,11 @@ export type SynDFlowHandle = {
   focusPhase: (phaseNumber: number) => void
 }
 
-const SynDFlow = forwardRef<SynDFlowHandle, Record<string, never>>(function SynDFlow(_props, ref) {
+type SynDFlowProps = {
+  // placeholder for future props
+}
+
+const SynDFlow = forwardRef<SynDFlowHandle, SynDFlowProps>(function SynDFlow(_props, ref) {
   const [expandedTimeline, setExpandedTimeline] = useState<Set<number>>(new Set())
   const [selectedPhase, setSelectedPhase] = useState<FlowPhase | null>(flowData[0] ?? null)
   const [modalPhase, setModalPhase] = useState<FlowPhase | null>(null)
