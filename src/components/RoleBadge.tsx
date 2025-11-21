@@ -4,7 +4,7 @@ import type { HTMLAttributes } from "react"
 
 import { cn } from "@/lib/utils"
 
-const ROLE_BADGE_STYLES = {
+export const ROLE_BADGE_STYLES = {
   DP: { background: "linear-gradient(135deg,#1d4ed8,#2563eb)", text: "#e0f2fe", border: "rgba(59,130,246,0.6)" },
   DR: { background: "linear-gradient(135deg,#047857,#059669)", text: "#d1fae5", border: "rgba(16,185,129,0.7)" },
   DS: { background: "linear-gradient(135deg,#b45309,#d97706)", text: "#fef3c7", border: "rgba(234,179,8,0.7)" },

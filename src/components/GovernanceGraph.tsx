@@ -12,197 +12,273 @@ import {
   type Options,
 } from "vis-network/standalone/esm/vis-network.js"
 
+import { ROLE_BADGE_STYLES, type FrameworkRole } from "./RoleBadge"
 type GraphNode = Node & { node_type?: string }
 interface GovernanceGraphProps {
   onSelectStep?: (phaseNumber: number) => void
 }
 
+const escapeHtml = (str: string) => {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+}
+
+const createNodeSvg = (title: string, groups: { label: string; roles: FrameworkRole[] }[]) => {
+  const width = 320
+  const height = 180
+
+  // Convert styles to CSS string
+  const getStyleString = (role: FrameworkRole) => {
+    const style = ROLE_BADGE_STYLES[role] || ROLE_BADGE_STYLES.DEFAULT
+    return `
+      background: ${style.background};
+      color: ${style.text};
+      border: 1px solid ${style.border};
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    `
+  }
+
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+      <foreignObject width="100%" height="100%">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          color: #f8fafc;
+          padding: 20px;
+          box-sizing: border-box;
+          background: rgba(15, 23, 42, 0.95);
+          border: 1px solid rgba(52, 211, 153, 0.4);
+          border-radius: 20px;
+          backdrop-filter: blur(8px);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+        ">
+          <div style="font-size: 18px; font-weight: 700; line-height: 1.3; margin-bottom: 16px; white-space: pre-wrap; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">${escapeHtml(title)}</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; align-items: center; width: 100%;">
+            ${groups
+      .map(
+        (g) => `
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #cbd5e1; font-weight: 500;">
+                <span>${escapeHtml(g.label)}</span>
+                <div style="display: flex; gap: 6px;">
+                  ${g.roles.map((r) => `<span style="${getStyleString(r)}">${escapeHtml(r)}</span>`).join("")}
+                </div>
+              </div>
+            `,
+      )
+      .join("")}
+          </div>
+        </div>
+      </foreignObject>
+    </svg>
+  `
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
+}
+
 const GRAPH_NODES: GraphNode[] = [
   {
-    color: "#2ECC71",
-    font: { color: "#f8fafc" },
     id: "start",
-    label: "START:\nSynthetic Health Data Request\n[DP + DR]",
-    node_type: "start",
-    shape: "box",
-    size: 30,
-    title: "START: Synthetic Health Data Request\nAccountable: DP\nSupport: DR",
-    x: -974,
-    y: 4587,
+    shape: "image",
+    image: createNodeSvg("START:\nInitiate Request", [
+      { label: "Accountable:", roles: ["DP"] },
+      { label: "Support:", roles: ["DR", "GC"] },
+    ]),
+    size: 50,
+    title: "START: Initiate Request\nAccountable: DP\nSupport: DR, GC",
+    x: -970,
+    y: 4478,
     fixed: true,
   },
   {
-    color: "#3498DB",
-    font: { color: "#f8fafc" },
     id: "step1",
-    label: "STEP 1:\nAssess the Use Case\n[DP accountable]\n[DR, GC support]",
-    node_type: "phase",
-    shape: "box",
-    size: 35,
+    shape: "image",
+    image: createNodeSvg("STEP 1:\nAssess the Use Case", [
+      { label: "Accountable:", roles: ["DP"] },
+      { label: "Support:", roles: ["DR", "GC"] },
+    ]),
+    size: 50,
     title: "STEP 1: Assess the Use Case\nAccountable: DP\nSupport: DR, GC",
     x: -968,
     y: 4778,
     fixed: true,
   },
   {
-    color: "#9B59B6",
+    id: "step2",
+    shape: "image",
+    image: createNodeSvg("STEP 2:\nAssess the Data", [
+      { label: "Accountable:", roles: ["DP"] },
+      { label: "Support:", roles: ["DR", "DS"] },
+    ]),
+    size: 50,
+    title: "STEP 2: Assess the Data\nAccountable: DP\nSupport: DR, DS",
+    x: -979,
+    y: 5292,
+    fixed: true,
+  },
+  {
+    id: "step3",
+    shape: "image",
+    image: createNodeSvg("STEP 3:\nPrepare the Data", [
+      { label: "Accountable:", roles: ["DS"] },
+      { label: "Support:", roles: ["DP", "DR"] },
+    ]),
+    size: 50,
+    title: "STEP 3: Prepare the Data\nAccountable: DS\nSupport: DP, DR",
+    x: -981,
+    y: 5888,
+    fixed: true,
+  },
+  {
+    id: "step4",
+    shape: "image",
+    image: createNodeSvg("STEP 4:\nAssess Risk & Utility", [
+      { label: "Accountable:", roles: ["DS"] },
+      { label: "Support:", roles: ["DP", "DR"] },
+    ]),
+    size: 50,
+    title: "STEP 4: Assess Risk & Utility\nAccountable: DS\nSupport: DP, DR",
+    x: -981,
+    y: 6188,
+    fixed: true,
+  },
+  {
+    id: "step5",
+    shape: "image",
+    image: createNodeSvg("STEP 5:\nFinal Review", [
+      { label: "Accountable:", roles: ["DP"] },
+      { label: "Support:", roles: ["DR", "GC"] },
+    ]),
+    size: 50,
+    title: "STEP 5: Final Review\nAccountable: DP\nSupport: DR, GC",
+    x: -981,
+    y: 6638,
+    fixed: true,
+  },
+  {
+    id: "approved",
+    shape: "image",
+    image: createNodeSvg("APPROVED:\nRelease Data", [
+      { label: "Accountable:", roles: ["DP"] },
+      { label: "Support:", roles: ["DR", "GC"] },
+    ]),
+    size: 50,
+    title: "APPROVED: Release Data\nAccountable: DP\nSupport: DR, GC",
+    x: -997,
+    y: 7035,
+    fixed: true,
+  },
+  {
+    color: "#E67E22",
     font: { color: "#f8fafc" },
     id: "app4",
-    label: "Appendix 4:\nUse Case Assessment",
-    node_type: "assessment",
+    label: "Appendix 4:\nFive Safes\nFramework",
+    node_type: "guidance",
     shape: "ellipse",
-    size: 25,
-    title: "Appendix 4: Use Case Assessment",
-    x: -802,
-    y: 4921,
+    size: 20,
+    title: "Appendix 4: Five Safes Framework",
+    x: -1179,
+    y: 4904,
     fixed: true,
   },
   {
-    color: "#9B59B6",
+    color: "#E67E22",
     font: { color: "#f8fafc" },
     id: "app5",
-    label: "Appendix 5:\nImpact Assessment",
-    node_type: "assessment",
+    label: "Appendix 5:\nData Breach\nResponse Plan",
+    node_type: "guidance",
     shape: "ellipse",
-    size: 25,
-    title: "Appendix 5: Impact Assessment",
-    x: -1172,
-    y: 4917,
+    size: 20,
+    title: "Appendix 5: Data Breach Response Plan",
+    x: -768,
+    y: 4904,
     fixed: true,
   },
   {
-    color: "#3498DB",
-    font: { color: "#f8fafc" },
-    id: "step2",
-    label: "STEP 2:\nAssess & Prepare\nSource Data\n[DP accountable]\n[DR, DS support]",
-    node_type: "phase",
-    shape: "box",
-    size: 35,
-    title: "STEP 2: Assess & Prepare Source Data\nAccountable: DP\nSupport: DR, DS",
-    x: -974,
-    y: 5201,
-    fixed: true,
-  },
-  {
-    color: "#9B59B6",
+    color: "#E67E22",
     font: { color: "#f8fafc" },
     id: "app6",
-    label: "Appendix 6:\nTechnical Assessment",
-    node_type: "assessment",
+    label: "Appendix 6:\nData Quality\nFramework",
+    node_type: "guidance",
     shape: "ellipse",
-    size: 25,
-    title: "Appendix 6: Technical Assessment",
-    x: -981,
-    y: 5426,
-    fixed: true,
-  },
-  {
-    color: "#3498DB",
-    font: { color: "#f8fafc" },
-    id: "step3",
-    label: "STEP 3:\nGenerate\nSynthetic Health Data\n[DP accountable]\n[DS, DR support]",
-    node_type: "phase",
-    shape: "box",
-    size: 35,
-    title: "STEP 3: Generate Synthetic Health Data\nAccountable: DP\nSupport: DS, DR",
-    x: -992,
-    y: 5815,
-    fixed: true,
-  },
-  {
-    color: "#3498DB",
-    font: { color: "#f8fafc" },
-    id: "step4",
-    label: "STEP 4:\nAssess & Manage\nRe-identification Risks\n[DP accountable]\n[DS, DR, GC support]",
-    node_type: "phase",
-    shape: "box",
-    size: 35,
-    title:
-      "STEP 4: Assess & Manage Re-identification Risks\nAccountable: DP\nSupport: DS, DR, GC",
-    x: -994,
-    y: 6085,
+    size: 20,
+    title: "Appendix 6: Data Quality Framework",
+    x: -782,
+    y: 5438,
     fixed: true,
   },
   {
     color: "#E67E22",
     font: { color: "#f8fafc" },
     id: "app7",
-    label: "Appendix 7:\nDe-identification\nTechniques",
+    label: "Appendix 7:\nPrivacy Preserving\nTechniques",
     node_type: "guidance",
     shape: "ellipse",
     size: 20,
-    title: "Appendix 7: De-identification Techniques",
-    x: -1018,
-    y: 6337,
+    title: "Appendix 7: Privacy Preserving Techniques",
+    x: -441,
+    y: 6436,
     fixed: true,
   },
   {
-    color: "#9B59B6",
+    color: "#E67E22",
     font: { color: "#f8fafc" },
-    id: "reid_assess",
-    label: "Re-identification\nRisk Assessment",
-    node_type: "assessment",
+    id: "app10",
+    label: "Appendix 10:\nData Sharing\nAgreement",
+    node_type: "guidance",
     shape: "ellipse",
-    size: 25,
-    title: "Re-identification Risk Assessment",
-    x: -866,
-    y: 6234,
-    fixed: true,
-  },
-  {
-    color: "#9B59B6",
-    font: { color: "#f8fafc" },
-    id: "utility_assess",
-    label: "Data Utility\nAssessment",
-    node_type: "assessment",
-    shape: "ellipse",
-    size: 25,
-    title: "Data Utility Assessment",
-    x: -1107,
-    y: 6235,
+    size: 20,
+    title: "Appendix 10: Data Sharing Agreement",
+    x: -779,
+    y: 6680,
     fixed: true,
   },
   {
     color: "#3498DB",
     font: { color: "#f8fafc" },
-    id: "step5",
-    label: "STEP 5:\nManage Residual\nPrivacy Risks\n[DP accountable]\n[DR, DS support]",
-    node_type: "phase",
+    id: "reid_assess",
+    label: "Re-ID Risk\nAssessment",
+    node_type: "process",
     shape: "box",
-    size: 35,
-    title: "STEP 5: Manage Residual Privacy Risks\nAccountable: DP\nSupport: DR, DS",
-    x: -1008,
-    y: 6533,
-    fixed: true,
-  },
-  {
-    color: "#9B59B6",
-    font: { color: "#f8fafc" },
-    id: "app10",
-    label: "Appendix 10:\nSafety Assessment",
-    node_type: "assessment",
-    shape: "ellipse",
     size: 25,
-    title: "Appendix 10: Safety Assessment",
-    x: -1001,
-    y: 6740,
+    title: "Re-ID Risk Assessment",
+    x: -741,
+    y: 6188,
     fixed: true,
   },
   {
-    color: "#27AE60",
+    color: "#3498DB",
     font: { color: "#f8fafc" },
-    id: "approved",
-    label: "APPROVED:\nShare Synthetic\nHealth Dataset\n[DP accountable]\n[DR, DS support]",
-    node_type: "outcome",
+    id: "utility_assess",
+    label: "Data Utility\nAssessment",
+    node_type: "process",
     shape: "box",
-    size: 30,
-    title: "APPROVED: Share Synthetic Health Dataset\nAccountable: DP\nSupport: DR, DS",
-    x: -998,
-    y: 6962,
+    size: 25,
+    title: "Data Utility Assessment",
+    x: -1221,
+    y: 6188,
     fixed: true,
   },
   {
-    color: "#95A5A6",
+    color: "#2ECC71",
     font: { color: "#f8fafc" },
     id: "app11",
     label: "Appendix 11:\nRequest & Assessment\nOutcomes Form",

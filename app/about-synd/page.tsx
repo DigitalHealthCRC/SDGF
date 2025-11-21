@@ -17,33 +17,37 @@ export default function AboutSynD() {
                 </div>
             </section>
 
+
             {/* Vision, Mission & Purpose */}
-            <section className="mb-16 rounded-3xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/20 via-background/95 to-background/90 p-8 shadow-xl shadow-indigo-900/10">
-                <h2 className="text-2xl font-semibold mb-6 text-center">Vision, Mission & Purpose</h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                    <div className="h-full rounded-lg border-2 bg-gradient-to-br from-chart-1/20 to-chart-1/5 p-6 transition-all hover:border-primary hover:shadow-lg border-border">
+            <section className="mb-16 rounded-3xl border border-amber-500/30 bg-gradient-to-br from-amber-500/20 via-background/95 to-background/90 p-8 shadow-xl shadow-amber-900/10">
+                <h2 className="text-2xl font-semibold mb-6">Vision, Mission & Purpose</h2>
+                <div className="space-y-6">
+                    <div className="rounded-lg border-2 bg-gradient-to-br from-chart-3/20 to-chart-3/5 p-6 transition-all hover:border-primary hover:shadow-lg border-border">
                         <div className="flex items-start gap-4 mb-4">
                             <div className="p-3 rounded-lg bg-background/80">
-                                <Target className="w-6 h-6 text-chart-1" />
+                                <Rocket className="w-6 h-6 text-chart-3" />
                             </div>
-                            <h3 className="text-xl font-semibold">Vision</h3>
+                            <h3 className="text-lg font-semibold">Vision</h3>
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                            To unlock the value of health information through synthetic data to advance research, education and innovation in health and care.
-                        </p>
+                        <ul className="space-y-2 text-sm text-muted-foreground pl-4">
+                            <li className="flex items-start gap-2">
+                                <span className="text-chart-3 mt-1">•</span>
+                                <span><em>To unlock the value of health information through synthetic data to advance research, education and innovation in health and care.</em></span>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div className="h-full rounded-lg border-2 bg-gradient-to-br from-chart-2/20 to-chart-2/5 p-6 transition-all hover:border-primary hover:shadow-lg border-border">
+                    <div className="rounded-lg border-2 bg-gradient-to-br from-chart-4/20 to-chart-4/5 p-6 transition-all hover:border-primary hover:shadow-lg border-border">
                         <div className="flex items-start gap-4 mb-4">
                             <div className="p-3 rounded-lg bg-background/80">
-                                <Lightbulb className="w-6 h-6 text-chart-2" />
+                                <Users className="w-6 h-6 text-chart-4" />
                             </div>
-                            <h3 className="text-xl font-semibold">Purpose / Program</h3>
+                            <h3 className="text-lg font-semibold">Mission</h3>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-4">
-                            To develop a coordinated program and national collaborative approach for evidence and knowledge exchange around synthetic health data, with key focus areas including:
-                        </p>
-                        <ul className="space-y-2 text-sm text-muted-foreground">
+                        <ul className="space-y-2 text-sm text-muted-foreground pl-4">
+                            <p className="text-base text-muted-foreground max-w-5xl">
+                                To develop a coordinated program and national collaborative approach for evidence and knowledge exchange around synthetic health data, with key focus areas including:
+                            </p>
                             <li className="flex items-start gap-2">
                                 <span className="text-chart-2 mt-1">•</span>
                                 <span>Advocacy, education and training</span>
@@ -63,77 +67,6 @@ export default function AboutSynD() {
                             <li className="flex items-start gap-2">
                                 <span className="text-chart-2 mt-1">•</span>
                                 <span>Use-case development</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            {/* Key Initiatives & Projects */}
-            <section className="mb-16 rounded-3xl border border-amber-500/30 bg-gradient-to-br from-amber-500/20 via-background/95 to-background/90 p-8 shadow-xl shadow-amber-900/10">
-                <h2 className="text-2xl font-semibold mb-6">Key Initiatives & Projects</h2>
-                <p className="text-base text-muted-foreground mb-6">
-                    SynD is currently in early stage but already has active initiatives. These include:
-                </p>
-
-                <div className="space-y-6">
-                    <div className="rounded-lg border-2 bg-gradient-to-br from-chart-3/20 to-chart-3/5 p-6 transition-all hover:border-primary hover:shadow-lg border-border">
-                        <div className="flex items-start gap-4 mb-4">
-                            <div className="p-3 rounded-lg bg-background/80">
-                                <Rocket className="w-6 h-6 text-chart-3" />
-                            </div>
-                            <h3 className="text-lg font-semibold">Projects in Delivery</h3>
-                        </div>
-                        <ul className="space-y-2 text-sm text-muted-foreground pl-4">
-                            <li className="flex items-start gap-2">
-                                <span className="text-chart-3 mt-1">•</span>
-                                <span><em>Critical infrastructure for training and innovation with synthetic health data</em></span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div className="rounded-lg border-2 bg-gradient-to-br from-chart-4/20 to-chart-4/5 p-6 transition-all hover:border-primary hover:shadow-lg border-border">
-                        <div className="flex items-start gap-4 mb-4">
-                            <div className="p-3 rounded-lg bg-background/80">
-                                <Users className="w-6 h-6 text-chart-4" />
-                            </div>
-                            <h3 className="text-lg font-semibold">Internship & Short-Term Projects</h3>
-                        </div>
-                        <ul className="space-y-2 text-sm text-muted-foreground pl-4">
-                            <li className="flex items-start gap-2">
-                                <span className="text-chart-4 mt-1">•</span>
-                                <span><em>Evaluating quality of synthetic data for training a deterioration prediction AI</em></span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-chart-4 mt-1">•</span>
-                                <span><em>Generative AI for safe data-driven innovation</em></span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-chart-4 mt-1">•</span>
-                                <span><em>Exploring use cases for synthetic data in health</em></span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div className="rounded-lg border-2 bg-gradient-to-br from-chart-5/20 to-chart-5/5 p-6 transition-all hover:border-primary hover:shadow-lg border-border">
-                        <div className="flex items-start gap-4 mb-4">
-                            <div className="p-3 rounded-lg bg-background/80">
-                                <Building2 className="w-6 h-6 text-chart-5" />
-                            </div>
-                            <h3 className="text-lg font-semibold">Additional Current Work</h3>
-                        </div>
-                        <ul className="space-y-2 text-sm text-muted-foreground pl-4">
-                            <li className="flex items-start gap-2">
-                                <span className="text-chart-5 mt-1">•</span>
-                                <span>Developing standards and guidelines for safe/effective synthetic health data in Australia</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-chart-5 mt-1">•</span>
-                                <span>Implementing an open-source evaluation suite for privacy, fidelity and utility of synthetic data</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-chart-5 mt-1">•</span>
-                                <span>Fostering innovation through knowledge sharing, advocacy, education and training</span>
                             </li>
                         </ul>
                     </div>
