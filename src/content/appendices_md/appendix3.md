@@ -1,9 +1,3 @@
-Here is **Appendix 3 converted to Markdown**, with **light styling only**, **no added interpretation**, **all links preserved exactly**, and the **table fully converted**.
-
-All content ⟂ sourced from the uploaded file ****.
-
----
-
 # **Appendix 3: The Policy and Legal Framework Underpinning This Framework**
 
 The system of privacy regulation in Australia is best described as a *“patchwork”*. Given the range of current and potential future SynD members, a range of privacy laws may apply to a single synthetic health data project.
@@ -155,14 +149,7 @@ SynD member organisations may have their own internal data policies governing th
 
 # **Summary Table: Applicable Australian Privacy Laws Regulating Health Information**
 
-*(Extracted directly and faithfully from the document — including the structure and markings)*
 
-| **Organisation**                                                                               | **Privacy Act / APPs** | **ACT HRPA Act / PPs** * | **NSW HRIP Act / HPPs** * | **NT IP Act / IPPs** * | **QLD IP Act / QPPs** * | **SA Privacy Instruction / IPPs** * | **TAS PIP Act / PIPPs** * | **VIC HR Act / HPPs** * | **WA PRIS Act / IPPs** * |
-| ---------------------------------------------------------------------------------------------- | ---------------------- | ------------------------ | ------------------------- | ---------------------- | ----------------------- | ----------------------------------- | ------------------------- | ----------------------- | ------------------------ |
-| **Private sector health service providers** (e.g., GPs, private hospitals)                     | Y                      | Y                        | Y                         | N                      | N                       | N                                   | N                         | Y                       | N                        |
-| **Health NGOs** (e.g., PHNs)                                                                   | Y                      | Y                        | Y                         | N                      | N                       | N                                   | N                         | Y                       | N                        |
-| **State/Territory public sector agencies** (e.g., public hospitals, state public universities) | N                      | Y                        | Y                         | Y                      | Y                       | Y                                   | Y                         | Y                       | Y                        |
-| **Commonwealth government agencies** (e.g., Department of Health, Disability and Ageing)       | Y                      | N                        | N                         | N                      | N                       | N                                   | N                         | N                       | N                        |
 
 *** If operating in the State or Territory**
 **** Where Entity A engages Entity B as a contracted service provider, the privacy laws applying to Entity A may also apply to Entity B**

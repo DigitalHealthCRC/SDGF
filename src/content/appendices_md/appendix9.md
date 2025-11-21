@@ -1,9 +1,3 @@
-Here is **Appendix 9 converted to Markdown**, using **light styling only**, **no added content**, **no interpretation**, and keeping the text faithful to the uploaded file ****.
-
-There were **no tables** or **links** in the original document except references at the end, which are preserved exactly as text.
-
----
-
 # **Appendix 9: The Lawful Pathways Explained**
 
 While there are differences between the sets of privacy principles that operate across Australian jurisdictions, there are many commonalities — particularly in how the principles both **facilitate** and **restrict** the sharing of personal information.

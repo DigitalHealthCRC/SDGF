@@ -11,6 +11,9 @@ import { BackButton } from "@/src/components/back-button"
 import type { AppendixRecord } from "./[id]/page"
 import { PageShell } from "@/components/page-shell"
 
+// Export BackLink as an alias for BackButton for backward compatibility
+export { BackButton as BackLink }
+
 const renderTemplateForm = (appendix: AppendixRecord) => {
   if (!appendix.sections || appendix.sections.length === 0) {
     return (
