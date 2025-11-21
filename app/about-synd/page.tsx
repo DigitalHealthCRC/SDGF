@@ -7,28 +7,6 @@ import { PageShell } from "@/components/page-shell"
 export default function AboutSynD() {
     return (
         <PageShell className="py-12">
-            {/* Hero Section */}
-            <section className="relative mb-16 overflow-hidden rounded-3xl border border-sky-500/30 bg-gradient-to-br from-sky-900/40 via-slate-950/90 to-indigo-950/80 text-white shadow-sky-900/20 shadow-2xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-sky-600/10" />
-                <div className="relative z-10 text-center px-6 py-16 md:py-20">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">About SynD</h1>
-                    <p className="text-xl text-white/90 max-w-3xl mx-auto text-pretty italic">
-                        Unlocking health data for research, education and innovation
-                    </p>
-                    <div className="mt-8">
-                        <Link
-                            href="https://digitalhealthcrc.com/synthetic-data-community-of-practice-synd/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-indigo-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-sky-500/30 transition-all hover:-translate-y-0.5 hover:shadow-sky-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-400"
-                        >
-                            Visit SynD Website
-                            <ExternalLink className="w-4 h-4" />
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
             {/* What SynD Is */}
             <section className="mb-16 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-background/95 to-background/90 p-10 shadow-xl shadow-emerald-900/10">
                 <div className="space-y-6 text-pretty">
