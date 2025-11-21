@@ -30,10 +30,9 @@ export default function AboutSynD() {
                             <h3 className="text-lg font-semibold">Vision</h3>
                         </div>
                         <ul className="space-y-2 text-sm text-muted-foreground pl-4">
-                            <li className="flex items-start gap-2">
-                                <span className="text-chart-3 mt-1">•</span>
-                                <span><em>To unlock the value of health information through synthetic data to advance research, education and innovation in health and care.</em></span>
-                            </li>
+                            <p className="text-base text-muted-foreground max-w-5xl">
+                                To unlock the value of health information through synthetic data to advance research, education and innovation in health and care.
+                            </p>
                         </ul>
                     </div>
 
