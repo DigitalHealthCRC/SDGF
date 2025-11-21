@@ -105,6 +105,13 @@ export function Navigation() {
             >
               Resources
             </Link>
+
+            <Link
+              href="/about-synd"
+              className={`text-sm font-medium hover:text-primary transition-colors ${pathname === "/about-synd" ? "text-primary" : ""}`}
+            >
+              About SynD
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -157,6 +164,9 @@ export function Navigation() {
               </div>
               <Link href="/resources" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Resources
+              </Link>
+              <Link href="/about-synd" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
+                About SynD
               </Link>
             </div>
           </div>
