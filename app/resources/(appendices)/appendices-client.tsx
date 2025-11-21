@@ -120,17 +120,17 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
                   View appendix <ArrowRight className="h-4 w-4" />
                 </div>
                 {appendix.pdfFilename && (
-                  <button
+                  <a
+                    href={`/appendices_pdf/${appendix.pdfFilename}`}
+                    download
                     onClick={(e) => {
-                      e.preventDefault()
                       e.stopPropagation()
-                      window.location.href = `/api/resources/download?file=${encodeURIComponent(appendix.pdfFilename!)}`
                     }}
                     className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors z-10 relative"
                   >
                     <Download className="h-4 w-4" />
                     Download PDF
-                  </button>
+                  </a>
                 )}
               </div>
             </div>

@@ -64,7 +64,7 @@ const resolveRoles = (appendixNumber: number) => {
 const readAppendices = (): AppendixRecord[] => {
   if (!fs.existsSync(APPENDICES_DIR)) return []
 
-  const pdfDir = path.join(process.cwd(), "src/content/appendices_pdf")
+  const pdfDir = path.join(process.cwd(), "public/appendices_pdf")
   const pdfFiles = fs.existsSync(pdfDir) ? fs.readdirSync(pdfDir) : []
 
   const files = fs.readdirSync(APPENDICES_DIR).filter((file) => file.endsWith(".json"))
