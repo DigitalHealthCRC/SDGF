@@ -1,14 +1,8 @@
 1:"$Sreact.fragment"
-2:I[78995,["/SDGF/_next/static/chunks/e16f1e7ee75573ff.js","/SDGF/_next/static/chunks/b350a96f2c24f56f.js","/SDGF/_next/static/chunks/b2d0c81b6ff91f20.js","/SDGF/_next/static/chunks/3c1c2c6d31fa05ec.js"],"AppendixDetail"]
+2:I[78995,["/SDGF/_next/static/chunks/560455be3ce76f92.js","/SDGF/_next/static/chunks/34ee24179ca0df5c.js","/SDGF/_next/static/chunks/3708046326082a93.js","/SDGF/_next/static/chunks/3c1c2c6d31fa05ec.js"],"AppendixDetail"]
 8:I[97367,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/247eb132b7f7b574.js"],"OutletBoundary"]
 9:"$Sreact.suspense"
-3:T2467,Here is **Appendix 9 converted to Markdown**, using **light styling only**, **no added content**, **no interpretation**, and keeping the text faithful to the uploaded file ****.
-
-There were **no tables** or **links** in the original document except references at the end, which are preserved exactly as text.
-
----
-
-# **Appendix 9: The Lawful Pathways Explained**
+3:T232c,# **Appendix 9: The Lawful Pathways Explained**
 
 While there are differences between the sets of privacy principles that operate across Australian jurisdictions, there are many commonalities — particularly in how the principles both **facilitate** and **restrict** the sharing of personal information.
 
@@ -209,9 +203,9 @@ Some exceptions (e.g., law enforcement, serious threats, missing persons) are **
 * **NSW IPC Statutory Guidelines – Research (HRIP Act)**
 * **NSW IPC Statutory Guidelines – Management of Health Services (HRIP Act)**
 * See also **Appendix 3: The policy and legal framework underpinning this Framework**
-0:{"buildId":"mbOyTlEh4rBdD5oTNOUP6","rsc":["$","$1","c",{"children":[["$","$L2",null,{"appendix":{"id":"appendix9","number":9,"title":"Appendix 9 — The Lawful Pathways Explained","purpose":"Explain lawful routes for using or disclosing synthetic data when re-identification risk remains more than very low, including typical approvals and conditions.","template":false,"body":"$3","component":"ReadOnlyContent","type":"read","exportKey":"appendix9_lawful_pathways"}}],["$L4","$L5","$L6"],"$L7"]}],"loading":null,"isPartial":false}
-4:["$","script","script-0",{"src":"/SDGF/_next/static/chunks/b350a96f2c24f56f.js","async":true}]
-5:["$","script","script-1",{"src":"/SDGF/_next/static/chunks/b2d0c81b6ff91f20.js","async":true}]
+0:{"buildId":"ihwwsEIKnyHwcT7tXlEm2","rsc":["$","$1","c",{"children":[["$","$L2",null,{"appendix":{"id":"appendix9","number":9,"title":"Appendix 9 — The Lawful Pathways Explained","purpose":"Explain lawful routes for using or disclosing synthetic data when re-identification risk remains more than very low, including typical approvals and conditions.","template":false,"body":"$3","component":"ReadOnlyContent","type":"read","exportKey":"appendix9_lawful_pathways"}}],["$L4","$L5","$L6"],"$L7"]}],"loading":null,"isPartial":false}
+4:["$","script","script-0",{"src":"/SDGF/_next/static/chunks/34ee24179ca0df5c.js","async":true}]
+5:["$","script","script-1",{"src":"/SDGF/_next/static/chunks/3708046326082a93.js","async":true}]
 6:["$","script","script-2",{"src":"/SDGF/_next/static/chunks/3c1c2c6d31fa05ec.js","async":true}]
 7:["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]
 a:null
