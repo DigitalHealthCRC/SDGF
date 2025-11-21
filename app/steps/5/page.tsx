@@ -9,6 +9,7 @@ import { useProgress } from "@/lib/progress-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import stepDataJson from "@/src/content/framework/step5.json"
 import { getAppendixLabelFromHref } from "@/src/lib/appendix-labels"
+import { StepNavigation } from "@/src/components/step-navigation"
 
 interface StepContent {
   title: string
@@ -272,11 +273,10 @@ export default function Step5Page() {
         type="button"
         onClick={handleComplete}
         disabled={!allChecksComplete() || stepCompletion[stepNumber]}
-        className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2 ${
-          allChecksComplete() && !stepCompletion[stepNumber]
-            ? "bg-emerald-500 text-white hover:bg-emerald-600"
-            : "bg-muted text-muted-foreground cursor-not-allowed"
-        }`}
+        className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2 ${allChecksComplete() && !stepCompletion[stepNumber]
+          ? "bg-emerald-500 text-white hover:bg-emerald-600"
+          : "bg-muted text-muted-foreground cursor-not-allowed"
+          }`}
         aria-disabled={!allChecksComplete() || stepCompletion[stepNumber]}
       >
         {stepCompletion[stepNumber] ? (
@@ -296,6 +296,7 @@ export default function Step5Page() {
   const rightColumn = (
     <div className="space-y-8">
       {checklistSection}
+      <StepNavigation currentStep={5} />
     </div>
   )
 
@@ -303,6 +304,7 @@ export default function Step5Page() {
     <div className="space-y-6">
       <StepProgress currentStep={stepNumber} />
       <TwoColumnLayout title={pageTitle} description={stepData.summary} left={leftColumn} right={rightColumn} />
+
 
       {showCompleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">

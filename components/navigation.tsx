@@ -52,23 +52,29 @@ export function Navigation() {
               Home
             </Link>
 
-            <Link
-              href="/about"
-              className={`text-sm font-medium hover:text-primary transition-colors ${pathname === "/about" ? "text-primary" : ""}`}
-            >
-              The Framework
-            </Link>
-
-            {/* Steps Dropdown */}
+            {/* The Framework Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setStepsMenuOpen(!stepsMenuOpen)}
-                className="flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors"
+                className={`flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors ${pathname === "/about" || pathname?.startsWith("/steps") ? "text-primary" : ""
+                  }`}
               >
-                Five Steps <ChevronDown className="w-4 h-4" />
+                The Framework <ChevronDown className="w-4 h-4" />
               </button>
               {stepsMenuOpen && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-popover border rounded-lg shadow-lg py-2">
+                  <Link
+                    href="/about"
+                    onClick={() => setStepsMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-accent"
+                  >
+                    <div className="w-6 h-6 flex items-center justify-center">
+                      {/* Placeholder for alignment or icon if needed */}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium">Overview</span>
+                    </div>
+                  </Link>
                   {steps.map((step) => (
                     <Link
                       key={step.num}
@@ -78,8 +84,8 @@ export function Navigation() {
                     >
                       <div
                         className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${stepCompletion[step.num]
-                            ? "bg-chart-2 text-white"
-                            : "bg-muted"
+                          ? "bg-chart-2 text-white"
+                          : "bg-muted"
                           }`}
                       >
                         {step.num}
@@ -114,11 +120,20 @@ export function Navigation() {
               <Link href="/" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Home
               </Link>
-              <Link href="/about" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                The framework
-              </Link>
               <div className="space-y-2">
-                <div className="text-sm font-medium text-muted-foreground">Five Steps</div>
+                <div className="text-sm font-medium text-muted-foreground">The Framework</div>
+                <Link
+                  href="/about"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-start gap-3 pl-4 py-1"
+                >
+                  <div className="w-6 h-6 flex items-center justify-center">
+                    {/* Placeholder for alignment */}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm">Overview</span>
+                  </div>
+                </Link>
                 {steps.map((step) => (
                   <Link
                     key={step.num}
@@ -128,8 +143,8 @@ export function Navigation() {
                   >
                     <div
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${stepCompletion[step.num]
-                          ? "bg-chart-2 text-white"
-                          : "bg-muted"
+                        ? "bg-chart-2 text-white"
+                        : "bg-muted"
                         }`}
                     >
                       {step.num}

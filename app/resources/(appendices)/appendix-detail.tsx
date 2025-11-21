@@ -6,16 +6,10 @@ import Link from "next/link"
 import TemplateForm from "@/src/components/TemplateForm"
 import { Glossary } from "@/src/components/appendices/Glossary"
 import { DecisionTree } from "@/src/components/appendices/DecisionTree"
+import { BackButton } from "@/src/components/back-button"
 
 import type { AppendixRecord } from "./[id]/page"
 import { PageShell } from "@/components/page-shell"
-
-export const BackLink = () => (
-  <Link href="/resources" className="inline-flex items-center gap-2 text-emerald-300 hover:underline">
-    <span aria-hidden="true">{"\u2190"}</span>
-    <span>Back to Resources</span>
-  </Link>
-)
 
 const renderTemplateForm = (appendix: AppendixRecord) => {
   if (!appendix.sections || appendix.sections.length === 0) {
@@ -127,7 +121,7 @@ export function AppendixDetail({ appendix }: { appendix: AppendixRecord }) {
       {appendix.id === "appendix8" && <DecisionTree />}
       {showTemplate ? renderTemplateForm(appendix) : renderBody(appendix, MarkdownRenderer, MarkdownComponents)}
 
-      <BackLink />
+      <BackButton />
     </PageShell>
   )
 }
