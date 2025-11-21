@@ -298,7 +298,7 @@ Perfect privacy is impossible, but **risk can be meaningfully managed** through 
 * ISO/TS 14265:2024 — Processing purposes classification
 * ISO 25237:2017 — Pseudonymisation
 
-0:{"buildId":"T2p7l1b50hZvLJHJcLsYp","rsc":["$","$1","c",{"children":[["$","$L2",null,{"appendix":{"id":"appendix7","number":7,"title":"Appendix 7 — De-identification Techniques and Privacy Evaluation","purpose":"Reference guidance on de-identification methods and how to evaluate re-identification risks in synthetic data projects.","template":false,"body":"$3","component":"ReadOnlyContent","type":"read","exportKey":"appendix7_deid_reference"}}],["$L4","$L5","$L6"],"$L7"]}],"loading":null,"isPartial":false}
+0:{"buildId":"WF14VE_XpzR_fKwgk4Yl3","rsc":["$","$1","c",{"children":[["$","$L2",null,{"appendix":{"id":"appendix7","number":7,"title":"Appendix 7 — De-identification Techniques and Privacy Evaluation","purpose":"Reference guidance on de-identification methods and how to evaluate re-identification risks in synthetic data projects.","template":false,"body":"$3","component":"ReadOnlyContent","type":"read","exportKey":"appendix7_deid_reference"}}],["$L4","$L5","$L6"],"$L7"]}],"loading":null,"isPartial":false}
 4:["$","script","script-0",{"src":"/SDGF/_next/static/chunks/34ee24179ca0df5c.js","async":true}]
 5:["$","script","script-1",{"src":"/SDGF/_next/static/chunks/3708046326082a93.js","async":true}]
 6:["$","script","script-2",{"src":"/SDGF/_next/static/chunks/3c1c2c6d31fa05ec.js","async":true}]
