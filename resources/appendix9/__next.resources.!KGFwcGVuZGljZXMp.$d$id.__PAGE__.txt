@@ -203,7 +203,7 @@ Some exceptions (e.g., law enforcement, serious threats, missing persons) are **
 * **NSW IPC Statutory Guidelines – Research (HRIP Act)**
 * **NSW IPC Statutory Guidelines – Management of Health Services (HRIP Act)**
 * See also **Appendix 3: The policy and legal framework underpinning this Framework**
-0:{"buildId":"jW_d_2r5iN7Divjj1llpq","rsc":["$","$1","c",{"children":[["$","$L2",null,{"appendix":{"id":"appendix9","number":9,"title":"Appendix 9 — The Lawful Pathways Explained","purpose":"Explain lawful routes for using or disclosing synthetic data when re-identification risk remains more than very low, including typical approvals and conditions.","template":false,"body":"$3","component":"ReadOnlyContent","type":"read","exportKey":"appendix9_lawful_pathways"}}],["$L4","$L5","$L6"],"$L7"]}],"loading":null,"isPartial":false}
+0:{"buildId":"T2p7l1b50hZvLJHJcLsYp","rsc":["$","$1","c",{"children":[["$","$L2",null,{"appendix":{"id":"appendix9","number":9,"title":"Appendix 9 — The Lawful Pathways Explained","purpose":"Explain lawful routes for using or disclosing synthetic data when re-identification risk remains more than very low, including typical approvals and conditions.","template":false,"body":"$3","component":"ReadOnlyContent","type":"read","exportKey":"appendix9_lawful_pathways"}}],["$L4","$L5","$L6"],"$L7"]}],"loading":null,"isPartial":false}
 4:["$","script","script-0",{"src":"/SDGF/_next/static/chunks/34ee24179ca0df5c.js","async":true}]
 5:["$","script","script-1",{"src":"/SDGF/_next/static/chunks/3708046326082a93.js","async":true}]
 6:["$","script","script-2",{"src":"/SDGF/_next/static/chunks/3c1c2c6d31fa05ec.js","async":true}]
