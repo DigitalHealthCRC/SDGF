@@ -121,7 +121,7 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
                 </div>
                 {appendix.pdfFilename && (
                   <a
-                    href={`/appendices_pdf/${appendix.pdfFilename}`}
+                    href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/appendices_pdf/${encodeURIComponent(appendix.pdfFilename)}`}
                     download
                     onClick={(e) => {
                       e.stopPropagation()
