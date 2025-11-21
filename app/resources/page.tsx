@@ -17,6 +17,7 @@ export type AppendixRecord = {
   type?: string
   roles: string[]
   roleDetails: Partial<Record<string, string[]>>
+  pdfFilename?: string
 }
 
 const APPENDICES_DIR = path.join(process.cwd(), "src/content/appendices")
@@ -63,6 +64,9 @@ const resolveRoles = (appendixNumber: number) => {
 const readAppendices = (): AppendixRecord[] => {
   if (!fs.existsSync(APPENDICES_DIR)) return []
 
+  const pdfDir = path.join(process.cwd(), "src/content/appendices_pdf")
+  const pdfFiles = fs.existsSync(pdfDir) ? fs.readdirSync(pdfDir) : []
+
   const files = fs.readdirSync(APPENDICES_DIR).filter((file) => file.endsWith(".json"))
 
   return files
@@ -77,7 +81,15 @@ const readAppendices = (): AppendixRecord[] => {
         const number = typeof raw.id === "number" ? raw.id : parseAppendixId(id)
         const { roles, roleDetails } = resolveRoles(number)
 
+        // Find matching PDF file
+        // Expected format: "APPENDIX X_ Title.pdf" or similar where X is the number
+        const pdfFilename = pdfFiles.find((pdf) => {
+          const match = pdf.match(/APPENDIX\s+(\d+)[_ ]/i)
+          return match && parseInt(match[1]) === number
+        })
+
         return {
+
           id,
           number,
           title: typeof raw.title === "string" && raw.title.trim().length > 0 ? raw.title : `Appendix ${number}`,
@@ -87,6 +99,7 @@ const readAppendices = (): AppendixRecord[] => {
           type: typeof raw.type === "string" ? raw.type : undefined,
           roles,
           roleDetails,
+          pdfFilename,
         }
       } catch {
         const number = parseAppendixId(fallbackId)
