@@ -77,11 +77,10 @@ export function Navigation() {
                       className="flex items-center gap-3 px-4 py-2 hover:bg-accent"
                     >
                       <div
-                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                          stepCompletion[step.num]
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${stepCompletion[step.num]
                             ? "bg-chart-2 text-white"
                             : "bg-muted"
-                        }`}
+                          }`}
                       >
                         {step.num}
                       </div>
@@ -99,12 +98,6 @@ export function Navigation() {
               className={`text-sm font-medium hover:text-primary transition-colors ${pathname?.startsWith("/resources") ? "text-primary" : ""}`}
             >
               Resources
-            </Link>
-            <Link
-              href="/templates"
-              className={`text-sm font-medium hover:text-primary transition-colors ${pathname === "/templates" ? "text-primary" : ""}`}
-            >
-              Templates
             </Link>
           </div>
 
@@ -134,11 +127,10 @@ export function Navigation() {
                     className="flex items-start gap-3 pl-4 py-1"
                   >
                     <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                        stepCompletion[step.num]
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${stepCompletion[step.num]
                           ? "bg-chart-2 text-white"
                           : "bg-muted"
-                      }`}
+                        }`}
                     >
                       {step.num}
                     </div>
@@ -150,9 +142,6 @@ export function Navigation() {
               </div>
               <Link href="/resources" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                 Resources
-              </Link>
-              <Link href="/templates" className="text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Templates
               </Link>
             </div>
           </div>

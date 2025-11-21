@@ -48,10 +48,10 @@
         placeholder: "Ask SynD Assistant anything about the SynD framework…",
       },
       startScreen: {
-        greeting: "Welcome to SynD Assistant! How can we help with synthetic data today?",
+        greeting: "Welcome to SynD Assistant! How can we help with synthetic data governace framework?",
         prompts: [
           {
-            label: "SynD overview",
+            label: "Overview",
             prompt: "Give me a high-level overview of the SynD Synthetic Health Data Governance Framework.",
             icon: "sparkle",
           },

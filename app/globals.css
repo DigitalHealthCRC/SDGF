@@ -149,6 +149,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -165,16 +166,6 @@ body {
   line-height: 1.6;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
 /* Focus visible styles for accessibility */
 *:focus-visible {
   outline: 2px solid var(--color-ring);
@@ -183,6 +174,7 @@ body {
 
 /* Print styles for PDF export */
 @media print {
+
   nav,
   .no-print {
     display: none !important;
@@ -196,4 +188,30 @@ body {
   .print-break {
     page-break-after: always;
   }
+}
+
+/* Multi-colored Blockquote Cards */
+blockquote:nth-of-type(5n+1) {
+  background-image: linear-gradient(to bottom right, color-mix(in oklab, var(--color-chart-1), transparent 80%), color-mix(in oklab, var(--color-chart-1), transparent 95%));
+  border-color: color-mix(in oklab, var(--color-chart-1), transparent 70%);
+}
+
+blockquote:nth-of-type(5n+2) {
+  background-image: linear-gradient(to bottom right, color-mix(in oklab, var(--color-chart-2), transparent 80%), color-mix(in oklab, var(--color-chart-2), transparent 95%));
+  border-color: color-mix(in oklab, var(--color-chart-2), transparent 70%);
+}
+
+blockquote:nth-of-type(5n+3) {
+  background-image: linear-gradient(to bottom right, color-mix(in oklab, var(--color-chart-3), transparent 80%), color-mix(in oklab, var(--color-chart-3), transparent 95%));
+  border-color: color-mix(in oklab, var(--color-chart-3), transparent 70%);
+}
+
+blockquote:nth-of-type(5n+4) {
+  background-image: linear-gradient(to bottom right, color-mix(in oklab, var(--color-chart-4), transparent 80%), color-mix(in oklab, var(--color-chart-4), transparent 95%));
+  border-color: color-mix(in oklab, var(--color-chart-4), transparent 70%);
+}
+
+blockquote:nth-of-type(5n+5) {
+  background-image: linear-gradient(to bottom right, color-mix(in oklab, var(--color-chart-5), transparent 80%), color-mix(in oklab, var(--color-chart-5), transparent 95%));
+  border-color: color-mix(in oklab, var(--color-chart-5), transparent 70%);
 }

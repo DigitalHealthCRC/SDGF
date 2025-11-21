@@ -67,7 +67,7 @@ function memIncrementAndCheck(map, key, limit, now = Date.now()) {
   return { allowed: true, count: entry.count };
 }
 
-export default {
+const worker = {
   async fetch(request, env) {
     // CORS configuration
     const DEFAULT_ORIGIN = 'https://digitalhealthcrc.github.io';
@@ -248,3 +248,5 @@ export default {
     }
   }
 };
+
+export default worker;

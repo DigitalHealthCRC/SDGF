@@ -1,0 +1,207 @@
+Here is **Appendix 9 converted to Markdown**, using **light styling only**, **no added content**, **no interpretation**, and keeping the text faithful to the uploaded file ****.
+
+There were **no tables** or **links** in the original document except references at the end, which are preserved exactly as text.
+
+---
+
+# **Appendix 9: The Lawful Pathways Explained**
+
+While there are differences between the sets of privacy principles that operate across Australian jurisdictions, there are many commonalities — particularly in how the principles both **facilitate** and **restrict** the sharing of personal information.
+
+Generally, organisations are permitted to collect personal information where the information is **necessary and relevant** for their functions or activities (and in some instances, with the individual’s consent). This is the **primary purpose** of collection. Organisations are then permitted to **use** and **disclose** the information for that primary purpose.
+
+If an organisation wishes to use or disclose personal information for a **secondary purpose**, it must meet at least one of a limited number of **exceptions** under privacy law.
+
+Under privacy law, using and sharing health data for synthetic health data projects will **always** be for a secondary purpose, because the primary purpose for collecting the data was to provide health services to individuals (see Step 1: *Assess the use case*).
+
+Synthetic health data requests generally involve handling personal information at two possible stages, each requiring a lawful pathway:
+
+1. **Selecting and handling the source data** used for synthetic data generation (source data is personal information).
+2. **Where synthetic data has more than very low re-identification risk**, and is therefore still considered personal information.
+
+---
+
+# **Multi-Party Projects**
+
+Where an organisation needs to collect personal information from others for synthetic health data generation, privacy and legal risks must be identified and managed.
+
+Examples include:
+
+* A health department disclosing data to another to create a **linked dataset**.
+* A health department disclosing data to a **university research team** to generate synthetic health data.
+
+In these scenarios, a **Privacy Impact Assessment (PIA)** must be completed. The PIA identifies the appropriate lawful pathway(s) for each participating organisation and the entire data flow.
+
+Possible lawful pathways are explained below. Organisations should also review the **Use and Disclosure** principles in the privacy laws that apply to them (see Appendix 3 for descriptions and links).
+
+---
+
+# **‘Directly Related’ and ‘Within Reasonable Expectations’**
+
+Privacy laws allow the use and sharing of health information for a secondary purpose if:
+
+* The secondary purpose is **directly related** to the primary purpose, and
+* The secondary purpose is **within the reasonable expectations** of the individual, and in some cases,
+* The organisation has no reason to believe the individual would object.
+
+Example:
+Using health information collected for treatment to send an **appointment reminder**.
+
+The NSW Privacy Commissioner describes a “directly related” purpose as something an individual would **reasonably expect** to occur with their personal information.
+
+Examples the NSW Privacy Commissioner considers appropriate include:
+
+* Providing information to someone involved in the patient’s **ongoing care**
+* **Investigating and managing incidents or complaints**
+* **Monitoring, evaluating or auditing** services
+* Managing a **legal claim** made by the patient
+
+If individuals were **not informed** (e.g., via a collection notice) that their information may be used or disclosed for the secondary purpose, reasonable expectation may not be established.
+
+Using or processing personal information for **de-identification** may in some cases be considered a normal business practice that is *incidental or directly related* to the primary purpose.
+
+### **Practical perspective**
+
+Using health information to generate synthetic health data can meet this pathway where:
+
+* The use case has a **clear public benefit** related to health services
+* The goal is to create a **de-identified** synthetic dataset with significantly reduced risk
+* Reasonable **consumer expectations** have been set about how their health information may be used
+
+These are reflected in **Appendix 4 — Use Case Assessment** and are explained in Step 1 of the Framework.
+
+---
+
+# **With Consent**
+
+Personal information may be used or disclosed for a secondary purpose if valid **consent** is obtained.
+
+To be valid, consent must be:
+
+* **Voluntary**
+* **Informed**
+* **Specific**
+* **Current**
+* **Given by a person with capacity**
+
+Consent must specifically cover:
+
+* The **purpose**
+* The **organisations** involved in handling the information
+
+Express consent (ticking a box, signing a form, verbally saying yes) is easier to evidence than implied consent.
+
+Mechanisms must exist to:
+
+* Record consent
+* Manage withdrawal of consent
+
+If earlier collected data did not include consent for synthetic data use, new consent must be obtained — unless another lawful pathway is available.
+
+### **Practical limitations**
+
+Obtaining consent is generally **not feasible** for large-scale synthetic health data projects, especially when data has already been collected.
+
+---
+
+# **Seeking Ethics Approval: Management of Health Services & Research Projects**
+
+Most privacy laws provide exceptions for using and sharing health information for:
+
+* **Management of health services**, and
+* **Research purposes**
+
+Both often require **Human Research Ethics Committee (HREC)** approval.
+
+HREC approval must cover:
+
+* Any **disclosure** between organisations
+* The **collection** and **use** of information to generate synthetic data
+
+For multi-jurisdictional projects, organisations should seek a single review from a **nationally certified HREC** under the **National Mutual Acceptance (NMA) scheme**.
+
+Where synthetic data is still personal information due to re-identification risk, HREC approval with **waiver of consent** is usually the most appropriate lawful pathway.
+
+---
+
+# **Required or Authorised Under Another Law**
+
+Personal information may be collected, used or disclosed if:
+
+* It is **required** under law, or
+* It is **authorised** under law
+
+If required, there is **no choice** (e.g., compulsory production under law enforcement powers).
+If authorised, the organisation may choose to act within the permitted scope.
+
+The OAIC warns that:
+
+> A practice is not “authorised” by law simply because no law prohibits it.
+> Authorization must be **clear and direct**.
+
+Examples include:
+
+* Laws governing an organisation’s **functions or services**
+* The **Data Availability and Transparency Act 2022 (Cth)**, which authorises certain data sharing
+
+---
+
+# **Effectively De-Identified to Be Safe for Sharing**
+
+Only **robustly and effectively de-identified** data can be considered safe to share.
+
+Under privacy law, de-identification must be understood in reference to **personal information**:
+
+> De-identified data means the person’s identity is no longer apparent, or cannot reasonably be ascertained.
+
+Even after removing direct identifiers, data may still be identifiable if identity can be re-established:
+
+* Using other datasets
+* Using contextual information
+
+The Australian Privacy Commissioner warns that:
+
+> De-identification may reduce, but does not eliminate, the risk of re-identification.
+
+Key points:
+
+* Identifiability includes the ability to **distinguish** someone, not just name them
+* De-identification must be **tested**
+* Some laws (e.g., WA PRIS Act) still regulate certain aspects of de-identified data (e.g., overseas transfers, prohibition on re-identification)
+
+Only data with **very low** re-identification risk can be considered safe for sharing.
+
+Data may be considered de-identified in one context (e.g., a secure enclave) but **re-identifiable** in another (e.g., publicly released).
+
+Re-identification risk is **not static** and must be re-assessed if:
+
+* Context changes
+* Environment changes
+* New data becomes available
+* A model or related data becomes exposed
+
+This Framework relies on this pathway where synthetic data has been de-identified to the point that it is no longer personal information.
+
+---
+
+# **Other Exceptions**
+
+Privacy laws may include additional exceptions, such as:
+
+* Temporary **Public Interest Directions (PID)**
+* Permanent **Health Privacy Codes of Practice (HPCOP)**
+* Equivalent mechanisms in other jurisdictions
+
+Some exceptions (e.g., law enforcement, serious threats, missing persons) are **not relevant** for synthetic health data.
+
+---
+
+# **Further Resources**
+
+* **OAIC Australian Privacy Principles Guidelines** (especially Chapter 6: APP 6 – Use or disclosure of personal information)
+* **Appendix 5** (Impact Assessment) – discussion of Aboriginal HRECs
+* **NHMRC Guidelines under Section 95A, Privacy Act 1988**
+* **NHMRC National Statement on Ethical Conduct in Human Research 2025**
+* **NSW IPC Statutory Guidelines – Research (HRIP Act)**
+* **NSW IPC Statutory Guidelines – Management of Health Services (HRIP Act)**
+* See also **Appendix 3: The policy and legal framework underpinning this Framework**

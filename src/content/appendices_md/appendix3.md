@@ -1,0 +1,169 @@
+Here is **Appendix 3 converted to Markdown**, with **light styling only**, **no added interpretation**, **all links preserved exactly**, and the **table fully converted**.
+
+All content ⟂ sourced from the uploaded file ****.
+
+---
+
+# **Appendix 3: The Policy and Legal Framework Underpinning This Framework**
+
+The system of privacy regulation in Australia is best described as a *“patchwork”*. Given the range of current and potential future SynD members, a range of privacy laws may apply to a single synthetic health data project.
+
+Federal government agencies and private sector organisations are generally regulated by the **Australian Privacy Principles (APPs)**, which sit under the **Privacy Act 1988 (Cth)**.
+
+State/Territory and local government agencies — including public universities — are generally regulated by their own State/Territory privacy laws. Some jurisdictions have multiple privacy laws and multiple sets of privacy principles.
+
+For example:
+
+* **NSW** has
+
+  * Information Protection Principles (IPPs) under the *Privacy and Personal Information Protection Act 1998 (NSW)* (PPIP Act)
+  * Health Privacy Principles (HPPs) under the *Health Records & Information Privacy Act 2002 (NSW)* (HRIP Act)
+* **South Australia** currently has *no specific privacy legislation* but has a mandatory **Information Privacy Principles Instruction**, issued by the Department of Premier and Cabinet.
+
+Some private sector organisations must comply with both federal and State/Territory privacy laws. For example, the NSW HRIP Act applies HPPs to *private* health service providers in addition to the federal APPs.
+
+Each privacy law establishes a set of privacy principles that govern:
+
+* Collection
+* Use
+* Disclosure
+* Data security
+* Data quality
+* Access and correction
+
+Privacy laws generally **prohibit disclosure** of personal information unless an exception applies.
+
+---
+
+## **Privacy Laws Potentially Applying to SynD Organisations**
+
+### **Commonwealth**
+
+* **Privacy Act 1988 (Cth)**
+  Applies to Commonwealth government agencies (including Commonwealth public universities) and private/NGO health service providers Australia-wide.
+
+---
+
+### **Australian Capital Territory (ACT)**
+
+* **Information Privacy Act 2014 (ACT)** (IP Act)
+
+  * Applies to ACT public sector agencies
+  * Contains 13 Territory Privacy Principles (TPPs)
+
+* **Health Records (Privacy and Access) Act 1997 (ACT)** (HRPA Act)
+
+  * Regulates health information
+  * Applies to both public and private sector health service providers
+  * Contains 12 Privacy Principles (PPs)
+
+---
+
+### **New South Wales (NSW)**
+
+* **Privacy and Personal Information Protection Act 1998 (NSW)** (PPIP Act)
+
+  * 12 Information Protection Principles (IPPs)
+
+* **Health Records and Information Privacy Act 2002 (NSW)** (HRIP Act)
+
+  * 15 Health Privacy Principles (HPPs)
+  * Applies to *all* private sector health service providers
+
+---
+
+### **Northern Territory (NT)**
+
+* **Information Act 2002 (NT)**
+
+  * Contains 10 Information Privacy Principles (NT IPPs)
+  * Applies to NT public sector agencies (including NT public universities)
+
+---
+
+### **Queensland (QLD)**
+
+* **Information Privacy Act 2009 (QLD)**
+
+  * Contains 13 Queensland Privacy Principles (QPPs)
+  * Applies to Queensland government agencies (including public universities)
+
+---
+
+### **South Australia (SA)**
+
+* *No specific privacy legislation*
+
+Instead:
+**Premier and Cabinet Circular 12 – Information Privacy Principles Instruction**
+
+* Contains 10 Information Privacy Principles (SA IPPs)
+* Creates a binding policy for SA public sector agencies
+* Not legislated
+* Establishes the **Privacy Committee of South Australia**
+
+---
+
+### **Tasmania (TAS)**
+
+* **Personal Information Protection Act 2004 (Tas)** (PIP Act)
+
+  * Contains 10 Personal Information Protection Principles (PIPPs)
+  * Applies to Tasmanian public sector agencies (including universities)
+
+---
+
+### **Victoria (VIC)**
+
+* **Privacy and Data Protection Act 2014 (Vic)** (PDP Act)
+
+  * 10 Information Privacy Principles (IPPs)
+
+* **Health Records Act 2011 (Vic)** (HR Act)
+
+  * 11 Health Privacy Principles (HPPs)
+  * Applies to both public and private sector health service providers
+
+---
+
+### **Western Australia (WA)**
+
+* **Privacy and Responsible Information Sharing Act 2024 (WA)** (PRIS Act)
+
+  * First comprehensive privacy legislation for WA
+  * Privacy provisions expected to commence **in 2026**
+  * Creates 11 Information Privacy Principles (WA IPPs) applying to WA public sector organisations
+  * Includes a legislative framework for responsible information sharing, including formal **information sharing agreements**
+
+---
+
+## **Other Relevant Laws**
+
+Organisations may also be subject to other laws controlling the handling of data, typically tied to specific functions or services.
+
+Example:
+
+* **Public Health Act 2010 (NSW)** — regulates specific types of public health data
+
+---
+
+## **Other Relevant Policies**
+
+SynD member organisations may have their own internal data policies governing the creation and handling of synthetic health data. These policies must operate alongside this Framework for any in-scope synthetic data request.
+
+---
+
+# **Summary Table: Applicable Australian Privacy Laws Regulating Health Information**
+
+*(Extracted directly and faithfully from the document — including the structure and markings)*
+
+| **Organisation**                                                                               | **Privacy Act / APPs** | **ACT HRPA Act / PPs** * | **NSW HRIP Act / HPPs** * | **NT IP Act / IPPs** * | **QLD IP Act / QPPs** * | **SA Privacy Instruction / IPPs** * | **TAS PIP Act / PIPPs** * | **VIC HR Act / HPPs** * | **WA PRIS Act / IPPs** * |
+| ---------------------------------------------------------------------------------------------- | ---------------------- | ------------------------ | ------------------------- | ---------------------- | ----------------------- | ----------------------------------- | ------------------------- | ----------------------- | ------------------------ |
+| **Private sector health service providers** (e.g., GPs, private hospitals)                     | Y                      | Y                        | Y                         | N                      | N                       | N                                   | N                         | Y                       | N                        |
+| **Health NGOs** (e.g., PHNs)                                                                   | Y                      | Y                        | Y                         | N                      | N                       | N                                   | N                         | Y                       | N                        |
+| **State/Territory public sector agencies** (e.g., public hospitals, state public universities) | N                      | Y                        | Y                         | Y                      | Y                       | Y                                   | Y                         | Y                       | Y                        |
+| **Commonwealth government agencies** (e.g., Department of Health, Disability and Ageing)       | Y                      | N                        | N                         | N                      | N                       | N                                   | N                         | N                       | N                        |
+
+*** If operating in the State or Territory**
+**** Where Entity A engages Entity B as a contracted service provider, the privacy laws applying to Entity A may also apply to Entity B**
+

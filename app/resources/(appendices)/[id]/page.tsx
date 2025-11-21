@@ -19,6 +19,7 @@ export type AppendixRecord = {
   exportKey?: string
   sections?: TemplateSection[]
   nodes?: Array<{ id: string; text: string; options: Array<{ label: string; next: string }> }>
+  terms?: Array<{ term: string; definition: string }>
 }
 
 const APPENDICES_DIR = path.join(process.cwd(), "src/content/appendices")
@@ -37,6 +38,8 @@ const parseAppendixNumber = (value: unknown, fallbackId: string) => {
   return Number.isNaN(numeric) ? 0 : numeric
 }
 
+const MD_DIR = path.join(process.cwd(), "src/content/appendices_md")
+
 const loadAppendix = (slug: string): AppendixRecord | null => {
   const filePath = path.join(APPENDICES_DIR, `${slug}.json`)
   if (!fs.existsSync(filePath)) return null
@@ -47,12 +50,18 @@ const loadAppendix = (slug: string): AppendixRecord | null => {
     const id = typeof candidateId === "string" && candidateId.trim().length > 0 ? candidateId : slug
     const number = parseAppendixNumber(raw.id, slug)
 
-    const body =
+    // Try to load markdown content
+    const mdPath = path.join(MD_DIR, `${slug}.md`)
+    let body =
       typeof raw.body === "string"
         ? raw.body
         : Array.isArray(raw.body)
           ? raw.body.filter((item: unknown) => typeof item === "string")
           : undefined
+
+    if (fs.existsSync(mdPath)) {
+      body = fs.readFileSync(mdPath, "utf8")
+    }
 
     return {
       id,
@@ -67,6 +76,7 @@ const loadAppendix = (slug: string): AppendixRecord | null => {
       exportKey: typeof raw.exportKey === "string" ? raw.exportKey : undefined,
       sections: Array.isArray(raw.sections) ? (raw.sections as TemplateSection[]) : undefined,
       nodes: Array.isArray(raw.nodes) ? raw.nodes : undefined,
+      terms: Array.isArray(raw.terms) ? raw.terms : undefined,
     }
   } catch {
     return null
