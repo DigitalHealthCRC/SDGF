@@ -58,13 +58,13 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-emerald-600/10" />
         <AuroraBackground />
         <div className="relative z-10 text-center px-6 py-16 md:py-20">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Synthetic Health Data Governance Framework</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Synthetic Health Data Governance Framework (DRAFT 1.01)</h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto text-pretty">
             A comprehensive governance framework for safely, legally, and ethically generating and using synthetic health data in Australia.
           </p>
         </div>
       </section>
-      
+
       <section className="mb-16 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/15 via-background/95 to-background/90 p-10 shadow-xl shadow-emerald-900/10">
         <div className="space-y-6 text-pretty">
           <h2 className="text-3xl font-bold text-balance">Overview</h2>
@@ -94,7 +94,7 @@ export default function Home() {
       </section>
 
 
-      
+
       {/*Who */}
       <section className="mb-16 rounded-3xl border border-sky-500/30 bg-gradient-to-br from-sky-500/20 via-background/95 to-background/90 p-8 shadow-xl shadow-sky-900/10">
         <div className="mb-16">
@@ -201,7 +201,7 @@ export default function Home() {
               <h3 className="font-semibold mb-2">Transparency and Accountability</h3>
               <p className="text-sm text-muted-foreground">
                 Open processes, clear documentation, and visible governance decisions build
-                confidence among stakeholders. Every stage of data creation, testing, 
+                confidence among stakeholders. Every stage of data creation, testing,
                 and use is recorded and explainable, ensuring ethical accountability across institutions.
               </p>
             </div>
@@ -346,7 +346,7 @@ export default function Home() {
           ))}
         </div>
         <p className="text-sm text-muted-foreground mt-6 text-center">
-          
+
         </p>
       </div>
 
