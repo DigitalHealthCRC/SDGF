@@ -6,6 +6,7 @@ import { useCallback, useRef } from "react"
 import GovernanceGraph from "@/src/components/GovernanceGraph"
 import SynDFlow, { SynDFlowHandle } from "@/src/components/SynDFlow"
 import { PageShell } from "@/components/page-shell"
+import { RoleLegend } from "@/src/components/RoleLegend"
 
 export default function About() {
   const flowRef = useRef<SynDFlowHandle | null>(null)
@@ -44,6 +45,8 @@ export default function About() {
           </div>
         </div>
       </header>
+
+      <RoleLegend />
 
       <section className="grid gap-8 lg:grid-cols-[minmax(0,_1.3fr)_minmax(0,_1.7fr)] lg:items-stretch xl:grid-cols-[minmax(0,_1.2fr)_minmax(0,_1.9fr)]">
         <div className="h-full">

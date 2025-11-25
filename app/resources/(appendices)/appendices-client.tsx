@@ -6,6 +6,7 @@ import { ArrowRight, Download, FileText, FileSpreadsheet, FileCode } from "lucid
 import type { AppendixRecord } from "../page";
 import { PageShell } from "@/components/page-shell";
 import { RoleBadge } from "@/src/components/RoleBadge";
+import { RoleLegend } from "@/src/components/RoleLegend";
 
 const cardGradients = [
   "from-chart-1/20 to-chart-1/5",
@@ -89,6 +90,8 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
         </p>
       </div>
 
+      <RoleLegend />
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-24">
         {appendices.map((appendix, index) => (
           <div key={appendix.id} className="group relative h-full">
@@ -159,17 +162,19 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
         {templates.map((template) => {
           const Icon = template.icon
           return (
-            <div key={template.title} className="bg-card border rounded-lg p-6 hover:border-primary transition-all">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="p-3 rounded-lg bg-muted">
-                  <Icon className="w-6 h-6" />
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs text-muted-foreground mb-1">{template.step}</div>
-                  <h3 className="font-semibold mb-2">{template.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs px-2 py-1 bg-muted rounded">{template.format}</span>
+            <div key={template.title} className="flex flex-col h-full bg-card border rounded-lg p-6 hover:border-primary transition-all">
+              <div className="flex-1">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="p-3 rounded-lg bg-muted">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs text-muted-foreground mb-1">{template.step}</div>
+                    <h3 className="font-semibold mb-2">{template.title}</h3>
+                    <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs px-2 py-1 bg-muted rounded">{template.format}</span>
+                    </div>
                   </div>
                 </div>
               </div>
