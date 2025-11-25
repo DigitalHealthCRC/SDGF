@@ -1,11 +1,15 @@
 {
   "id": 1,
-  "title": "Appendix 1 — About Synthetic Health Data",
+  "title": "Appendix 1 - About Synthetic Health Data",
   "purpose": "Explain what synthetic health data is, its benefits and limitations, and how it supports privacy when used within a governed process.",
   "type": "read",
   "component": "ReadOnlyContent",
   "template": false,
-  "personaVisibility": ["custodian", "requestor", "scientist"],
+  "personaVisibility": [
+    "custodian",
+    "requestor",
+    "scientist"
+  ],
   "exportKey": "appendix1_about",
   "body": [
     "Synthetic health data are data generated to resemble real health data in structure and statistical properties, without being direct copies of individual records. Their purpose is to enable analysis, development and testing activities while reducing direct privacy risks when compared with using identifiable source data.",

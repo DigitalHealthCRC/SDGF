@@ -1,11 +1,15 @@
 {
   "id": 9,
-  "title": "Appendix 9 — The Lawful Pathways Explained",
+  "title": "Appendix 9 - The Lawful Pathways Explained",
   "purpose": "Explain lawful routes for using or disclosing synthetic data when re-identification risk remains more than very low, including typical approvals and conditions.",
   "type": "read",
   "component": "ReadOnlyContent",
   "template": false,
-  "personaVisibility": ["custodian", "requestor", "scientist"],
+  "personaVisibility": [
+    "custodian",
+    "requestor",
+    "scientist"
+  ],
   "exportKey": "appendix9_lawful_pathways",
   "body": [
     "When re-identification risk is more than very low, synthetic data must be treated as personal information under privacy law. Use or sharing may proceed only under a suitable lawful pathway and with appropriate approvals.",

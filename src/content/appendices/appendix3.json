@@ -1,11 +1,15 @@
 {
   "id": 3,
-  "title": "Appendix 3 — Policy and Legal Framework",
+  "title": "Appendix 3 - Policy and Legal Framework",
   "purpose": "Explain the policy and legal context underpinning the Framework and how it guides lawful creation, use, and sharing of synthetic health data.",
   "type": "read",
   "component": "ReadOnlyContent",
   "template": false,
-  "personaVisibility": ["custodian", "requestor", "scientist"],
+  "personaVisibility": [
+    "custodian",
+    "requestor",
+    "scientist"
+  ],
   "exportKey": "appendix3_policy_legal",
   "body": [
     "The creation, use, and sharing of synthetic health data must be lawful. Organisations remain responsible for ensuring that activities undertaken under this Framework align with applicable privacy laws and organisational policies.",

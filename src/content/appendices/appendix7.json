@@ -1,11 +1,15 @@
 {
   "id": 7,
-  "title": "Appendix 7 — De-identification Techniques and Privacy Evaluation",
+  "title": "Appendix 7 - De-identification Techniques and Privacy Evaluation",
   "purpose": "Reference guidance on de-identification methods and how to evaluate re-identification risks in synthetic data projects.",
   "type": "read",
   "component": "ReadOnlyContent",
   "template": false,
-  "personaVisibility": ["custodian", "requestor", "scientist"],
+  "personaVisibility": [
+    "custodian",
+    "requestor",
+    "scientist"
+  ],
   "exportKey": "appendix7_deid_reference",
   "body": [
     "De-identification encompasses techniques that reduce the likelihood that an individual can be reasonably identified in a dataset. Removal or modification of direct identifiers alone is insufficient; residual risks must be evaluated in context.",
