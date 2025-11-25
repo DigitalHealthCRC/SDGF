@@ -2,7 +2,7 @@
 "use client"
 
 import { RoleBadge } from "@/src/components/RoleBadge"
-import type { FrameworkRole } from "@/src/lib/framework"
+import type { FrameworkRole } from "@/src/components/RoleBadge"
 
 interface RoleBadgeBarProps {
     accountable: FrameworkRole
