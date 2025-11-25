@@ -1,0 +1,41 @@
+{
+    "title": "Step 7 - Post-Sharing Assurance & Review",
+    "summary": "Provide continuous monitoring and assurance after sharing synthetic data to detect and respond to any policy breaches or privacy incidents.",
+    "checklist": [
+        "Establish ongoing monitoring processes for data use and access.",
+        "Review audit logs regularly for suspicious activity.",
+        "Respond to any incidents or breaches according to organizational policy.",
+        "Conduct periodic reviews of data sharing arrangements.",
+        "Confirm retention and destruction policies are followed."
+    ],
+    "readMore": [
+        "/resources/appendix10"
+    ],
+    "accountable": "DP",
+    "support_roles": [
+        "DR"
+    ],
+    "decisions": [
+        {
+            "question": "Has any policy breach or privacy incident been detected?",
+            "role": "DP",
+            "options": [
+                {
+                    "answer": "No",
+                    "next_phase": null
+                },
+                {
+                    "answer": "Yes",
+                    "action": "Revoke access and trigger audit (Appx 10)",
+                    "loop_to_phase": 5
+                }
+            ]
+        }
+    ],
+    "governance_intent": "Provide continuous monitoring and assurance after sharing.",
+    "operational_evidence": [
+        "Audit logs",
+        "Incident reports",
+        "Retention/destruction confirmation"
+    ]
+}

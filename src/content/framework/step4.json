@@ -8,5 +8,57 @@
     "If risk exceeds threshold, adjust synthesis parameters and retest.",
     "Document outcomes and sign-off by the responsible governance body."
   ],
-  "readMore": ["/resources/appendix10"]
+  "readMore": [
+    "/resources/appendix10"
+  ],
+  "accountable": "DP",
+  "support_roles": [
+    "DS",
+    "DR",
+    "GC"
+  ],
+  "decisions": [
+    {
+      "question": "What is the residual re-identification risk level?",
+      "role": "DP",
+      "options": [
+        {
+          "answer": "Very Low",
+          "next_phase": 5
+        },
+        {
+          "answer": "Low / Medium",
+          "action": "Mitigate and re-test",
+          "loop_to_phase": 4
+        },
+        {
+          "answer": "High",
+          "action": "Pause → PIA → GC approval (Appx 8/9)",
+          "pause": true,
+          "resume_to_phase": 4
+        }
+      ]
+    },
+    {
+      "question": "Is data utility still acceptable after mitigation?",
+      "role": "DS",
+      "options": [
+        {
+          "answer": "Yes",
+          "next_phase": 5
+        },
+        {
+          "answer": "No",
+          "action": "Regenerate dataset",
+          "loop_to_phase": 3
+        }
+      ]
+    }
+  ],
+  "governance_intent": "Ensure synthetic data satisfies 'very low risk' before release.",
+  "operational_evidence": [
+    "Re-ID metrics (Appx 7)",
+    "Utility report",
+    "GC review record (Appx 9)"
+  ]
 }

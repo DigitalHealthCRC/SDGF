@@ -1,3 +1,4 @@
+// app/steps/1/page.tsx
 "use client"
 
 import { useState } from "react"
@@ -10,12 +11,21 @@ import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import stepDataJson from "@/src/content/framework/step1.json"
 import { getAppendixLabelFromHref } from "@/src/lib/appendix-labels"
 import { StepNavigation } from "@/src/components/step-navigation"
+import { RoleBadgeBar } from "@/src/components/RoleBadgeBar"
+import { GovernanceIntentCard } from "@/src/components/GovernanceIntentCard"
+import { DecisionPanel } from "@/src/components/DecisionPanel"
+import { EvidenceChecklist } from "@/src/components/EvidenceChecklist"
 
 interface StepContent {
   title: string
   summary: string
   checklist: string[]
   readMore?: string[]
+  accountable: string
+  support_roles: string[]
+  decisions?: any[]
+  governance_intent?: string
+  operational_evidence?: string[]
 }
 
 interface StepFormState {
@@ -122,25 +132,22 @@ export default function Step1Page() {
     if (label) resourceMap.set(href, label)
   })
   const combinedResources = Array.from(resourceMap.entries()).map(([href, label]) => ({ href, label }))
-  const resourcesSection =
-    combinedResources.length > 0 ? (
-      <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 text-sm">
-        <h3 className="font-semibold text-foreground">Resources</h3>
-        <ul className="space-y-2 text-emerald-300">
-          {combinedResources.map(({ href, label }) => (
-            <li key={href}>
-              <Link href={href} className="hover:underline">
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ) : null
+
   const pageTitle = normaliseTitle(stepData.title)
+
+  const handleDecisionChange = (question: string, selected: any) => {
+    console.log("Decision", question, selected)
+  }
+
+  const evidenceItems = stepData.operational_evidence?.map((label) => ({ label })) || []
 
   const leftColumn = (
     <div className="space-y-6 text-sm">
+      <RoleBadgeBar accountable={stepData.accountable as any} supportRoles={stepData.support_roles as any} />
+      <GovernanceIntentCard intent={stepData.governance_intent ?? ""} />
+      {stepData.decisions && (
+        <DecisionPanel decisions={stepData.decisions} onDecisionChange={handleDecisionChange} />
+      )}
       <div>
         <h3 className="font-semibold text-foreground">Why This Step</h3>
         <p className="text-muted-foreground">
@@ -195,54 +202,47 @@ export default function Step1Page() {
           </div>
         </section>
       ))}
-
+      <EvidenceChecklist items={evidenceItems} />
       <div className="flex flex-wrap gap-3">
         <button
           type="button"
           onClick={handleSaveDraft}
           className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
         >
-          <Save className="h-4 w-4" />
-          Save Draft
+          <Save className="h-4 w-4" /> Save Draft
         </button>
         <button
           type="button"
           onClick={exportJSON}
           className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
         >
-          <Download className="h-4 w-4" />
-          Export JSON
+          <Download className="h-4 w-4" /> Export JSON
         </button>
         <button
           type="button"
           onClick={() => window.print()}
-          className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+          className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-5 focus-visible:outline-offset-2"
         >
-          <Printer className="h-4 w-4" />
-          Print
+          <Printer className="h-4 w-4" /> Print
         </button>
       </div>
-
       <button
         type="button"
         onClick={handleComplete}
         disabled={!allComplete || stepCompletion[stepNumber]}
-        className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2 ${allComplete && !stepCompletion[stepNumber]
+        className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-5 focus-visible:outline-offset-2 ${allComplete && !stepCompletion[stepNumber]
           ? "bg-emerald-500 text-white hover:bg-emerald-600"
-          : "bg-muted text-muted-foreground cursor-not-allowed"
-          }`}
+          : "bg-muted text-muted-foreground cursor-not-allowed"}`}
         aria-disabled={!allComplete || stepCompletion[stepNumber]}
       >
         {stepCompletion[stepNumber] ? (
           <span className="flex items-center justify-center gap-2">
-            <CheckCircle2 className="h-5 w-5" />
-            Step Completed
+            <CheckCircle2 className="h-5 w-5" /> Step Completed
           </span>
         ) : (
           "Mark Step Complete"
         )}
       </button>
-
       {stepCompletion[stepNumber] && (
         <Link
           href="/steps/2"
@@ -251,8 +251,20 @@ export default function Step1Page() {
           Continue to Step 2 ?
         </Link>
       )}
-
-      {resourcesSection}
+      {combinedResources.length > 0 && (
+        <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 text-sm">
+          <h3 className="font-semibold text-foreground">Resources</h3>
+          <ul className="space-y-2 text-emerald-300">
+            {combinedResources.map(({ href, label }) => (
+              <li key={href}>
+                <Link href={href} className="hover:underline">
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   )
 
@@ -267,8 +279,6 @@ export default function Step1Page() {
     <div className="space-y-6">
       <StepProgress currentStep={stepNumber} />
       <TwoColumnLayout title={pageTitle} description={stepData.summary} left={leftColumn} right={rightColumn} />
-
-
       {showCompleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="w-full max-w-md space-y-6 rounded-xl border border-border/60 bg-background p-6 shadow-2xl">
@@ -280,14 +290,14 @@ export default function Step1Page() {
               <button
                 type="button"
                 onClick={() => setShowCompleteModal(false)}
-                className="flex-1 rounded-lg border border-border/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+                className="flex-1 rounded-lg border border-border/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-5 focus-visible:outline-offset-2"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={confirmComplete}
-                className="flex-1 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+                className="flex-1 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-5 focus-visible:outline-offset-2"
               >
                 Confirm
               </button>

@@ -1,3 +1,4 @@
+// app/steps/2/page.tsx
 "use client"
 
 import { useState } from "react"
@@ -10,11 +11,21 @@ import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import stepDataJson from "@/src/content/framework/step2.json"
 import { getAppendixLabelFromHref } from "@/src/lib/appendix-labels"
 import { StepNavigation } from "@/src/components/step-navigation"
+import { RoleBadgeBar } from "@/src/components/RoleBadgeBar"
+import { GovernanceIntentCard } from "@/src/components/GovernanceIntentCard"
+import { DecisionPanel } from "@/src/components/DecisionPanel"
+import { EvidenceChecklist } from "@/src/components/EvidenceChecklist"
 
 interface StepContent {
   title: string
   summary: string
+  checklist: string[]
   readMore?: string[]
+  accountable: string
+  support_roles: string[]
+  decisions?: any[]
+  governance_intent?: string
+  operational_evidence?: string[]
 }
 
 interface StepFormState {
@@ -28,43 +39,16 @@ const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2
 export default function Step2Page() {
   const stepNumber = 2
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
-  const [formData, setFormData] = useState<StepFormState>(() => ({ ...getFormData(stepNumber) }))
+
+  const saved = (getFormData(stepNumber) as StepFormState) || {}
+  const [formData, setFormData] = useState<StepFormState>(saved)
   const [showCompleteModal, setShowCompleteModal] = useState(false)
 
-  const dataQualityChecks = [
-    {
-      id: "completeness",
-      label: "Data completeness assessed",
-      description: "Missing values, gaps, and coverage evaluated",
-    },
-    {
-      id: "accuracy",
-      label: "Data accuracy verified",
-      description: "Source data validated against known standards",
-    },
-    {
-      id: "consistency",
-      label: "Data consistency checked",
-      description: "Internal consistency and format standardisation confirmed",
-    },
-    {
-      id: "timeliness",
-      label: "Data timeliness evaluated",
-      description: "Currency and relevance of source data assessed",
-    },
-  ] as const
-
-  const fitnessChecks = [
-    { id: "representativeness", label: "Representativeness of source data confirmed" },
-    { id: "sampleSize", label: "Adequate sample size for synthesis" },
-    { id: "variableSelection", label: "Key variables identified and documented" },
-    { id: "biasAssessment", label: "Potential biases in source data assessed" },
-    { id: "dataLineage", label: "Data lineage and provenance documented" },
-  ] as const
-
   const allChecksComplete = () => {
+    const dataQualityChecks = ["completeness", "accuracy", "consistency", "timeliness"]
+    const fitnessChecks = ["representativeness", "sampleSize", "variableSelection", "biasAssessment", "dataLineage"]
     const checks = [...dataQualityChecks, ...fitnessChecks]
-    return checks.every((check) => Boolean(formData[check.id]))
+    return checks.every((id) => Boolean(formData[id]))
   }
 
   const handleCheckChange = (id: string, checked: boolean) => {
@@ -73,10 +57,13 @@ export default function Step2Page() {
     saveFormData(stepNumber, next)
   }
 
+  const handleDecisionChange = (question: string, selected: any) => {
+    console.log("Decision", question, selected)
+    // Store decision if needed
+  }
+
   const handleComplete = () => {
-    if (allChecksComplete()) {
-      setShowCompleteModal(true)
-    }
+    if (allChecksComplete()) setShowCompleteModal(true)
   }
 
   const confirmComplete = () => {
@@ -90,12 +77,7 @@ export default function Step2Page() {
     const payload = {
       step: normaliseTitle(stepData.title),
       summary: stepData.summary,
-      checks: [...dataQualityChecks, ...fitnessChecks].map((item) => ({
-        id: item.id,
-        label: item.label,
-        completed: Boolean(formData[item.id]),
-      })),
-      notes: formData.notes || "",
+      checks: Object.entries(formData).map(([k, v]) => ({ id: k, completed: Boolean(v) })),
       exportedAt: new Date().toISOString(),
     }
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
@@ -113,64 +95,26 @@ export default function Step2Page() {
     { href: "/resources/appendix6", label: "Technical Assessment Template (Appendix 6)" },
   ]
   const resourceMap = new Map<string, string>()
-  curatedResources.forEach((resource) => {
-    resourceMap.set(resource.href, resource.label)
-  })
+  curatedResources.forEach((r) => resourceMap.set(r.href, r.label))
   readMoreLinks.forEach((href) => {
     const label = getAppendixLabelFromHref(href)
     if (label) resourceMap.set(href, label)
   })
   const combinedResources = Array.from(resourceMap.entries()).map(([href, label]) => ({ href, label }))
-  const notesSection = (
-    <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-foreground">Notes & next steps</h3>
-      <p className="text-sm text-muted-foreground">Document required remediation before you proceed.</p>
-      <textarea
-        value={(formData.notes as string) || ""}
-        onChange={(event) => {
-          const next = { ...formData, notes: event.target.value }
-          setFormData(next)
-          saveFormData(stepNumber, next)
-        }}
-        placeholder="List data quality issues, remediation actions, and responsible owners..."
-        className="h-32 w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
-      />
-    </section>
-  )
 
-  const resourcesSection =
-    combinedResources.length > 0 ? (
-      <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
-        <h3 className="text-lg font-semibold text-foreground">Resources</h3>
-        <ul className="space-y-2 text-sm text-emerald-300">
-          {combinedResources.map(({ href, label }) => (
-            <li key={href}>
-              <Link href={href} className="hover:underline">
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ) : null
-
-  const supplementarySection = resourcesSection ? (
-    <div className="grid gap-6 lg:grid-cols-2">
-      {resourcesSection}
-      {notesSection}
-    </div>
-  ) : (
-    notesSection
-  )
   const pageTitle = normaliseTitle(stepData.title)
 
   const leftColumn = (
     <div className="space-y-6 text-sm">
+      <RoleBadgeBar accountable={stepData.accountable as any} supportRoles={stepData.support_roles as any} />
+      <GovernanceIntentCard intent={stepData.governance_intent ?? ""} />
+      {stepData.decisions && (
+        <DecisionPanel decisions={stepData.decisions} onDecisionChange={handleDecisionChange} />
+      )}
       <div>
         <h3 className="font-semibold text-foreground">Why This Step</h3>
         <p className="text-muted-foreground">
-          Ensure source data quality and fitness for purpose before synthesis. Poor quality input leads to poor quality
-          synthetic data.
+          Ensure source data quality and fitness for purpose before synthesis. Poor quality input leads to poor quality synthetic data.
         </p>
       </div>
       <div>
@@ -197,18 +141,24 @@ export default function Step2Page() {
 
   const checklistSection = (
     <div className="space-y-6">
+      {/* Data Quality Checks */}
       <section className="space-y-4 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
         <header className="space-y-2">
           <h2 className="text-xl font-semibold text-foreground">Data Quality Assessment</h2>
           <p className="text-sm text-muted-foreground">Evaluate readiness across core quality dimensions.</p>
         </header>
         <div className="space-y-3">
-          {dataQualityChecks.map((check) => (
+          {[
+            { id: "completeness", label: "Data completeness assessed", description: "Missing values, gaps, and coverage evaluated" },
+            { id: "accuracy", label: "Data accuracy verified", description: "Source data validated against known standards" },
+            { id: "consistency", label: "Data consistency checked", description: "Internal consistency and format standardisation confirmed" },
+            { id: "timeliness", label: "Data timeliness evaluated", description: "Currency and relevance of source data assessed" },
+          ].map((check) => (
             <label key={check.id} className="flex items-start gap-3">
               <input
                 type="checkbox"
                 checked={Boolean(formData[check.id])}
-                onChange={(event) => handleCheckChange(check.id, event.target.checked)}
+                onChange={(e) => handleCheckChange(check.id, e.target.checked)}
                 className="mt-1 h-4 w-4 rounded border-border text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
                 aria-label={`Toggle ${check.label}`}
               />
@@ -221,18 +171,25 @@ export default function Step2Page() {
         </div>
       </section>
 
+      {/* Fitness for Purpose Checks */}
       <section className="space-y-4 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
         <header className="space-y-2">
           <h2 className="text-xl font-semibold text-foreground">Fitness for Purpose</h2>
           <p className="text-sm text-muted-foreground">Confirm the dataset can support the intended synthesis use case.</p>
         </header>
         <div className="space-y-3">
-          {fitnessChecks.map((check) => (
+          {[
+            { id: "representativeness", label: "Representativeness of source data confirmed" },
+            { id: "sampleSize", label: "Adequate sample size for synthesis" },
+            { id: "variableSelection", label: "Key variables identified and documented" },
+            { id: "biasAssessment", label: "Potential biases in source data assessed" },
+            { id: "dataLineage", label: "Data lineage and provenance documented" },
+          ].map((check) => (
             <label key={check.id} className="flex items-start gap-3">
               <input
                 type="checkbox"
                 checked={Boolean(formData[check.id])}
-                onChange={(event) => handleCheckChange(check.id, event.target.checked)}
+                onChange={(e) => handleCheckChange(check.id, e.target.checked)}
                 className="mt-1 h-4 w-4 rounded border-border text-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500"
                 aria-label={`Toggle ${check.label}`}
               />
@@ -242,30 +199,29 @@ export default function Step2Page() {
         </div>
       </section>
 
+      <EvidenceChecklist items={stepData.operational_evidence?.map((label) => ({ label })) || []} />
+
       <div className="flex flex-wrap gap-3">
         <button
           type="button"
           onClick={handleSaveDraft}
           className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
         >
-          <Save className="h-4 w-4" />
-          Save Draft
+          <Save className="h-4 w-4" /> Save Draft
         </button>
         <button
           type="button"
           onClick={exportJSON}
-          className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+          className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-5 focus-visible:outline-offset-2"
         >
-          <Download className="h-4 w-4" />
-          Export JSON
+          <Download className="h-4 w-4" /> Export JSON
         </button>
         <button
           type="button"
           onClick={() => window.print()}
-          className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+          className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-5 focus-visible:outline-offset-2"
         >
-          <Printer className="h-4 w-4" />
-          Print
+          <Printer className="h-4 w-4" /> Print
         </button>
       </div>
 
@@ -273,16 +229,14 @@ export default function Step2Page() {
         type="button"
         onClick={handleComplete}
         disabled={!allChecksComplete() || stepCompletion[stepNumber]}
-        className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2 ${allChecksComplete() && !stepCompletion[stepNumber]
+        className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-5 focus-visible:outline-offset-2 ${allChecksComplete() && !stepCompletion[stepNumber]
           ? "bg-emerald-500 text-white hover:bg-emerald-600"
-          : "bg-muted text-muted-foreground cursor-not-allowed"
-          }`}
+          : "bg-muted text-muted-foreground cursor-not-allowed"}`}
         aria-disabled={!allChecksComplete() || stepCompletion[stepNumber]}
       >
         {stepCompletion[stepNumber] ? (
           <span className="flex items-center justify-center gap-2">
-            <CheckCircle2 className="h-5 w-5" />
-            Step Completed
+            <CheckCircle2 className="h-5 w-5" /> Step Completed
           </span>
         ) : (
           "Mark Step Complete"
@@ -298,7 +252,20 @@ export default function Step2Page() {
         </Link>
       )}
 
-      {supplementarySection}
+      {combinedResources.length > 0 && (
+        <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 text-sm">
+          <h3 className="font-semibold text-foreground">Resources</h3>
+          <ul className="space-y-2 text-emerald-300">
+            {combinedResources.map(({ href, label }) => (
+              <li key={href}>
+                <Link href={href} className="hover:underline">
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   )
 
@@ -313,8 +280,6 @@ export default function Step2Page() {
     <div className="space-y-6">
       <StepProgress currentStep={stepNumber} />
       <TwoColumnLayout title={pageTitle} description={stepData.summary} left={leftColumn} right={rightColumn} />
-
-
       {showCompleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="w-full max-w-md space-y-6 rounded-xl border border-border/60 bg-background p-6 shadow-2xl">
@@ -326,14 +291,14 @@ export default function Step2Page() {
               <button
                 type="button"
                 onClick={() => setShowCompleteModal(false)}
-                className="flex-1 rounded-lg border border-border/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+                className="flex-1 rounded-lg border border-border/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-5 focus-visible:outline-offset-2"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={confirmComplete}
-                className="flex-1 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2"
+                className="flex-1 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-5 focus-visible:outline-offset-2"
               >
                 Confirm
               </button>

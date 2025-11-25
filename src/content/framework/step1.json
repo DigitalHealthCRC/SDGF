@@ -8,5 +8,58 @@
     "Document benefits, potential impacts and intended outcomes.",
     "If complex or novel, escalate to a governance committee for review."
   ],
-  "readMore": ["/resources/appendix4", "/resources/appendix5"]
+  "readMore": [
+    "/resources/appendix4",
+    "/resources/appendix5"
+  ],
+  "accountable": "DP",
+  "support_roles": [
+    "DR",
+    "GC"
+  ],
+  "decisions": [
+    {
+      "question": "Is the proposed use case lawful and ethical?",
+      "role": "DP",
+      "options": [
+        {
+          "answer": "Yes",
+          "next_phase": 2
+        },
+        {
+          "answer": "Unclear",
+          "action": "Pause → PIA → GC review",
+          "pause": true,
+          "resume_to_phase": 2
+        },
+        {
+          "answer": "No",
+          "action": "Reject request",
+          "terminate": true
+        }
+      ]
+    },
+    {
+      "question": "Does the project involve high-risk data (sensitive, cross-jurisdictional)?",
+      "role": "DP",
+      "options": [
+        {
+          "answer": "No",
+          "next_phase": 2
+        },
+        {
+          "answer": "Yes",
+          "action": "Follow lawful pathway C/D (Appx 9)",
+          "pause": true,
+          "resume_to_phase": 2
+        }
+      ]
+    }
+  ],
+  "governance_intent": "Ensure the use case meets ethical and legal prerequisites before data preparation.",
+  "operational_evidence": [
+    "Appendix 4 Use Case Assessment",
+    "Appendix 5 Impact Assessment",
+    "PIA if triggered (Appx 9)"
+  ]
 }

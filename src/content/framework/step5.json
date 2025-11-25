@@ -8,5 +8,35 @@
     "Apply retention and disposal policies consistent with data governance standards.",
     "Undertake periodic review and re-approval for ongoing use."
   ],
-  "readMore": ["/resources/appendix11"]
+  "readMore": [
+    "/resources/appendix11"
+  ],
+  "accountable": "DP",
+  "support_roles": [
+    "DR",
+    "DS"
+  ],
+  "decisions": [
+    {
+      "question": "Are all Five Safes satisfied?",
+      "role": "DP",
+      "options": [
+        {
+          "answer": "Yes",
+          "next_phase": 6
+        },
+        {
+          "answer": "No",
+          "action": "Revise controls or access conditions",
+          "loop_to_phase": 5
+        }
+      ]
+    }
+  ],
+  "governance_intent": "Verify that environment, people, and data controls satisfy the Five Safes framework.",
+  "operational_evidence": [
+    "Completed Five Safes checklist (Appx 10)",
+    "Access control records",
+    "DP sign-off"
+  ]
 }

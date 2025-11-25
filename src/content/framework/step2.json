@@ -1,5 +1,5 @@
 {
-  "title": "Step 2 - Assess and Prepare the Source Data",
+  "title": "Step 2 - Assess & Prepare Source Data",
   "summary": "Determine whether the original dataset is suitable for synthetic generation. Apply governance, data quality and privacy checks before data access.",
   "checklist": [
     "Verify data custodianship, lawful basis and data sharing agreements.",
@@ -8,5 +8,68 @@
     "Assess risks of re-identification in the source dataset.",
     "Document any required approvals or ethics clearance."
   ],
-  "readMore": ["/resources/appendix6", "/resources/appendix7"]
+  "readMore": [
+    "/resources/appendix6",
+    "/resources/appendix7"
+  ],
+  "accountable": "DP",
+  "support_roles": [
+    "DR",
+    "DS"
+  ],
+  "decisions": [
+    {
+      "question": "Is source data lawfully owned and available for synthesis?",
+      "role": "DP",
+      "options": [
+        {
+          "answer": "Yes",
+          "next_phase": 3
+        },
+        {
+          "answer": "No",
+          "action": "Escalate to GC (Appx 9)",
+          "pause": true,
+          "resume_to_phase": 3
+        }
+      ]
+    },
+    {
+      "question": "Is linkage to external datasets required?",
+      "role": "DS",
+      "options": [
+        {
+          "answer": "No",
+          "next_phase": 3
+        },
+        {
+          "answer": "Yes",
+          "action": "Trigger complex scenario (Appx 8)",
+          "pause": true,
+          "resume_to_phase": 3
+        }
+      ]
+    },
+    {
+      "question": "Is data quality and representativeness adequate?",
+      "role": "DS",
+      "options": [
+        {
+          "answer": "Yes",
+          "next_phase": 3
+        },
+        {
+          "answer": "No",
+          "action": "Refine pre-processing plan",
+          "loop_to_phase": 2
+        }
+      ]
+    }
+  ],
+  "governance_intent": "Confirm lawful availability, readiness, and data quality before synthesis.",
+  "operational_evidence": [
+    "Ownership confirmation",
+    "Profiling report (Appx 6)",
+    "Cross-custodian agreements"
+  ]
 }

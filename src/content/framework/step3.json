@@ -8,5 +8,51 @@
     "Conduct internal testing for quality, representativeness and bias.",
     "Store synthesis scripts securely and maintain provenance logs."
   ],
-  "readMore": ["/resources/appendix8", "/resources/appendix9"]
+  "readMore": [
+    "/resources/appendix8",
+    "/resources/appendix9"
+  ],
+  "accountable": "DP",
+  "support_roles": [
+    "DS",
+    "DR"
+  ],
+  "decisions": [
+    {
+      "question": "Does the synthetic dataset achieve adequate utility?",
+      "role": "DS",
+      "options": [
+        {
+          "answer": "Yes",
+          "next_phase": 4
+        },
+        {
+          "answer": "No",
+          "action": "Retrain or tune model",
+          "loop_to_phase": 3
+        }
+      ]
+    },
+    {
+      "question": "Has privacy risk increased due to overfitting?",
+      "role": "DS",
+      "options": [
+        {
+          "answer": "No",
+          "next_phase": 4
+        },
+        {
+          "answer": "Yes",
+          "action": "Apply additional privacy controls (Appx 8)",
+          "loop_to_phase": 3
+        }
+      ]
+    }
+  ],
+  "governance_intent": "Balance data utility with privacy during generation.",
+  "operational_evidence": [
+    "Model parameters + logs",
+    "Utility metrics",
+    "DP oversight record"
+  ]
 }
