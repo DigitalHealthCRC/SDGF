@@ -21,6 +21,7 @@ export function Navigation() {
     { num: 3, title: "Generate Synthetic Data", path: "/steps/3" },
     { num: 4, title: "Assess Re-ID Risks", path: "/steps/4" },
     { num: 5, title: "Manage Residual Risks", path: "/steps/5" },
+    { num: 6, title: "Final Considerations", path: "/steps/6" },
   ]
 
   return (

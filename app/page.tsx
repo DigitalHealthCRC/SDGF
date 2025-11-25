@@ -4,10 +4,12 @@ import Link from "next/link"
 import { Users, Shield, FlaskConical, CheckCircle2, HeartPulse, Database, Building2, Microscope, Scale } from "lucide-react"
 
 import { AuroraBackground } from "@/components/aurora-background"
+import { RoleBadge } from "@/src/components/RoleBadge"
 
 const personaCards = [
   {
     id: "requestor",
+    role: "DR",
     title: "Data Requestor / End User",
     icon: Users,
     description: "I need synthetic health data for research, education, or development.",
@@ -21,6 +23,7 @@ const personaCards = [
   },
   {
     id: "custodian",
+    role: "DP",
     title: "Data Custodian / Provider",
     icon: Shield,
     description: "I manage and govern synthetic health data generation and sharing.",
@@ -35,6 +38,7 @@ const personaCards = [
   },
   {
     id: "scientist",
+    role: "DS",
     title: "Data Scientist / Ethics Committee",
     icon: FlaskConical,
     description: "I provide technical expertise or ethical oversight.",
@@ -114,7 +118,10 @@ export default function Home() {
                         <Icon className="w-6 h-6" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-lg mb-2">{persona.title}</h3>
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="font-semibold text-lg">{persona.title}</h3>
+                          <RoleBadge role={persona.role} />
+                        </div>
                         <p className="text-sm text-muted-foreground">{persona.description}</p>
                       </div>
                     </div>
@@ -324,13 +331,14 @@ export default function Home() {
             Explore The Framework
           </Link>
         </div>
-        <div className="grid md:grid-cols-5 gap-4">
+        <div className="grid md:grid-cols-6 gap-4">
           {[
             { num: 1, title: "Assess Use Case", desc: "Confirm eligibility and public benefit" },
             { num: 2, title: "Prepare Source Data", desc: "Validate data quality and fitness" },
             { num: 3, title: "Generate Synthetic Data", desc: "Document synthesis approach" },
             { num: 4, title: "Assess Re-ID Risks", desc: "Test and manage privacy risks" },
             { num: 5, title: "Manage Residual Risks", desc: "Ensure safe sharing practices" },
+            { num: 6, title: "Final Considerations", desc: "Sign-off and ongoing assurance" },
           ].map((step) => (
             <div key={step.num} className="text-center">
               <Link

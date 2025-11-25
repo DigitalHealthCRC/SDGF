@@ -9,7 +9,7 @@ interface StepNavigationProps {
 
 export function StepNavigation({ currentStep }: StepNavigationProps) {
     const prevStep = currentStep > 1 ? currentStep - 1 : null
-    const nextStep = currentStep < 5 ? currentStep + 1 : null
+    const nextStep = currentStep < 6 ? currentStep + 1 : null
 
     return (
         <div className="mt-8 flex items-center justify-between border-t border-border/60 pt-4">

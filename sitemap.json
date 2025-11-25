@@ -1,0 +1,130 @@
+{
+    "home": {
+        "title": "Home",
+        "url": "/SDGF/",
+        "children": [
+            "framework_overview",
+            "resources",
+            "about_synd"
+        ]
+    },
+    "framework_overview": {
+        "title": "Framework Overview",
+        "url": "/SDGF/about",
+        "children": [
+            "step1",
+            "step2",
+            "step3",
+            "step4",
+            "step5",
+            "final_considerations"
+        ]
+    },
+    "step1": {
+        "title": "Step 1 – Assess Use Case",
+        "url": "/SDGF/steps/1",
+        "children": []
+    },
+    "step2": {
+        "title": "Step 2 – Prepare Source Data",
+        "url": "/SDGF/steps/2",
+        "children": []
+    },
+    "step3": {
+        "title": "Step 3 – Generate Synthetic Data",
+        "url": "/SDGF/steps/3",
+        "children": []
+    },
+    "step4": {
+        "title": "Step 4 – Assess Re-ID Risks",
+        "url": "/SDGF/steps/4",
+        "children": []
+    },
+    "step5": {
+        "title": "Step 5 – Manage Residual Risks",
+        "url": "/SDGF/steps/5",
+        "children": []
+    },
+    "final_considerations": {
+        "title": "Final Considerations – Decision, Sign-off & Post-Sharing Assurance",
+        "url": "/SDGF/steps/6",
+        "children": []
+    },
+    "resources": {
+        "title": "Resources",
+        "url": "/SDGF/resources",
+        "children": [
+            "appendix1",
+            "appendix2",
+            "appendix3",
+            "appendix4",
+            "appendix5",
+            "appendix6",
+            "appendix7",
+            "appendix8",
+            "appendix9",
+            "appendix10",
+            "appendix11"
+        ]
+    },
+    "appendix1": {
+        "title": "Appendix 1 – About Synthetic Health Data",
+        "url": "/SDGF/resources/appendix1",
+        "children": []
+    },
+    "appendix2": {
+        "title": "Appendix 2 – Glossary",
+        "url": "/SDGF/resources/appendix2",
+        "children": []
+    },
+    "appendix3": {
+        "title": "Appendix 3 – Technical Requirements",
+        "url": "/SDGF/resources/appendix3",
+        "children": []
+    },
+    "appendix4": {
+        "title": "Appendix 4 – Data Stewardship",
+        "url": "/SDGF/resources/appendix4",
+        "children": []
+    },
+    "appendix5": {
+        "title": "Appendix 5 – Privacy & Safety",
+        "url": "/SDGF/resources/appendix5",
+        "children": []
+    },
+    "appendix6": {
+        "title": "Appendix 6 – Evaluation Metrics",
+        "url": "/SDGF/resources/appendix6",
+        "children": []
+    },
+    "appendix7": {
+        "title": "Appendix 7 – Use Case Templates",
+        "url": "/SDGF/resources/appendix7",
+        "children": []
+    },
+    "appendix8": {
+        "title": "Appendix 8 – Decision Tree",
+        "url": "/SDGF/resources/appendix8",
+        "children": []
+    },
+    "appendix9": {
+        "title": "Appendix 9 – Governance Checklist",
+        "url": "/SDGF/resources/appendix9",
+        "children": []
+    },
+    "appendix10": {
+        "title": "Appendix 10 – Synthetic Data Evaluation Guide",
+        "url": "/SDGF/resources/appendix10",
+        "children": []
+    },
+    "appendix11": {
+        "title": "Appendix 11 – End-to-End Examples",
+        "url": "/SDGF/resources/appendix11",
+        "children": []
+    },
+    "about_synd": {
+        "title": "About SynD",
+        "url": "/SDGF/about-synd",
+        "children": []
+    }
+}

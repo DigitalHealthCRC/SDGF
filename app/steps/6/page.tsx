@@ -8,7 +8,7 @@ import { AlertCircle, CheckCircle2, Download, Printer, Save } from "lucide-react
 import { StepProgress } from "@/components/step-progress"
 import { useProgress } from "@/lib/progress-context"
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
-import stepDataJson from "@/src/content/framework/step6.json"
+import stepDataJson from "@/src/content/framework/final_considerations.json"
 import { getAppendixLabelFromHref } from "@/src/lib/appendix-labels"
 import { StepNavigation } from "@/src/components/step-navigation"
 import { RoleBadgeBar } from "@/src/components/RoleBadgeBar"
@@ -34,7 +34,7 @@ interface StepFormState {
 
 const stepData = stepDataJson as StepContent
 
-const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Step 6: Final Decision & Sign-off")
+const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Final Considerations: Decision, Sign-off & Post-Sharing Assurance")
 
 const ensureChecklist = (source: boolean[] | undefined, length: number) =>
     Array.from({ length }, (_, idx) => (Array.isArray(source) ? Boolean(source[idx]) : false))
@@ -88,7 +88,7 @@ export default function Step6Page() {
         const url = URL.createObjectURL(blob)
         const link = document.createElement("a")
         link.href = url
-        link.download = "step6-final-decision-signoff.json"
+        link.download = "final-considerations.json"
         link.click()
         URL.revokeObjectURL(url)
     }
@@ -100,6 +100,7 @@ export default function Step6Page() {
     const readMoreLinks = stepData.readMore ?? []
     const curatedResources = [
         { href: "/resources/appendix11", label: "Final Sign-off Record (Appendix 11)" },
+        { href: "/resources/appendix10", label: "Post-Sharing Assurance (Appendix 10)" },
     ]
     const resourceMap = new Map<string, string>()
     curatedResources.forEach((resource) => {
@@ -124,7 +125,7 @@ export default function Step6Page() {
             <div>
                 <h3 className="font-semibold text-foreground">Why This Step</h3>
                 <p className="text-muted-foreground">
-                    Formally close the governance process with signed authorisation after all preceding assessments have been completed.
+                    Formally close the governance process with signed authorisation and establish continuous monitoring and assurance after sharing synthetic data.
                 </p>
             </div>
             <div>
@@ -137,14 +138,14 @@ export default function Step6Page() {
             </div>
             <div>
                 <h3 className="font-semibold text-foreground">Time Estimate</h3>
-                <p className="text-muted-foreground">30-45 minutes</p>
+                <p className="text-muted-foreground">45-60 minutes (initial setup) + ongoing monitoring</p>
             </div>
             <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 p-4 text-sm text-muted-foreground">
                 <div className="mb-2 flex items-center gap-2 text-emerald-500">
                     <CheckCircle2 className="h-5 w-5" />
-                    <span className="font-semibold">Final governance checkpoint</span>
+                    <span className="font-semibold">Final governance checkpoint & ongoing assurance</span>
                 </div>
-                This step formally authorises the synthetic data for release. Ensure all documentation is complete and archived.
+                This step formally authorises the synthetic data for release and establishes continuous monitoring. Ensure all documentation is complete and archived.
             </div>
         </div>
     )
@@ -153,8 +154,8 @@ export default function Step6Page() {
         <div className="space-y-6">
             <section className="space-y-4 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
                 <header>
-                    <h2 className="text-xl font-semibold text-foreground">Final Sign-off Checklist</h2>
-                    <p className="text-sm text-muted-foreground">Complete all tasks to obtain formal authorisation for data release.</p>
+                    <h2 className="text-xl font-semibold text-foreground">Final Considerations Checklist</h2>
+                    <p className="text-sm text-muted-foreground">Complete all tasks for formal authorisation and establish ongoing monitoring.</p>
                 </header>
                 <div className="space-y-3">
                     {stepData.checklist.map((label, index) => (
@@ -203,8 +204,8 @@ export default function Step6Page() {
                 onClick={handleComplete}
                 disabled={!allComplete || stepCompletion[stepNumber]}
                 className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2 ${allComplete && !stepCompletion[stepNumber]
-                        ? "bg-emerald-500 text-white hover:bg-emerald-600"
-                        : "bg-muted text-muted-foreground cursor-not-allowed"
+                    ? "bg-emerald-500 text-white hover:bg-emerald-600"
+                    : "bg-muted text-muted-foreground cursor-not-allowed"
                     }`}
                 aria-disabled={!allComplete || stepCompletion[stepNumber]}
             >
@@ -217,14 +218,7 @@ export default function Step6Page() {
                 )}
             </button>
 
-            {stepCompletion[stepNumber] && (
-                <Link
-                    href="/steps/7"
-                    className="inline-flex w-full items-center justify-center rounded-lg border border-emerald-500/50 px-4 py-3 text-sm font-semibold text-emerald-400 transition hover:bg-emerald-500/10"
-                >
-                    Continue to Step 7 →
-                </Link>
-            )}
+
 
             {combinedResources.length > 0 && (
                 <section className="space-y-3 rounded-xl border border-border/60 bg-card/70 p-6 text-sm">
@@ -257,9 +251,9 @@ export default function Step6Page() {
             {showCompleteModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
                     <div className="w-full max-w-md space-y-6 rounded-xl border border-border/60 bg-background p-6 shadow-2xl">
-                        <h3 className="text-xl font-semibold text-foreground">Complete Step 6?</h3>
+                        <h3 className="text-xl font-semibold text-foreground">Complete Final Considerations?</h3>
                         <p className="text-sm text-muted-foreground">
-                            You have completed all required tasks for Step 6. The governance process is formally closed with signed authorisation.
+                            You have completed all required tasks. The governance process is formally closed with signed authorisation and ongoing monitoring is established.
                         </p>
                         <div className="flex gap-3">
                             <button
