@@ -91,34 +91,43 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-24">
         {appendices.map((appendix, index) => (
-          <Link key={appendix.id} href={`/resources/${appendix.id}`} className="group">
+          <div key={appendix.id} className="group relative h-full">
+            {appendix.id !== "full-framework" && (
+              <Link href={`/resources/${appendix.id}`} className="absolute inset-0 z-0">
+                <span className="sr-only">View {appendix.title}</span>
+              </Link>
+            )}
             <div
-              className={`h-full rounded-lg border-2 bg-gradient-to-br ${cardGradients[index % cardGradients.length]} p-6 transition-all hover:border-primary hover:shadow-lg`}
+              className={`flex flex-col h-full rounded-lg border-2 bg-gradient-to-br ${cardGradients[index % cardGradients.length]} p-6 transition-all hover:border-primary hover:shadow-lg`}
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="space-y-2">
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground/80">
-                    Appendix {appendix.number}
-                  </p>
-                  <h3 className="text-lg font-semibold text-foreground">{appendix.title}</h3>
-                  {appendix.roles.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {appendix.roles.map((role) => {
-                        const detail = appendix.roleDetails[role]?.join("; ")
-                        return <RoleBadge key={`${appendix.id}-${role}`} role={role} title={detail} />
-                      })}
-                    </div>
+              <div className="flex-1 pointer-events-none">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-2">
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground/80">
+                      {appendix.id === "full-framework" ? "Full Framework" : `Appendix ${appendix.number}`}
+                    </p>
+                    <h3 className="text-lg font-semibold text-foreground">{appendix.title}</h3>
+                    {appendix.roles.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {appendix.roles.map((role) => {
+                          const detail = appendix.roleDetails[role]?.join("; ")
+                          return <RoleBadge key={`${appendix.id}-${role}`} role={role} title={detail} />
+                        })}
+                      </div>
+                    )}
+                  </div>
+                  {appendix.template && (
+                    <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-emerald-700">Template</span>
                   )}
                 </div>
-                {appendix.template && (
-                  <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-emerald-700">Template</span>
-                )}
+                <p className="mt-4 text-sm text-muted-foreground">{appendix.purpose}</p>
               </div>
-              <p className="mt-4 text-sm text-muted-foreground">{appendix.purpose}</p>
-              <div className="mt-6 flex flex-col gap-3">
-                <div className="inline-flex items-center gap-2 text-sm font-medium text-primary transition group-hover:gap-3">
-                  View appendix <ArrowRight className="h-4 w-4" />
-                </div>
+              <div className="mt-6 flex flex-col gap-3 relative z-10 pointer-events-none">
+                {appendix.id !== "full-framework" && (
+                  <div className="inline-flex items-center gap-2 text-sm font-medium text-primary transition group-hover:gap-3">
+                    View appendix <ArrowRight className="h-4 w-4" />
+                  </div>
+                )}
                 {appendix.pdfFilename && (
                   <a
                     href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/appendices_pdf/${encodeURIComponent(appendix.pdfFilename)}`}
@@ -126,7 +135,7 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
                     onClick={(e) => {
                       e.stopPropagation()
                     }}
-                    className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors z-10 relative"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors pointer-events-auto"
                   >
                     <Download className="h-4 w-4" />
                     Download PDF
@@ -134,7 +143,7 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
                 )}
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
 

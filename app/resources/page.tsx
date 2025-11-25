@@ -115,6 +115,20 @@ const readAppendices = (): AppendixRecord[] => {
       }
     })
     .sort((a, b) => a.number - b.number)
+    .concat([
+      {
+        id: "full-framework",
+        number: 12,
+        title: "Synthetic Health Data Governance Framework",
+        purpose: "The complete governance framework document (Draft 1.01).",
+        template: false,
+        roles: [],
+        roleDetails: {},
+        pdfFilename: "SYNTHETIC HEALTH DATA FRAMEWORK_DRAF_101.pdf",
+        component: undefined,
+        type: undefined,
+      },
+    ])
 }
 
 export default function AppendicesIndexPage() {
