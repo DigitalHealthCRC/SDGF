@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
-2:I[78995,["/SDGF/_next/static/chunks/480617ecc94242dd.js","/SDGF/_next/static/chunks/34ee24179ca0df5c.js","/SDGF/_next/static/chunks/3708046326082a93.js","/SDGF/_next/static/chunks/3c1c2c6d31fa05ec.js"],"AppendixDetail"]
+2:I[78995,["/SDGF/_next/static/chunks/560455be3ce76f92.js","/SDGF/_next/static/chunks/34ee24179ca0df5c.js","/SDGF/_next/static/chunks/3708046326082a93.js","/SDGF/_next/static/chunks/3c1c2c6d31fa05ec.js"],"AppendixDetail"]
 8:I[97367,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/247eb132b7f7b574.js"],"OutletBoundary"]
 9:"$Sreact.suspense"
 3:T145c,# **Appendix 3: The Policy and Legal Framework Underpinning This Framework**
@@ -158,7 +158,7 @@ SynD member organisations may have their own internal data policies governing th
 *** If operating in the State or Territory**
 **** Where Entity A engages Entity B as a contracted service provider, the privacy laws applying to Entity A may also apply to Entity B**
 
-0:{"buildId":"4_X_MgdY246sgPTlR2Wwg","rsc":["$","$1","c",{"children":[["$","$L2",null,{"appendix":{"id":"appendix3","number":3,"title":"Appendix 3 - Policy and Legal Framework","purpose":"Explain the policy and legal context underpinning the Framework and how it guides lawful creation, use, and sharing of synthetic health data.","template":false,"body":"$3","component":"ReadOnlyContent","type":"read","exportKey":"appendix3_policy_legal"}}],["$L4","$L5","$L6"],"$L7"]}],"loading":null,"isPartial":false}
+0:{"buildId":"Zv27t9yv0gOBMUzHtZaQV","rsc":["$","$1","c",{"children":[["$","$L2",null,{"appendix":{"id":"appendix3","number":3,"title":"Appendix 3 - Policy and Legal Framework","purpose":"Explain the policy and legal context underpinning the Framework and how it guides lawful creation, use, and sharing of synthetic health data.","template":false,"body":"$3","component":"ReadOnlyContent","type":"read","exportKey":"appendix3_policy_legal"}}],["$L4","$L5","$L6"],"$L7"]}],"loading":null,"isPartial":false}
 4:["$","script","script-0",{"src":"/SDGF/_next/static/chunks/34ee24179ca0df5c.js","async":true}]
 5:["$","script","script-1",{"src":"/SDGF/_next/static/chunks/3708046326082a93.js","async":true}]
 6:["$","script","script-2",{"src":"/SDGF/_next/static/chunks/3c1c2c6d31fa05ec.js","async":true}]
