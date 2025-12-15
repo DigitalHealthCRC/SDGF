@@ -1,6 +1,6 @@
 [
   {
-    "phase": 0,
+    "step": 0,
     "title": "Initiation & Documentation Setup",
     "accountable": "DP",
     "support_roles": ["DR"],
@@ -10,7 +10,7 @@
     "outcome": "Framework process initiated and traceable."
   },
   {
-    "phase": 1,
+    "step": 1,
     "title": "Assess the Use Case",
     "accountable": "DP",
     "support_roles": ["DR", "GC"],
@@ -19,8 +19,8 @@
         "question": "Is the proposed use case lawful and ethical?",
         "role": "DP",
         "options": [
-          { "answer": "Yes", "next_phase": 2 },
-          { "answer": "Unclear", "action": "Pause → PIA → GC review", "pause": true, "resume_to_phase": 2 },
+          { "answer": "Yes", "next_step": 2 },
+          { "answer": "Unclear", "action": "Pause → PIA → GC review", "pause": true, "resume_to_step": 2 },
           { "answer": "No", "action": "Reject request", "terminate": true }
         ]
       },
@@ -28,8 +28,8 @@
         "question": "Does the project involve high-risk data (sensitive, cross-jurisdictional)?",
         "role": "DP",
         "options": [
-          { "answer": "No", "next_phase": 2 },
-          { "answer": "Yes", "action": "Follow lawful pathway C/D (Appx 9)", "pause": true, "resume_to_phase": 2 }
+          { "answer": "No", "next_step": 2 },
+          { "answer": "Yes", "action": "Follow lawful pathway C/D (Appx 9)", "pause": true, "resume_to_step": 2 }
         ]
       }
     ],
@@ -37,7 +37,7 @@
     "operational_evidence": ["Appendix 4 Use Case Assessment", "Appendix 5 Impact Assessment", "PIA if triggered (Appx 9)"]
   },
   {
-    "phase": 2,
+    "step": 2,
     "title": "Assess & Prepare Source Data",
     "accountable": "DP",
     "support_roles": ["DR", "DS"],
@@ -46,24 +46,24 @@
         "question": "Is source data lawfully owned and available for synthesis?",
         "role": "DP",
         "options": [
-          { "answer": "Yes", "next_phase": 3 },
-          { "answer": "No", "action": "Escalate to GC (Appx 9)", "pause": true, "resume_to_phase": 3 }
+          { "answer": "Yes", "next_step": 3 },
+          { "answer": "No", "action": "Escalate to GC (Appx 9)", "pause": true, "resume_to_step": 3 }
         ]
       },
       {
         "question": "Is linkage to external datasets required?",
         "role": "DS",
         "options": [
-          { "answer": "No", "next_phase": 3 },
-          { "answer": "Yes", "action": "Trigger complex scenario (Appx 8)", "pause": true, "resume_to_phase": 3 }
+          { "answer": "No", "next_step": 3 },
+          { "answer": "Yes", "action": "Trigger complex scenario (Appx 8)", "pause": true, "resume_to_step": 3 }
         ]
       },
       {
         "question": "Is data quality and representativeness adequate?",
         "role": "DS",
         "options": [
-          { "answer": "Yes", "next_phase": 3 },
-          { "answer": "No", "action": "Refine pre-processing plan", "loop_to_phase": 2 }
+          { "answer": "Yes", "next_step": 3 },
+          { "answer": "No", "action": "Refine pre-processing plan", "loop_to_step": 2 }
         ]
       }
     ],
@@ -71,7 +71,7 @@
     "operational_evidence": ["Ownership confirmation", "Profiling report (Appx 6)", "Cross-custodian agreements"]
   },
   {
-    "phase": 3,
+    "step": 3,
     "title": "Generate Synthetic Data",
     "accountable": "DP",
     "support_roles": ["DS", "DR"],
@@ -80,16 +80,16 @@
         "question": "Does the synthetic dataset achieve adequate utility?",
         "role": "DS",
         "options": [
-          { "answer": "Yes", "next_phase": 4 },
-          { "answer": "No", "action": "Retrain or tune model", "loop_to_phase": 3 }
+          { "answer": "Yes", "next_step": 4 },
+          { "answer": "No", "action": "Retrain or tune model", "loop_to_step": 3 }
         ]
       },
       {
         "question": "Has privacy risk increased due to overfitting?",
         "role": "DS",
         "options": [
-          { "answer": "No", "next_phase": 4 },
-          { "answer": "Yes", "action": "Apply additional privacy controls (Appx 8)", "loop_to_phase": 3 }
+          { "answer": "No", "next_step": 4 },
+          { "answer": "Yes", "action": "Apply additional privacy controls (Appx 8)", "loop_to_step": 3 }
         ]
       }
     ],
@@ -97,7 +97,7 @@
     "operational_evidence": ["Model parameters + logs", "Utility metrics", "DP oversight record"]
   },
   {
-    "phase": 4,
+    "step": 4,
     "title": "Assess & Manage Re-Identification Risks",
     "accountable": "DP",
     "support_roles": ["DS", "DR", "GC"],
@@ -106,17 +106,17 @@
         "question": "What is the residual re-identification risk level?",
         "role": "DP",
         "options": [
-          { "answer": "Very Low", "next_phase": 5 },
-          { "answer": "Low / Medium", "action": "Mitigate and re-test", "loop_to_phase": 4 },
-          { "answer": "High", "action": "Pause → PIA → GC approval (Appx 8/9)", "pause": true, "resume_to_phase": 4 }
+          { "answer": "Very Low", "next_step": 5 },
+          { "answer": "Low / Medium", "action": "Mitigate and re-test", "loop_to_step": 4 },
+          { "answer": "High", "action": "Pause → PIA → GC approval (Appx 8/9)", "pause": true, "resume_to_step": 4 }
         ]
       },
       {
         "question": "Is data utility still acceptable after mitigation?",
         "role": "DS",
         "options": [
-          { "answer": "Yes", "next_phase": 5 },
-          { "answer": "No", "action": "Regenerate dataset", "loop_to_phase": 3 }
+          { "answer": "Yes", "next_step": 5 },
+          { "answer": "No", "action": "Regenerate dataset", "loop_to_step": 3 }
         ]
       }
     ],
@@ -124,7 +124,7 @@
     "operational_evidence": ["Re-ID metrics (Appx 7)", "Utility report", "GC review record (Appx 9)"]
   },
   {
-    "phase": 5,
+    "step": 5,
     "title": "Manage Residual Privacy Risks (Five Safes)",
     "accountable": "DP",
     "support_roles": ["DR", "DS"],
@@ -133,8 +133,8 @@
         "question": "Are all Five Safes satisfied?",
         "role": "DP",
         "options": [
-          { "answer": "Yes", "next_phase": 6 },
-          { "answer": "No", "action": "Revise controls or access conditions", "loop_to_phase": 5 }
+          { "answer": "Yes", "next_step": 6 },
+          { "answer": "No", "action": "Revise controls or access conditions", "loop_to_step": 5 }
         ]
       }
     ],
@@ -142,7 +142,7 @@
     "operational_evidence": ["Completed Five Safes checklist (Appx 10)", "Access control records", "DP sign-off"]
   },
   {
-    "phase": 6,
+    "step": 6,
     "title": "Final Decision & Sign-off",
     "accountable": "DP",
     "support_roles": ["DR", "DS"],
@@ -151,8 +151,8 @@
         "question": "Have all preceding assessments been completed?",
         "role": "DP",
         "options": [
-          { "answer": "Yes", "next_phase": 7 },
-          { "answer": "No", "action": "Return to incomplete phase", "loop_to_phase": "pending" }
+          { "answer": "Yes", "next_step": 7 },
+          { "answer": "No", "action": "Return to incomplete step", "loop_to_step": "pending" }
         ]
       }
     ],
@@ -160,7 +160,7 @@
     "operational_evidence": ["Signed Appendix 11 record", "Archived evidence bundle"]
   },
   {
-    "phase": 7,
+    "step": 7,
     "title": "Post-Sharing Assurance & Review",
     "accountable": "DP",
     "support_roles": ["DR"],
@@ -169,8 +169,8 @@
         "question": "Has any policy breach or privacy incident been detected?",
         "role": "DP",
         "options": [
-          { "answer": "No", "next_phase": null },
-          { "answer": "Yes", "action": "Revoke access and trigger audit (Appx 10)", "loop_to_phase": 5 }
+          { "answer": "No", "next_step": null },
+          { "answer": "Yes", "action": "Revoke access and trigger audit (Appx 10)", "loop_to_step": 5 }
         ]
       }
     ],

@@ -6,14 +6,12 @@ import appendixData from "@/src/content/appendices/appendix4.json"
 
 import { BackLink } from "../appendix-detail"
 
-const appendixNumber = typeof appendixData.id === "number" ? appendixData.id : 4
 const sections = (appendixData.sections ?? []) as TemplateSection[]
+const storageId = (appendixData.exportKey as string) ?? "appendix4-use-case-assessment"
+const pdfFilename = "APPENDIX 4_ Use Case Assessment.pdf"
 
 export default function Appendix4Page() {
-  const overview = sections.map((section) => ({
-    label: section.groupLabel,
-    firstField: section.fields[0]?.label,
-  }))
+  const pdfHref = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/appendices_pdf/${encodeURIComponent(pdfFilename)}`
 
   const left = (
     <div className="space-y-4 text-sm text-muted-foreground">
@@ -26,15 +24,41 @@ export default function Appendix4Page() {
         Tip: Capture concise yet outcome-oriented answers. Where approvals are pending, note the decision maker and due
         date.
       </div>
+      <div className="flex flex-wrap gap-2">
+        <a
+          href={pdfHref}
+          target="_blank"
+          rel="noreferrer"
+          className="rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold text-foreground transition hover:bg-card/80"
+        >
+          Open original PDF
+        </a>
+        <a
+          href={pdfHref}
+          download
+          className="rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold text-foreground transition hover:bg-card/80"
+        >
+          Download PDF
+        </a>
+      </div>
       <div className="space-y-2 text-xs text-muted-foreground/80">
-        <p className="font-semibold text-foreground">Assessment sections</p>
-        <ul className="list-disc list-inside space-y-1">
-          {overview.map((item) => (
-            <li key={item.label ?? item.firstField}>
-              {item.label ?? item.firstField}
-            </li>
-          ))}
-        </ul>
+        <p className="font-semibold text-foreground">Jump to section</p>
+        <ol className="space-y-1">
+          {sections.map((section, index) => {
+            const label = section.groupLabel ?? section.fields[0]?.label ?? `Section ${index + 1}`
+            const anchorId = `${storageId}-section-${index + 1}-${label
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "")}`
+            return (
+              <li key={anchorId}>
+                <a href={`#${anchorId}`} className="underline underline-offset-2 hover:text-foreground">
+                  {label}
+                </a>
+              </li>
+            )
+          })}
+        </ol>
       </div>
       <BackLink />
     </div>
@@ -48,7 +72,7 @@ export default function Appendix4Page() {
         left={left}
         right={
           <TemplateForm
-            id={(appendixData.exportKey as string) ?? "appendix4-use-case-assessment"}
+            id={storageId}
             exportKey={appendixData.exportKey as string | undefined}
             sections={sections}
           />

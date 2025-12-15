@@ -174,15 +174,44 @@ body {
 
 /* Print styles for PDF export */
 @media print {
+  @page {
+    margin: 14mm;
+  }
 
   nav,
   .no-print {
     display: none !important;
   }
 
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
   body {
     background: white;
     color: black;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  /* Make common UI containers print cleanly */
+  [data-slot="card"],
+  [data-slot="popover-content"],
+  [data-slot="select-content"] {
+    background: transparent !important;
+    border-color: #d4d4d4 !important;
+  }
+
+  input,
+  textarea,
+  select {
+    background: transparent !important;
+    color: black !important;
+    border-color: #a3a3a3 !important;
   }
 
   .print-break {

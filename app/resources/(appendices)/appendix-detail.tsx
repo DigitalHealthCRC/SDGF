@@ -3,6 +3,7 @@
 import type { ComponentType } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
+import remarkGfm from "remark-gfm"
 import TemplateForm from "@/src/components/TemplateForm"
 import { Glossary } from "@/src/components/appendices/Glossary"
 import { DecisionTree } from "@/src/components/appendices/DecisionTree"
@@ -40,7 +41,13 @@ const renderBody = (appendix: AppendixRecord, MarkdownRenderer?: ComponentType<a
   const { description, body } = appendix
 
   const renderMarkdown = (content: string) =>
-    MarkdownRenderer ? <MarkdownRenderer components={MarkdownComponents}>{content}</MarkdownRenderer> : content
+    MarkdownRenderer ? (
+      <MarkdownRenderer components={MarkdownComponents} remarkPlugins={[remarkGfm]}>
+        {content}
+      </MarkdownRenderer>
+    ) : (
+      content
+    )
 
   const hasDescription = typeof description === "string" && description.trim().length > 0
   const hasBody =
@@ -91,6 +98,41 @@ export function AppendixDetail({ appendix }: { appendix: AppendixRecord }) {
     ul: ({ node, ordered, ...props }: any) => <ul className="my-6 ml-6 list-disc [&>li]:mt-2 marker:text-emerald-500 text-muted-foreground" {...props} />,
     ol: ({ node, ordered, ...props }: any) => <ol className="my-6 ml-6 list-decimal [&>li]:mt-2 marker:text-emerald-500 text-muted-foreground" {...props} />,
     li: ({ node, ordered, ...props }: any) => <li className="leading-7" {...props} />,
+    table: ({ children, node, isHeader, ...props }: any) => (
+      <div className="not-prose my-6 overflow-x-auto rounded-xl border border-border/60 bg-card/60 shadow-sm">
+        <table className="w-full border-collapse text-sm" {...props}>
+          {children}
+        </table>
+      </div>
+    ),
+    thead: ({ children, node, isHeader, ...props }: any) => (
+      <thead className="bg-muted/40 text-foreground" {...props}>
+        {children}
+      </thead>
+    ),
+    tbody: ({ children, node, isHeader, ...props }: any) => (
+      <tbody className="divide-y divide-border/60" {...props}>
+        {children}
+      </tbody>
+    ),
+    tr: ({ children, node, isHeader, ...props }: any) => (
+      <tr className="hover:bg-muted/30" {...props}>
+        {children}
+      </tr>
+    ),
+    th: ({ children, isHeader, node, ...props }: any) => (
+      <th
+        className="whitespace-nowrap border-b border-border/60 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide"
+        {...props}
+      >
+        {children}
+      </th>
+    ),
+    td: ({ children, isHeader, node, ...props }: any) => (
+      <td className="align-top px-4 py-3 text-sm text-muted-foreground [&_strong]:text-foreground" {...props}>
+        {children}
+      </td>
+    ),
     blockquote: ({ node, ...props }: any) => (
       <blockquote className="my-8 rounded-xl border bg-gradient-to-br p-6 shadow-lg shadow-emerald-900/5" {...props}>
         <div className="[&>p]:mt-0 [&>p]:text-foreground [&>h3]:mt-0 [&>h3]:text-emerald-400" {...props} />
@@ -113,11 +155,34 @@ export function AppendixDetail({ appendix }: { appendix: AppendixRecord }) {
   const showTemplate =
     appendix.component === "TemplateForm" || (appendix.template && Array.isArray(appendix.sections))
 
+  const pdfHref = appendix.pdfFilename
+    ? `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/appendices_pdf/${encodeURIComponent(appendix.pdfFilename)}`
+    : null
+
   return (
     <PageShell variant="narrow" className="space-y-6 py-10">
       <header className="space-y-2">
         <h1 className="text-2xl font-semibold">{appendix.title}</h1>
         <p className="text-muted-foreground">{appendix.purpose}</p>
+        {pdfHref && (
+          <div className="flex flex-wrap gap-2 pt-2">
+            <Link
+              href={pdfHref}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold text-foreground transition hover:bg-card/80"
+            >
+              Open original PDF
+            </Link>
+            <a
+              href={pdfHref}
+              download
+              className="inline-flex items-center rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold text-foreground transition hover:bg-card/80"
+            >
+              Download PDF
+            </a>
+          </div>
+        )}
       </header>
 
       {appendix.id === "appendix2" && <Glossary terms={appendix.terms} />}

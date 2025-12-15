@@ -1,8 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
+import Link from "next/link"
+import { Download, FileText } from "lucide-react"
+
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
-import appendixData from "@/src/content/appendices/appendix8.json"
 
 import { BackLink } from "../appendix-detail"
 import { PageShell } from "@/components/page-shell"
@@ -10,24 +12,92 @@ import { PageShell } from "@/components/page-shell"
 type WizardOption = { label: string; next: string }
 type WizardNode = { id: string; text: string; options?: WizardOption[] }
 
-const nodes = (appendixData.nodes ?? []) as WizardNode[]
-const appendixNumber = typeof appendixData.id === "number" ? appendixData.id : 8
-const { description: rawDescription } = appendixData as { description?: unknown }
-const appendixDescription = typeof rawDescription === "string" ? rawDescription : undefined
+const APPENDIX_TITLE = "Appendix 8 - Decision Tree for Complex Scenarios"
+const APPENDIX_PURPOSE =
+  "Provide a guided decision pathway for requests where risk cannot be reduced to very low, or where lawful pathways and approvals are uncertain."
+const EXPORT_KEY = "appendix8_decision_tree"
+const PDF_FILENAME = "APPENDIX 8_ Decision tree for complex synthetic health data scenarios.pdf"
+
+const nodes: WizardNode[] = [
+  {
+    id: "start",
+    text: "Has a Re-identification Risk Assessment been completed on the synthetic dataset?",
+    options: [
+      { label: "Yes", next: "risk_result" },
+      { label: "No", next: "do_risk_assessment" },
+    ],
+  },
+  {
+    id: "do_risk_assessment",
+    text: "Complete a Re-identification Risk Assessment. If residual risk cannot be reduced to very low, treat the dataset as personal information and proceed via a lawful pathway.",
+    options: [{ label: "Continue", next: "risk_result" }],
+  },
+  {
+    id: "risk_result",
+    text: "What is the assessed re-identification risk?",
+    options: [
+      { label: "Very low", next: "proceed_step5" },
+      { label: "More than very low, but can be reduced", next: "apply_more_controls" },
+      { label: "More than very low and cannot be reduced", next: "lawful_pathway" },
+    ],
+  },
+  {
+    id: "apply_more_controls",
+    text: "Consult with the Requestor and apply further de-identification techniques and controls. Re-run the assessment.",
+    options: [{ label: "Re-run assessment", next: "risk_result" }],
+  },
+  {
+    id: "lawful_pathway",
+    text: "Treat as personal information. Determine a lawful pathway (e.g., seek waiver of consent via HREC for research).",
+    options: [
+      { label: "View lawful pathways", next: "appendix9_link" },
+      { label: "Stop and document outcome", next: "end_stop" },
+    ],
+  },
+  {
+    id: "appendix9_link",
+    text: "Open Appendix 9 to review lawful pathways and conditions. When ready, return to confirm pathway and approvals.",
+    options: [{ label: "Pathway confirmed", next: "end_pathway_confirmed" }],
+  },
+  {
+    id: "proceed_step5",
+    text: "Residual risk is very low. Proceed to Step 5 (Safety Assessment, controls and approvals) and document the decision.",
+    options: [{ label: "Go to Step 5 controls", next: "end_step5" }],
+  },
+  {
+    id: "end_step5",
+    text: "Route to Safety Assessment (Appendix 10) and complete final documentation (Appendix 11).",
+    options: [],
+  },
+  {
+    id: "end_pathway_confirmed",
+    text: "Proceed under the confirmed lawful pathway with appropriate approvals and controls documented.",
+    options: [],
+  },
+  {
+    id: "end_stop",
+    text: "Request cannot proceed under the Framework without a lawful pathway. Record decision and rationale.",
+    options: [],
+  },
+]
 
 const findStartNode = (collection: WizardNode[]) => {
   const explicit = collection.find((node) => node.id === "start")
   return explicit ?? collection[0]
 }
 
-const nodesById = nodes.reduce<Record<string, WizardNode>>((acc, node) => {
-  acc[node.id] = node
-  return acc
-}, {})
-
 const startNode = findStartNode(nodes)
 
 export default function Appendix8Page() {
+  const nodesById = useMemo(
+    () =>
+      nodes.reduce<Record<string, WizardNode>>((acc, node) => {
+        acc[node.id] = node
+        return acc
+      }, {}),
+    [],
+  )
+
   const [path, setPath] = useState<string[]>(startNode ? [startNode.id] : [])
   const [history, setHistory] = useState<Array<{ id: string; text: string; answer: string }>>([])
 
@@ -39,7 +109,7 @@ export default function Appendix8Page() {
   if (!startNode) {
     return (
       <PageShell variant="narrow" className="space-y-6 py-10 text-sm text-muted-foreground">
-        <h1 className="text-2xl font-semibold text-foreground">Appendix 8 - Decision Tree</h1>
+        <h1 className="text-2xl font-semibold text-foreground">{APPENDIX_TITLE}</h1>
         <p>Decision tree content is unavailable. Please contact the framework team.</p>
         <BackLink />
       </PageShell>
@@ -71,19 +141,70 @@ export default function Appendix8Page() {
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
     const anchor = document.createElement("a")
     anchor.href = URL.createObjectURL(blob)
-    anchor.download = `${(appendixData.exportKey as string) ?? "appendix8-decision-tree"}.json`
+    anchor.download = `${EXPORT_KEY}.json`
     anchor.click()
     URL.revokeObjectURL(anchor.href)
   }
 
+  const pdfHref = PDF_FILENAME
+    ? `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/appendices_pdf/${encodeURIComponent(PDF_FILENAME)}`
+    : null
+
   const leftPanel = (
     <div className="space-y-4 text-sm text-muted-foreground">
-      <p>{appendixData.purpose}</p>
+      <p>{APPENDIX_PURPOSE}</p>
       <ul className="list-disc list-inside space-y-1 text-xs text-muted-foreground/80">
         <li>Document each response so governance reviewers can trace the decision.</li>
         <li>Use the Back button to revisit earlier choices if circumstances change.</li>
         <li>Download the JSON log and attach it to Step 4 or Step 5 evidence packs.</li>
       </ul>
+      <div className="flex flex-wrap gap-2 pt-1">
+        <Link
+          href="/resources/appendix9"
+          className="inline-flex items-center rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold text-foreground transition hover:bg-card/80"
+        >
+          Open Appendix 9
+        </Link>
+        <Link
+          href="/resources/appendix3"
+          className="inline-flex items-center rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold text-foreground transition hover:bg-card/80"
+        >
+          Open Appendix 3
+        </Link>
+        <Link
+          href="/steps/4"
+          className="inline-flex items-center rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold text-foreground transition hover:bg-card/80"
+        >
+          Step 4
+        </Link>
+        <Link
+          href="/steps/5"
+          className="inline-flex items-center rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold text-foreground transition hover:bg-card/80"
+        >
+          Step 5
+        </Link>
+      </div>
+      {pdfHref && (
+        <div className="flex flex-wrap gap-2 pt-1">
+          <a
+            href={pdfHref}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold text-foreground transition hover:bg-card/80"
+          >
+            <FileText className="h-4 w-4" aria-hidden="true" />
+            Open original PDF
+          </a>
+          <a
+            href={pdfHref}
+            download
+            className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-2 text-xs font-semibold text-foreground transition hover:bg-card/80"
+          >
+            <Download className="h-4 w-4" aria-hidden="true" />
+            Download PDF
+          </a>
+        </div>
+      )}
       <div className="rounded-md border border-emerald-500/40 bg-emerald-500/10 p-3 text-emerald-200">
         Tip: If you end on a stop condition, escalate to the governance office with your recorded answers.
       </div>
@@ -93,11 +214,6 @@ export default function Appendix8Page() {
 
   const rightPanel = (
     <div className="space-y-6">
-      {appendixDescription && (
-        <div className="rounded-md border border-border/60 bg-card/80 p-4 text-sm text-muted-foreground">
-          {appendixDescription}
-        </div>
-      )}
       {currentNode && !isTerminal && (
         <div className="space-y-4 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
           <h2 className="text-lg font-semibold text-foreground">{currentNode.text}</h2>
@@ -174,13 +290,21 @@ export default function Appendix8Page() {
 
   return (
     <div className="space-y-6">
+      <section className="relative overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-900/40 via-slate-950/90 to-blue-950/80 text-white shadow-emerald-900/20 shadow-2xl">
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-emerald-600/10" />
+        <div className="relative z-10 px-6 py-12 md:px-10 md:py-14">
+          <p className="text-sm font-semibold uppercase tracking-wide text-white/70">Appendix 8</p>
+          <h1 className="mt-2 text-3xl font-bold text-balance md:text-4xl">{APPENDIX_TITLE}</h1>
+          <p className="mt-3 max-w-3xl text-base text-white/80">{APPENDIX_PURPOSE}</p>
+        </div>
+      </section>
+
       <TwoColumnLayout
-        title="Appendix 8 - Decision Tree for Complex Scenarios"
-        description={appendixData.purpose}
+        title={APPENDIX_TITLE}
+        description={APPENDIX_PURPOSE}
         left={leftPanel}
         right={rightPanel}
       />
     </div>
   )
 }
-
