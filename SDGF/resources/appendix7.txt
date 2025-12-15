@@ -1,14 +1,11 @@
 1:"$Sreact.fragment"
-2:I[76526,["/SDGF/_next/static/chunks/2665a9e9f354d27e.js"],"ProgressProvider"]
+2:I[76526,["/SDGF/_next/static/chunks/9db71e3be5a1d9f8.js"],"ProgressProvider"]
 3:"$Sreact.suspense"
-4:I[13474,["/SDGF/_next/static/chunks/2665a9e9f354d27e.js"],"Navigation"]
-5:I[39756,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/247eb132b7f7b574.js"],"default"]
-6:I[37457,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/247eb132b7f7b574.js"],"default"]
-8:I[97367,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/247eb132b7f7b574.js"],"OutletBoundary"]
-a:I[97367,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/247eb132b7f7b574.js"],"ViewportBoundary"]
-c:I[97367,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/247eb132b7f7b574.js"],"MetadataBoundary"]
-e:I[68027,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/247eb132b7f7b574.js"],"default"]
-:HL["/SDGF/_next/static/chunks/5830e366def01188.css","style"]
+4:I[13474,["/SDGF/_next/static/chunks/9db71e3be5a1d9f8.js"],"Navigation"]
+5:I[39756,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/c81db6e24f0cfdeb.js"],"default"]
+6:I[37457,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/c81db6e24f0cfdeb.js"],"default"]
+11:I[68027,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/c81db6e24f0cfdeb.js"],"default"]
+:HL["/SDGF/_next/static/chunks/a3e5102e8c1e4bd7.css","style"]
 :HL["/SDGF/_next/static/chunks/58e45d4f177e378e.css","style"]
 :HL["/SDGF/_next/static/media/68d403cf9f2c68c5-s.p.f9f15f61.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/SDGF/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
@@ -16,306 +13,34 @@ e:I[68027,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/c
 :HL["/SDGF/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/SDGF/print.css","style",{"media":"print"}]
 :HL["/SDGF/assets/chatbot/chatbot-theme.css","style"]
-0:{"P":null,"b":"kjBdasdxNRFCJkOhfrC_7","c":["","resources","appendix7"],"q":"","i":false,"f":[[["",{"children":["resources",{"children":["(appendices)",{"children":[["id","appendix7","d"],{"children":["__PAGE__",{}]}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/SDGF/_next/static/chunks/5830e366def01188.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/SDGF/_next/static/chunks/58e45d4f177e378e.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/SDGF/_next/static/chunks/2665a9e9f354d27e.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"stylesheet","href":"/SDGF/print.css","media":"print"}],["$","link",null,{"rel":"icon","href":"/SDGF/favicon.png","sizes":"192x192"}],["$","link",null,{"rel":"apple-touch-icon","href":"/SDGF/favicon.png"}]]}],["$","body",null,{"className":"inter_5972bc34-module__OU16Qa__className","children":[["$","$L2",null,{"children":["$","$3",null,{"fallback":null,"children":[["$","$L4",null,{}],["$","main",null,{"className":"min-h-screen","children":["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]}],["$","link",null,{"rel":"stylesheet","href":"/SDGF/assets/chatbot/chatbot-theme.css"}],["$","script",null,{"src":"https://cdn.platform.openai.com/deployments/chatkit/chatkit.js","async":true}],["$","script",null,{"src":"/SDGF/assets/chatbot/chatkit.js","defer":true}]]}]]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L7",[["$","script","script-0",{"src":"/SDGF/_next/static/chunks/34ee24179ca0df5c.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/SDGF/_next/static/chunks/30047457f88e5d1e.js","async":true,"nonce":"$undefined"}],["$","script","script-2",{"src":"/SDGF/_next/static/chunks/3c1c2c6d31fa05ec.js","async":true,"nonce":"$undefined"}]],["$","$L8",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@9"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$La",null,{"children":"$@b"}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$3",null,{"name":"Next.Metadata","children":"$@d"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$e",[]],"s":false,"S":true}
-f:I[78995,["/SDGF/_next/static/chunks/2665a9e9f354d27e.js","/SDGF/_next/static/chunks/34ee24179ca0df5c.js","/SDGF/_next/static/chunks/30047457f88e5d1e.js","/SDGF/_next/static/chunks/3c1c2c6d31fa05ec.js"],"AppendixDetail"]
-10:T2d02,
-# **Appendix 7: De-Identification Techniques and Evaluation of Privacy in Synthetic Data**
-
-## **De-identification Techniques**
-
-De-identification aims to break the link between a dataset and an individual in the real world, ensuring that a disclosed fact (e.g., “a patient is being treated for HIV”) cannot be linked back to an identified person.
-
-The harm being prevented is **identity disclosure**, which occurs when data is re-identified. Identity disclosure can arise by:
-
-1. **Matching a person to data**, or
-2. **Matching data to a person**
-
-Robustness checks should test for both types of re-identification risk.
-
-> “De-identification is not a single technique, but a collection of approaches, algorithms, and tools… privacy protection improves as more aggressive techniques are employed, but data utility decreases.”
-
-There is no single correct method; de-identification is a **risk management exercise**. The effectiveness of different techniques depends on:
-
-* The type of data
-* Context
-* Re-identification threats
-* Desired utility
-
-Examples of de-identification techniques include:
-
-* **Aggregation**
-* **Suppression** (removing identifiers or overtly identifying fields)
-* **Generalisation** (e.g., replacing date of birth with an age band)
-* **Pseudonymisation** (SLKs, encryption, hashing)
-* **Perturbation** (noise addition, micro-aggregation, data swapping)
-
----
-
-# **Evaluation of Privacy in Synthetic Data**
-
-## **Introduction**
-
-Privacy protection is the first principle guiding synthetic data generation, even though synthetic data represents a **trade-off** between fidelity, utility, and privacy.
-
-Residual privacy risks persist due to factors such as:
-
-* Model overfitting
-* Memorisation of sensitive patterns
-* Inference attacks exploiting preserved distributions
-
-Some generative models implement privacy mechanisms (DPGAN, PATEGAN, ADSGAN), but **privacy evaluation is still essential**.
-
-This appendix provides a conceptual overview of privacy evaluation methods — not algorithms or code.
-
-There is no universal definition of “privacy risk,” and metrics only capture partial aspects of vulnerability. No single score indicates overall privacy safety.
-
-A wide range of privacy metrics has been proposed. A practical grouping is summarised in **Table 1**. Categories include:
-
-* Traditional re-identifiability metrics
-* Distance-based methods
-* Adversarial attack-based methods
-
-There is still **no unified standard** for what constitutes adequate privacy protection.
-
----
-
-# **Table 1: Categories of Metrics for Evaluating Privacy in Synthetic Data**
-
-### **Evaluation Category → Evaluation Method / Metric → Description**
-
----
-
-## **I. Non-Adversarial Metrics**
-
-### **A. Re-identifiability Metrics**
-
-| Method          | Description                                                                                       |
-| --------------- | ------------------------------------------------------------------------------------------------- |
-| **k-Anonymity** | Checks if each record is indistinguishable from at least *k–1* others based on quasi-identifiers. |
-| **l-Diversity** | Extends k-Anonymity by enforcing at least *l* distinct sensitive values in each group.            |
-| **t-Closeness** | Requires each group’s sensitive attribute distribution to be close to the overall distribution.   |
-
----
-
-### **B. Memorisation Metrics**
-
-| Method                                                | Description                                                                                                            |
-| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| **Hitting Rate / Common Row Proportion**              | Measures exact matches between synthetic and source data.                                                              |
-| **Close Value Ratio**                                 | Measures “blurry matches” within a set distance threshold.                                                             |
-| **Similarity Ratio (ε-identifiability)**              | Tests if fewer than ε proportion of synthetic records are too similar to originals.                                    |
-| **Nearest Neighbour Accuracy (Adversarial Accuracy)** | Measures whether records in the original dataset are closest to synthetic vs original points. 0.5 = indistinguishable. |
-
----
-
-### **C. Distinguishability Metrics**
-
-| Method              | Description                                                                                                    |
-| ------------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Data Likelihood** | Measures likelihood that synthetic records belong to the original data distribution (Bayesian networks, GMMs). |
-| **Detection Rate**  | Measures how well a classifier can distinguish synthetic from real data.                                       |
-
----
-
-## **II. Adversarial Metrics (Attack-Based)**
-
-### **A. Singling Out Attacks**
-
-| Method                        | Description                                            |
-| ----------------------------- | ------------------------------------------------------ |
-| **Univariate Singling Out**   | Examines uniqueness in a single attribute.             |
-| **Multivariate Singling Out** | Examines uniqueness across combinations of attributes. |
-
----
-
-### **B. Record Linkage Attacks**
-
-| Method                       | Description                                                        |
-| ---------------------------- | ------------------------------------------------------------------ |
-| **Public–Public Linkage**    | Uses synthetic data as a bridge between two public datasets.       |
-| **Public–Synthetic Linkage** | Links synthetic rows to external datasets using quasi-identifiers. |
-
----
-
-### **C. Attribute Inference Attacks (AIA)**
-
-| Method                     | Description                                                       |
-| -------------------------- | ----------------------------------------------------------------- |
-| **Exact Match AIA**        | Infers missing attribute via exact QI matching.                   |
-| **Closest Distance AIA**   | Infers sensitive values by nearest synthetic neighbour (k=1).     |
-| **Nearest Neighbours AIA** | Uses k>1 nearest neighbours.                                      |
-| **ML Inference AIA**       | Trains a model on synthetic data to predict sensitive attributes. |
-
----
-
-### **D. Membership Inference Attacks (MIA)**
-
-| Method                         | Description                                                                  |
-| ------------------------------ | ---------------------------------------------------------------------------- |
-| **Closest Distance MIA**       | Membership inferred by proximity of target record to synthetic distribution. |
-| **Nearest Neighbours MIA**     | Extends above with k>1 neighbours.                                           |
-| **Probability Estimation MIA** | Hypothesis testing of membership probability.                                |
-| **Shadow Model MIA**           | Trains classifiers on shadow models with and without the target record.      |
-
----
-
-# **Consensus-Based Recommendations (R1–R10)**
-
-A Delphi process (13 experts, 3 rounds) produced 10 consensus recommendations:
-
-1. **Base evaluations on Quasi-Identifiers**
-2. **Evaluate all records**
-3. **Avoid stand-alone similarity metrics**
-4. **Align membership disclosure with threat models**
-5. **Report prevalence-adjusted scores**
-6. **Limit attribute disclosure to members**
-7. **Use non-member baselines**
-8. **Apply dual thresholds (absolute + relative)**
-9. **Validate Differential Privacy empirically**
-10. **Report stochastic variation** across multiple synthetic datasets
-
----
-
-# **Fundamental Concepts**
-
-## **Identity Disclosure**
-
-Occurs when a synthetic record can be linked to a specific individual. Often less relevant for synthetic data because records are artificial, but overfitting may still leak identity.
-
-## **Membership Disclosure**
-
-Occurs when an adversary can tell whether a person’s data was included in the training set.
-
-Useful metrics:
-
-* **F1 score**
-* **F naïve** baseline (expected success by random guessing)
-
-## **Attribute Disclosure**
-
-Occurs when an adversary can infer sensitive attributes about an individual using synthetic data.
-
-## **Differential Privacy**
-
-Defines privacy guarantees of the *process*, not the dataset.
-
-Key components:
-
-* **ε (epsilon): privacy budget**
-* Lower ε = stronger privacy
-
----
-
-# **Common Misconceptions to Avoid**
-
-1. **Synthetic data is inherently private**
-2. **Record-level similarity indicates privacy risk**
-3. **All attributes should be considered in evaluation**
-4. **Large DP budgets automatically ensure privacy**
-
----
-
-# **Practical Evaluation Guides**
-
-## **Guide: Membership Disclosure Evaluation**
-
-* Define threat model
-* Calculate naive baseline
-* Compute F1 and compare to baseline
-* Report assumptions clearly
-
-## **Guide: Attribute Disclosure Evaluation**
-
-* Select quasi-identifiers
-* Use non-member baseline
-* Compute absolute and relative risks
-* Apply dual thresholds
-
-## **Evaluating Multiple Synthetic Datasets**
-
-* Generate **≥10 datasets**
-* Report means, SDs, worst cases
-
----
-
-# **Implementation Considerations**
-
-## Computational Efficiency
-
-* Start with domain-informed QIs
-* Expand if needed
-
-## Threshold Determination
-
-* Must be context-specific
-* Evidence-informed
-* Document assumptions
-
-## Reporting Requirements
-
-Include:
-
-* Absolute & relative metrics
-* Variation measures
-* Worst-case values
-* Threat model definitions
-
----
-
-# **Future Directions**
-
-* Empirical threshold validation
-* Standardised ε interpretation
-* Automated privacy evaluation tools
-* Joint utility–privacy optimisation
-* Methods for non-tabular data
-
----
-
-# **Conclusion**
-
-Privacy evaluation in synthetic data requires:
-
-* Rigorous, contextual, evidence-based methods
-* Clear threat models
-* Empirical validation
-* Multiple complementary metrics
-
-Perfect privacy is impossible, but **risk can be meaningfully managed** through structured assessment.
-
----
-
-# **References**
-
-*(All references included exactly as in the source document)*
-
-1. Xie et al., *Differentially Private GANs* — arXiv:1802.06739
-2. Jordon et al., *PATE-GAN* — ICLR
-3. Yoon et al., *ADS-GAN* — IEEE JBHI
-4. Trudslev et al., *Review of Privacy Metrics* — arXiv:2507.11324
-5. Osorio-Marulanda et al., *Privacy Mechanisms* — IEEE Access
-6. Liao et al., *Pick Your Enemy*
-7. Folz et al., *Scoring System for Privacy* — IEEE Access
-8. Hernandez et al., *Comprehensive Framework* — Frontiers Digital Health
-9. Yan et al., *Benchmarking Synthetic EHR Models* — Nature Communications
-10. Pierce et al., *Practical Steps for Implementing Privacy* — WMHP
-11. Pilgram et al., *Consensus Privacy Metrics Framework* — Patterns
-
----
-
-# **Further Resources**
-
-* HealthStats NSW — Privacy and small counts
-* CSIRO & OAIC — *De-identification Decision-Making Framework*
-* OVIC — *Limitations of De-identification*
-* OIC QLD — *Managing Re-identification Risk*
-* ISO/IEC 27559:2022 — Privacy enhancing de-identification
-* ISO/IEC 27554:2024 — Identity-related risk assessment
-* ISO/TS 14265:2024 — Processing purposes classification
-* ISO 25237:2017 — Pseudonymisation
-
-7:["$","$Lf",null,{"appendix":{"id":"appendix7","number":7,"title":"Appendix 7 - De-identification Techniques and Privacy Evaluation","purpose":"Reference guidance on de-identification methods and how to evaluate re-identification risks in synthetic data projects.","template":false,"description":"$undefined","body":"$10","component":"ReadOnlyContent","type":"read","exportKey":"appendix7_deid_reference","sections":"$undefined","nodes":"$undefined","terms":"$undefined"}}]
-b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
-11:I[27201,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/247eb132b7f7b574.js"],"IconMark"]
-d:[["$","title","0",{"children":"SynD - Synthetic Health Data Governance Framework"}],["$","meta","1",{"name":"description","content":"A comprehensive framework for safely generating and using synthetic health data in Australia"}],["$","meta","2",{"name":"generator","content":"v0.app"}],["$","link","3",{"rel":"shortcut icon","href":"/favicon.png"}],["$","link","4",{"rel":"icon","href":"/favicon.png"}],["$","link","5",{"rel":"apple-touch-icon","href":"/favicon.png"}],["$","$L11","6",{}]]
-9:null
+0:{"P":null,"b":"cxn-6MHdrIcOCZccdSt08","c":["","resources","appendix7"],"q":"","i":false,"f":[[["",{"children":["resources",{"children":["(appendices)",{"children":["appendix7",{"children":["__PAGE__",{}]}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/SDGF/_next/static/chunks/a3e5102e8c1e4bd7.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/SDGF/_next/static/chunks/58e45d4f177e378e.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/SDGF/_next/static/chunks/9db71e3be5a1d9f8.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"stylesheet","href":"/SDGF/print.css","media":"print"}],["$","link",null,{"rel":"icon","href":"/SDGF/favicon.png","sizes":"192x192"}],["$","link",null,{"rel":"apple-touch-icon","href":"/SDGF/favicon.png"}]]}],["$","body",null,{"className":"inter_5972bc34-module__OU16Qa__className","children":[["$","$L2",null,{"children":["$","$3",null,{"fallback":null,"children":[["$","$L4",null,{}],["$","main",null,{"className":"min-h-screen","children":["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]}],["$","link",null,{"rel":"stylesheet","href":"/SDGF/assets/chatbot/chatbot-theme.css"}],["$","script",null,{"src":"https://cdn.platform.openai.com/deployments/chatkit/chatkit.js","async":true}],["$","script",null,{"src":"/SDGF/assets/chatbot/chatkit.js","defer":true}]]}]]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","div",null,{"className":"mx-auto w-full px-4 sm:px-6 lg:px-8 max-w-7xl py-12","children":[["$","section",null,{"className":"relative mb-12 overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-900/40 via-slate-950/90 to-blue-950/80 text-white shadow-emerald-900/20 shadow-2xl","children":[["$","div",null,{"className":"absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-emerald-600/10"}],["$","div",null,{"className":"relative z-10 px-6 py-14 md:px-10 md:py-16","children":[["$","p",null,{"className":"text-sm font-semibold uppercase tracking-wide text-white/70","children":"Appendix 7"}],["$","h1",null,{"className":"mt-2 text-4xl font-bold text-balance md:text-5xl","children":"De‑identification techniques and privacy evaluation"}],["$","p",null,{"className":"mt-4 max-w-3xl text-lg text-white/80","children":"Practical guidance for reducing re‑identification risk and selecting privacy evaluation methods for synthetic health data."}],"$L7"]}]]}],"$L8","$L9","$La","$Lb","$Lc","$Ld"]}],["$Le"],"$Lf"]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false]},null,false,false],"$L10",false]],"m":"$undefined","G":["$11",[]],"s":false,"S":true}
+12:I[22016,["/SDGF/_next/static/chunks/9db71e3be5a1d9f8.js","/SDGF/_next/static/chunks/6df210ce185a710b.js"],""]
+1e:I[33696,["/SDGF/_next/static/chunks/9db71e3be5a1d9f8.js","/SDGF/_next/static/chunks/6df210ce185a710b.js"],"BackButton"]
+1f:I[97367,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/c81db6e24f0cfdeb.js"],"OutletBoundary"]
+21:I[97367,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/c81db6e24f0cfdeb.js"],"ViewportBoundary"]
+23:I[97367,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/c81db6e24f0cfdeb.js"],"MetadataBoundary"]
+7:["$","div",null,{"className":"mt-8 flex flex-wrap gap-3","children":[["$","$L12",null,{"href":"/steps/4","className":"inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-card/80","children":["Use in Step 4 ",["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right h-4 w-4","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","$L12",null,{"href":"#metrics","className":"inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-card/80","children":["Privacy metrics ",["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-target h-4 w-4","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","circle","1vlfrh",{"cx":"12","cy":"12","r":"6"}],["$","circle","1c9p78",{"cx":"12","cy":"12","r":"2"}],"$undefined"]}]]}],["$","$L12",null,{"href":"#recommendations","className":"inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-card/80","children":["Recommendations ",["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-sparkles h-4 w-4","aria-hidden":"true","children":[["$","path","4pj2yx",{"d":"M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"}],["$","path","1olli1",{"d":"M20 3v4"}],["$","path","1gvqau",{"d":"M22 5h-4"}],["$","path","vumght",{"d":"M4 17v2"}],["$","path","zchphs",{"d":"M5 18H3"}],"$undefined"]}]]}],[["$","a",null,{"href":"/SDGF/appendices_pdf/APPENDIX%207_%20De-identification%20techniques%20and%20Evaluation%20of%20Privacy%20in%20Synthetic%20Data.pdf","target":"_blank","rel":"noreferrer","className":"inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-card/80","children":["Open original PDF ",["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-file-text h-4 w-4","aria-hidden":"true","children":[["$","path","1rqfz7",{"d":"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"}],["$","path","tnqrlb",{"d":"M14 2v4a2 2 0 0 0 2 2h4"}],["$","path","b1mrlr",{"d":"M10 9H8"}],["$","path","t4e002",{"d":"M16 13H8"}],["$","path","z1uh3a",{"d":"M16 17H8"}],"$undefined"]}]]}],["$","a",null,{"href":"/SDGF/appendices_pdf/APPENDIX%207_%20De-identification%20techniques%20and%20Evaluation%20of%20Privacy%20in%20Synthetic%20Data.pdf","download":true,"className":"inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-card/80","children":["Download PDF ",["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-download h-4 w-4","aria-hidden":"true","children":[["$","path","ih7n3h",{"d":"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"}],["$","polyline","2ggqvy",{"points":"7 10 12 15 17 10"}],["$","line","1vk2je",{"x1":"12","x2":"12","y1":"15","y2":"3"}],"$undefined"]}]]}]]]}]
+8:["$","section",null,{"className":"mb-12 grid gap-6 lg:grid-cols-3","children":[["$","div","What de‑identification does",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-emerald-500/10 via-background/95 to-background/80 p-6 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"rounded-xl bg-muted/60 p-3","children":["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-shield-check h-6 w-6 text-emerald-300","aria-hidden":"true","children":[["$","path","oel41y",{"d":"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"}],["$","path","dzmm74",{"d":"m9 12 2 2 4-4"}],"$undefined"]}]}],["$","div",null,{"className":"space-y-2","children":[["$","h2",null,{"className":"text-lg font-semibold text-foreground","children":"What de‑identification does"}],["$","p",null,{"className":"text-sm leading-relaxed text-muted-foreground","children":"Break the link between a dataset and a real person so disclosed facts can’t be reasonably linked back to an identified individual."}]]}]]}]}],["$","div","Why privacy evaluation matters",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-emerald-500/10 via-background/95 to-background/80 p-6 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"rounded-xl bg-muted/60 p-3","children":["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-target h-6 w-6 text-emerald-300","aria-hidden":"true","children":[["$","circle","1mglay",{"cx":"12","cy":"12","r":"10"}],["$","circle","1vlfrh",{"cx":"12","cy":"12","r":"6"}],["$","circle","1c9p78",{"cx":"12","cy":"12","r":"2"}],"$undefined"]}]}],["$","div",null,{"className":"space-y-2","children":[["$","h2",null,{"className":"text-lg font-semibold text-foreground","children":"Why privacy evaluation matters"}],["$","p",null,{"className":"text-sm leading-relaxed text-muted-foreground","children":"Synthetic data can still leak membership or attributes when models overfit or preserve rare patterns; evaluation validates residual risk."}]]}]]}]}],["$","div","Who this is for",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-emerald-500/10 via-background/95 to-background/80 p-6 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"rounded-xl bg-muted/60 p-3","children":["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-users h-6 w-6 text-emerald-300","aria-hidden":"true","children":[["$","path","1yyitq",{"d":"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"}],["$","circle","nufk8",{"cx":"9","cy":"7","r":"4"}],["$","path","kshegd",{"d":"M22 21v-2a4 4 0 0 0-3-3.87"}],["$","path","1da9ce",{"d":"M16 3.13a4 4 0 0 1 0 7.75"}],"$undefined"]}]}],["$","div",null,{"className":"space-y-2","children":[["$","h2",null,{"className":"text-lg font-semibold text-foreground","children":"Who this is for"}],["$","p",null,{"className":"text-sm leading-relaxed text-muted-foreground","children":"Data custodians, requestors, scientists, and governance reviewers documenting a re‑identification risk assessment."}]]}]]}]}]]}]
+9:["$","section",null,{"className":"mb-14","children":[["$","div",null,{"className":"mb-6 space-y-2","children":[["$","h2",null,{"className":"text-3xl font-bold text-balance","children":"De‑identification techniques"}],["$","p",null,{"className":"max-w-4xl text-base text-muted-foreground","children":"De‑identification is a risk management exercise: stronger privacy protection generally reduces data utility. Effectiveness depends on data type, context, and plausible re‑identification threats."}]]}],["$","div",null,{"className":"grid gap-5 md:grid-cols-2 lg:grid-cols-3","children":[[["$","div","Aggregation",{"className":"h-full rounded-2xl border border-border/60 bg-card/70 p-6 shadow-sm transition hover:border-primary","children":[["$","h3",null,{"className":"text-base font-semibold text-foreground","children":"Aggregation"}],["$","p",null,{"className":"mt-3 text-sm text-muted-foreground","children":"Reduce granularity by summarising values (e.g., counts, bands, regional roll-ups)."}]]}],["$","div","Suppression",{"className":"h-full rounded-2xl border border-border/60 bg-card/70 p-6 shadow-sm transition hover:border-primary","children":[["$","h3",null,{"className":"text-base font-semibold text-foreground","children":"Suppression"}],["$","p",null,{"className":"mt-3 text-sm text-muted-foreground","children":"Remove direct identifiers or high-risk values/records when they cannot be safely generalised."}]]}],["$","div","Generalisation",{"className":"h-full rounded-2xl border border-border/60 bg-card/70 p-6 shadow-sm transition hover:border-primary","children":[["$","h3",null,{"className":"text-base font-semibold text-foreground","children":"Generalisation"}],["$","p",null,{"className":"mt-3 text-sm text-muted-foreground","children":"Replace precise values with coarser categories (e.g., date of birth → age band)."}]]}],["$","div","Pseudonymisation",{"className":"h-full rounded-2xl border border-border/60 bg-card/70 p-6 shadow-sm transition hover:border-primary","children":[["$","h3",null,{"className":"text-base font-semibold text-foreground","children":"Pseudonymisation"}],["$","p",null,{"className":"mt-3 text-sm text-muted-foreground","children":"Transform identifiers (SLKs, hashing, encryption) while recognising residual linkage risk."}]]}],["$","div","Perturbation",{"className":"h-full rounded-2xl border border-border/60 bg-card/70 p-6 shadow-sm transition hover:border-primary","children":[["$","h3",null,{"className":"text-base font-semibold text-foreground","children":"Perturbation"}],["$","p",null,{"className":"mt-3 text-sm text-muted-foreground","children":"Introduce controlled noise or swapping/micro-aggregation to reduce singling-out."}]]}]],["$","div",null,{"className":"h-full rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-6 shadow-sm","children":[["$","h3",null,{"className":"text-base font-semibold text-emerald-200","children":"Robustness checks"}],["$","p",null,{"className":"mt-3 text-sm text-emerald-100","children":"Test for both directions of re‑identification risk: matching a person to data and matching data to a person. Document assumptions about attacker knowledge and auxiliary data."}]]}]]}]]}]
+a:["$","section",null,{"id":"metrics","className":"mb-14 scroll-mt-24","children":[["$","div",null,{"className":"mb-6 space-y-2","children":[["$","h2",null,{"className":"text-3xl font-bold text-balance","children":"Privacy evaluation in synthetic data"}],["$","p",null,{"className":"max-w-4xl text-base text-muted-foreground","children":"No single score defines “privacy safe”. Use multiple metrics aligned to the threat model and interpret results in context. This table summarises commonly used families of privacy evaluation methods."}]]}],["$","div",null,{"className":"overflow-hidden rounded-2xl border border-border/60 bg-card/70 shadow-sm","children":[["$","div",null,{"className":"flex flex-wrap items-center justify-between gap-3 border-b border-border/60 bg-muted/30 px-6 py-4","children":[["$","p",null,{"className":"text-sm font-semibold text-foreground","children":"Table: categories of privacy metrics"}],["$","p",null,{"className":"text-xs text-muted-foreground","children":"Non‑adversarial methods focus on similarity/overlap; adversarial methods simulate attacks."}]]}],["$","div",null,{"className":"overflow-x-auto","children":["$","table",null,{"className":"w-full min-w-[760px] border-collapse text-sm","children":[["$","thead",null,{"children":["$","tr",null,{"className":"bg-muted/40 text-foreground","children":[["$","th",null,{"className":"px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide","children":"Type"}],["$","th",null,{"className":"px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide","children":"Category"}],["$","th",null,{"className":"px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide","children":"Method / Metric"}],["$","th",null,{"className":"px-6 py-3 text-left text-xs font-semibold uppercase tracking-wide","children":"What it tells you"}]]}]}],["$","tbody",null,{"className":"divide-y divide-border/60","children":[["$","tr","Non-adversarial-Re-identifiability-k‑Anonymity",{"className":"hover:bg-muted/20","children":[["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top","children":["$","span",null,{"className":"inline-flex rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-200","children":"Non-adversarial"}]}],["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top font-medium text-foreground","children":"Re-identifiability"}],["$","td",null,{"className":"px-6 py-4 align-top text-foreground","children":"k‑Anonymity"}],["$","td",null,{"className":"px-6 py-4 align-top text-muted-foreground","children":"Each record is indistinguishable from at least k−1 others on quasi-identifiers."}]]}],["$","tr","Non-adversarial-Re-identifiability-l‑Diversity",{"className":"hover:bg-muted/20","children":[["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top","children":["$","span",null,{"className":"inline-flex rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-200","children":"Non-adversarial"}]}],["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top font-medium text-foreground","children":"Re-identifiability"}],["$","td",null,{"className":"px-6 py-4 align-top text-foreground","children":"l‑Diversity"}],["$","td",null,{"className":"px-6 py-4 align-top text-muted-foreground","children":"Each equivalence class contains at least l distinct sensitive values."}]]}],["$","tr","Non-adversarial-Re-identifiability-t‑Closeness",{"className":"hover:bg-muted/20","children":[["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top","children":["$","span",null,{"className":"inline-flex rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-200","children":"Non-adversarial"}]}],["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top font-medium text-foreground","children":"Re-identifiability"}],["$","td",null,{"className":"px-6 py-4 align-top text-foreground","children":"t‑Closeness"}],["$","td",null,{"className":"px-6 py-4 align-top text-muted-foreground","children":"Sensitive attribute distribution within a class stays close to the overall distribution."}]]}],"$L13","$L14","$L15","$L16","$L17"]}]]}]}]]}],"$L18"]}]
+b:["$","section",null,{"id":"recommendations","className":"mb-14 scroll-mt-24","children":[["$","div",null,{"className":"mb-6 space-y-2","children":[["$","h2",null,{"className":"text-3xl font-bold text-balance","children":"Consensus-based recommendations"}],["$","p",null,{"className":"max-w-4xl text-base text-muted-foreground","children":"Practical recommendations for reporting and decision-making during re‑identification risk assessments."}]]}],["$","div",null,{"className":"grid gap-4 md:grid-cols-2","children":[["$","div","Base evaluations on quasi-identifiers (QIs).",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-chart-2/10 via-background/95 to-background/80 p-5 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald-500/20 text-xs font-bold text-emerald-200","children":1}],["$","p",null,{"className":"text-sm font-medium text-foreground","children":"Base evaluations on quasi-identifiers (QIs)."}]]}]}],["$","div","Evaluate all records (not just samples).",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-chart-2/10 via-background/95 to-background/80 p-5 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald-500/20 text-xs font-bold text-emerald-200","children":2}],["$","p",null,{"className":"text-sm font-medium text-foreground","children":"Evaluate all records (not just samples)."}]]}]}],["$","div","Avoid stand‑alone similarity metrics for privacy claims.",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-chart-2/10 via-background/95 to-background/80 p-5 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald-500/20 text-xs font-bold text-emerald-200","children":3}],["$","p",null,{"className":"text-sm font-medium text-foreground","children":"Avoid stand‑alone similarity metrics for privacy claims."}]]}]}],["$","div","Align membership disclosure tests to an explicit threat model.",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-chart-2/10 via-background/95 to-background/80 p-5 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald-500/20 text-xs font-bold text-emerald-200","children":4}],["$","p",null,{"className":"text-sm font-medium text-foreground","children":"Align membership disclosure tests to an explicit threat model."}]]}]}],["$","div","Report prevalence‑adjusted scores and naive baselines.",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-chart-2/10 via-background/95 to-background/80 p-5 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald-500/20 text-xs font-bold text-emerald-200","children":5}],["$","p",null,{"className":"text-sm font-medium text-foreground","children":"Report prevalence‑adjusted scores and naive baselines."}]]}]}],["$","div","Limit attribute disclosure claims to members when applicable.",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-chart-2/10 via-background/95 to-background/80 p-5 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald-500/20 text-xs font-bold text-emerald-200","children":6}],"$L19"]}]}],"$L1a","$L1b","$L1c","$L1d"]}]]}]
+c:["$","section",null,{"className":"mb-10","children":["$","div",null,{"className":"rounded-3xl border border-border/60 bg-muted/30 p-8","children":[["$","h2",null,{"className":"text-xl font-semibold text-foreground","children":"Using this appendix in practice"}],["$","div",null,{"className":"mt-4 grid gap-4 md:grid-cols-2","children":[["$","div",null,{"className":"rounded-2xl border border-border/60 bg-card/70 p-6","children":[["$","h3",null,{"className":"text-base font-semibold text-foreground","children":"Membership disclosure evaluation"}],["$","ul",null,{"className":"mt-3 space-y-2 text-sm text-muted-foreground","children":[["$","li",null,{"children":"Define threat model and attacker access."}],["$","li",null,{"children":"Compute a naive baseline (random guessing / prevalence)."}],["$","li",null,{"children":"Report F1 (or equivalent) against baseline and thresholds."}]]}]]}],["$","div",null,{"className":"rounded-2xl border border-border/60 bg-card/70 p-6","children":[["$","h3",null,{"className":"text-base font-semibold text-foreground","children":"Attribute disclosure evaluation"}],["$","ul",null,{"className":"mt-3 space-y-2 text-sm text-muted-foreground","children":[["$","li",null,{"children":"Select quasi-identifiers that reflect realistic auxiliary information."}],["$","li",null,{"children":"Use non-member baselines when measuring disclosure risk."}],["$","li",null,{"children":"Apply dual thresholds (absolute + relative) for decisions."}]]}]]}]]}],["$","div",null,{"className":"mt-5 flex flex-wrap items-center gap-3 text-sm","children":[["$","$L12",null,{"href":"/steps/4","className":"inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-semibold text-primary-foreground transition hover:bg-primary/90","children":["Go to Step 4 ",["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-right h-4 w-4","aria-hidden":"true","children":[["$","path","1ays0h",{"d":"M5 12h14"}],["$","path","xquz4c",{"d":"m12 5 7 7-7 7"}],"$undefined"]}]]}],["$","$L12",null,{"href":"/resources","className":"inline-flex items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-4 py-2 font-semibold text-foreground transition hover:bg-card/80","children":"Back to appendices"}]]}]]}]}]
+d:["$","$L1e",null,{}]
+e:["$","script","script-0",{"src":"/SDGF/_next/static/chunks/6df210ce185a710b.js","async":true,"nonce":"$undefined"}]
+f:["$","$L1f",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@20"}]}]
+10:["$","$1","h",{"children":[null,["$","$L21",null,{"children":"$@22"}],["$","div",null,{"hidden":true,"children":["$","$L23",null,{"children":["$","$3",null,{"name":"Next.Metadata","children":"$@24"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+13:["$","tr","Non-adversarial-Memorisation-Hitting rate / common rows",{"className":"hover:bg-muted/20","children":[["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top","children":["$","span",null,{"className":"inline-flex rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-200","children":"Non-adversarial"}]}],["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top font-medium text-foreground","children":"Memorisation"}],["$","td",null,{"className":"px-6 py-4 align-top text-foreground","children":"Hitting rate / common rows"}],["$","td",null,{"className":"px-6 py-4 align-top text-muted-foreground","children":"Exact overlap between synthetic and source records (direct leakage signal)."}]]}]
+14:["$","tr","Non-adversarial-Memorisation-Close value ratio",{"className":"hover:bg-muted/20","children":[["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top","children":["$","span",null,{"className":"inline-flex rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-200","children":"Non-adversarial"}]}],["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top font-medium text-foreground","children":"Memorisation"}],["$","td",null,{"className":"px-6 py-4 align-top text-foreground","children":"Close value ratio"}],["$","td",null,{"className":"px-6 py-4 align-top text-muted-foreground","children":"Near-matches within a distance threshold (captures ‘blurry’ memorisation)."}]]}]
+15:["$","tr","Non-adversarial-Distinguishability-Classifier / two-sample tests",{"className":"hover:bg-muted/20","children":[["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top","children":["$","span",null,{"className":"inline-flex rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-200","children":"Non-adversarial"}]}],["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top font-medium text-foreground","children":"Distinguishability"}],["$","td",null,{"className":"px-6 py-4 align-top text-foreground","children":"Classifier / two-sample tests"}],["$","td",null,{"className":"px-6 py-4 align-top text-muted-foreground","children":"Whether a model can distinguish real vs synthetic beyond chance (utility–privacy signal)."}]]}]
+16:["$","tr","Adversarial-Membership disclosure-Membership inference attack (MIA)",{"className":"hover:bg-muted/20","children":[["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top","children":["$","span",null,{"className":"inline-flex rounded-full bg-rose-500/15 px-2.5 py-1 text-xs font-semibold text-rose-200","children":"Adversarial"}]}],["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top font-medium text-foreground","children":"Membership disclosure"}],["$","td",null,{"className":"px-6 py-4 align-top text-foreground","children":"Membership inference attack (MIA)"}],["$","td",null,{"className":"px-6 py-4 align-top text-muted-foreground","children":"Attacker estimates whether an individual’s record was in the training data."}]]}]
+17:["$","tr","Adversarial-Attribute disclosure-Attribute inference attack (AIA)",{"className":"hover:bg-muted/20","children":[["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top","children":["$","span",null,{"className":"inline-flex rounded-full bg-rose-500/15 px-2.5 py-1 text-xs font-semibold text-rose-200","children":"Adversarial"}]}],["$","td",null,{"className":"whitespace-nowrap px-6 py-4 align-top font-medium text-foreground","children":"Attribute disclosure"}],["$","td",null,{"className":"px-6 py-4 align-top text-foreground","children":"Attribute inference attack (AIA)"}],["$","td",null,{"className":"px-6 py-4 align-top text-muted-foreground","children":"Attacker infers sensitive attributes for a target using quasi-identifiers and synthetic data."}]]}]
+18:["$","div",null,{"className":"mt-6 grid gap-4 md:grid-cols-2","children":[["$","div",null,{"className":"rounded-2xl border border-border/60 bg-card/70 p-6","children":[["$","h3",null,{"className":"text-base font-semibold text-foreground","children":"Threat-model reminders"}],["$","ul",null,{"className":"mt-3 space-y-2 text-sm text-muted-foreground","children":[["$","li",null,{"children":"Define attacker knowledge and access (e.g., quasi-identifiers, auxiliary datasets)."}],["$","li",null,{"children":"Separate membership, identity, and attribute disclosure risks."}],["$","li",null,{"children":"Report baselines and decision thresholds used for governance sign-off."}]]}]]}],["$","div",null,{"className":"rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-6","children":[["$","h3",null,{"className":"text-base font-semibold text-emerald-200","children":"Differential privacy (DP)"}],["$","p",null,{"className":"mt-3 text-sm text-emerald-100","children":"DP provides guarantees about the synthesis process, not a blanket guarantee about every dataset. If DP is used, document the privacy budget (ε) and validate empirical privacy risk with tests."}]]}]]}]
+19:["$","p",null,{"className":"text-sm font-medium text-foreground","children":"Limit attribute disclosure claims to members when applicable."}]
+1a:["$","div","Use non‑member baselines for comparison.",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-chart-2/10 via-background/95 to-background/80 p-5 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald-500/20 text-xs font-bold text-emerald-200","children":7}],["$","p",null,{"className":"text-sm font-medium text-foreground","children":"Use non‑member baselines for comparison."}]]}]}]
+1b:["$","div","Apply dual thresholds (absolute + relative) for decisions.",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-chart-2/10 via-background/95 to-background/80 p-5 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald-500/20 text-xs font-bold text-emerald-200","children":8}],["$","p",null,{"className":"text-sm font-medium text-foreground","children":"Apply dual thresholds (absolute + relative) for decisions."}]]}]}]
+1c:["$","div","Validate differential privacy empirically where used.",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-chart-2/10 via-background/95 to-background/80 p-5 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald-500/20 text-xs font-bold text-emerald-200","children":9}],["$","p",null,{"className":"text-sm font-medium text-foreground","children":"Validate differential privacy empirically where used."}]]}]}]
+1d:["$","div","Report stochastic variation across multiple synthetic datasets.",{"className":"rounded-2xl border border-border/60 bg-gradient-to-br from-chart-2/10 via-background/95 to-background/80 p-5 shadow-sm","children":["$","div",null,{"className":"flex items-start gap-3","children":[["$","div",null,{"className":"mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald-500/20 text-xs font-bold text-emerald-200","children":10}],["$","p",null,{"className":"text-sm font-medium text-foreground","children":"Report stochastic variation across multiple synthetic datasets."}]]}]}]
+22:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+25:I[27201,["/SDGF/_next/static/chunks/ff1a16fafef87110.js","/SDGF/_next/static/chunks/c81db6e24f0cfdeb.js"],"IconMark"]
+24:[["$","title","0",{"children":"SynD - Synthetic Health Data Governance Framework"}],["$","meta","1",{"name":"description","content":"A comprehensive framework for safely generating and using synthetic health data in Australia"}],["$","meta","2",{"name":"generator","content":"v0.app"}],["$","link","3",{"rel":"shortcut icon","href":"/favicon.png"}],["$","link","4",{"rel":"icon","href":"/favicon.png"}],["$","link","5",{"rel":"apple-touch-icon","href":"/favicon.png"}],["$","$L25","6",{}]]
+20:null
