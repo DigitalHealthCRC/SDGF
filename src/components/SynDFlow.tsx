@@ -18,7 +18,14 @@ import "reactflow/dist/style.css"
 import flowData from "@/src/content/framework/end_to_end_flow.json"
 import { RoleBadge } from "./RoleBadge"
 
-type FlowPhase = (typeof flowData)[number]
+type RawFlowPhase = (typeof flowData)[number] & {
+  phase?: unknown
+  step?: unknown
+}
+
+type FlowPhase = Omit<RawFlowPhase, "phase" | "step"> & {
+  phase: number
+}
 
 type PhaseNodeData = {
   title: string
@@ -214,6 +221,24 @@ const coercePhaseNumber = (value: unknown): number | null => {
   return null
 }
 
+const normaliseFlowData = (data: RawFlowPhase[]): FlowPhase[] => {
+  return data
+    .map((item, index) => {
+      const phase =
+        coercePhaseNumber(item.phase) ??
+        coercePhaseNumber(item.step) ??
+        (Number.isFinite(index) ? index : 0)
+
+      return {
+        ...(item as Omit<RawFlowPhase, "phase" | "step">),
+        phase,
+      } satisfies FlowPhase
+    })
+    .sort((a, b) => a.phase - b.phase)
+}
+
+const normalisedFlowData: FlowPhase[] = normaliseFlowData(flowData as unknown as RawFlowPhase[])
+
 const EDGE_STYLE = {
   stroke: "rgba(94,234,212,0.85)",
   strokeWidth: 2,
@@ -249,7 +274,7 @@ const buildGraph = (collapsedPhases: Set<number>, activePhase?: number) => {
   const optionSpacing = 120
   let cursorY = 0
 
-  flowData.forEach((phase, index) => {
+  normalisedFlowData.forEach((phase, index) => {
     const accent = getAccent(phase.phase)
     const phaseId = phaseNodeId(phase.phase)
 
@@ -302,9 +327,12 @@ const buildGraph = (collapsedPhases: Set<number>, activePhase?: number) => {
 
         decision.options.forEach((option, optionIndex) => {
           const targetPhase =
-            coercePhaseNumber(option.next_phase) ??
-            ("resume_to_phase" in option ? coercePhaseNumber(option.resume_to_phase) : null) ??
-            ("loop_to_phase" in option ? coercePhaseNumber(option.loop_to_phase) : null)
+            coercePhaseNumber("next_step" in option ? option.next_step : undefined) ??
+            coercePhaseNumber("next_phase" in option ? option.next_phase : undefined) ??
+            coercePhaseNumber("resume_to_step" in option ? option.resume_to_step : undefined) ??
+            coercePhaseNumber("resume_to_phase" in option ? option.resume_to_phase : undefined) ??
+            coercePhaseNumber("loop_to_step" in option ? option.loop_to_step : undefined) ??
+            coercePhaseNumber("loop_to_phase" in option ? option.loop_to_phase : undefined)
 
           const answerLabel = option.answer?.trim() ?? "Option"
           const description = option.action?.trim()
@@ -376,7 +404,7 @@ const buildGraph = (collapsedPhases: Set<number>, activePhase?: number) => {
       })
     }
 
-    const nextPhase = flowData[index + 1]
+    const nextPhase = normalisedFlowData[index + 1]
     if (nextPhase) {
       edges.push({
         id: `edge-${phaseId}-${phaseNodeId(nextPhase.phase)}`,
@@ -592,7 +620,7 @@ type SynDFlowProps = {
 
 const SynDFlow = forwardRef<SynDFlowHandle, SynDFlowProps>(function SynDFlow(_props, ref) {
   const [expandedTimeline, setExpandedTimeline] = useState<Set<number>>(new Set())
-  const [selectedPhase, setSelectedPhase] = useState<FlowPhase | null>(flowData[0] ?? null)
+  const [selectedPhase, setSelectedPhase] = useState<FlowPhase | null>(normalisedFlowData[0] ?? null)
   const [modalPhase, setModalPhase] = useState<FlowPhase | null>(null)
   const [collapsedFlowPhases] = useState<Set<number>>(new Set())
   const phaseRefs = useRef<Record<number, HTMLDivElement | null>>({})
@@ -619,7 +647,7 @@ const SynDFlow = forwardRef<SynDFlowHandle, SynDFlowProps>(function SynDFlow(_pr
 
   const focusPhase = useCallback(
     (phaseNumber: number) => {
-      const phase = flowData.find((item) => item.phase === phaseNumber)
+      const phase = normalisedFlowData.find((item) => item.phase === phaseNumber)
       if (phase) {
         setSelectedPhase(phase)
         setExpandedTimeline((prev) => {
@@ -654,7 +682,7 @@ const SynDFlow = forwardRef<SynDFlowHandle, SynDFlowProps>(function SynDFlow(_pr
   const handleNodeDoubleClick = useCallback(
     (_: React.MouseEvent, node: Node) => {
       const phaseNumber = (node.data as { phase?: number })?.phase
-      const phase = flowData.find((item) => item.phase === phaseNumber)
+      const phase = normalisedFlowData.find((item) => item.phase === phaseNumber)
       if (phase) {
         setModalPhase(phase)
       }
@@ -666,7 +694,7 @@ const SynDFlow = forwardRef<SynDFlowHandle, SynDFlowProps>(function SynDFlow(_pr
     <div className="space-y-6">
       <div className={SHOW_FLOW ? "grid gap-6 lg:grid-cols-[360px,1fr]" : "flex justify-center"}>
         <div className="flex flex-col items-center space-y-4">
-          {flowData.map((phase) => {
+          {normalisedFlowData.map((phase) => {
             const accent = getAccent(phase.phase)
             const isExpanded = expandedTimeline.has(phase.phase)
             const isActive = selectedPhase?.phase === phase.phase

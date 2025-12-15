@@ -515,12 +515,20 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
       >
         {field.options?.map((option) => {
           const optionId = `${field.key}-${option.value}`
+          const selected = stringValue === option.value
           return (
-            <div key={optionId} className="flex items-start gap-3 rounded-lg border border-border/60 bg-muted/50 p-3 dark:border-white/10 dark:bg-white/5">
+            <div
+              key={optionId}
+              className={`flex items-start gap-3 rounded-lg border p-3 transition-colors focus-within:ring-2 focus-within:ring-primary/30 ${
+                selected
+                  ? "border-emerald-500/40 bg-emerald-500/12"
+                  : "border-border/60 bg-foreground/10 hover:bg-foreground/12"
+              }`}
+            >
               <RadioGroupItem
                 value={option.value}
                 id={optionId}
-                className="border-muted-foreground/60 bg-muted/60 text-primary data-[state=checked]:border-primary dark:border-white/15 dark:bg-white/10 print:border-neutral-500 print:bg-transparent"
+                className="border-foreground/30 bg-foreground/18 text-primary data-[state=checked]:border-primary data-[state=checked]:bg-foreground/22 print:border-neutral-500 print:bg-transparent"
               />
               <Label htmlFor={optionId} className="text-sm text-foreground">
                 {option.label}
@@ -537,13 +545,17 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
     const hasError = showValidation && field.required && checked !== true
 
     return (
-      <div className="flex items-start gap-3 rounded-lg border border-border/60 bg-muted/50 p-3 dark:border-white/10 dark:bg-white/5">
+      <div
+        className={`flex items-start gap-3 rounded-lg border p-3 transition-colors focus-within:ring-2 focus-within:ring-primary/30 ${
+          checked ? "border-emerald-500/40 bg-emerald-500/12" : "border-border/60 bg-foreground/10 hover:bg-foreground/12"
+        }`}
+      >
         <Checkbox
           id={field.key}
           checked={checked}
           onCheckedChange={(value) => setFieldValue(field, value === true)}
           aria-invalid={hasError || undefined}
-          className="border-muted-foreground/60 bg-muted/60 text-primary data-[state=checked]:border-primary dark:border-white/15 dark:bg-white/10 print:border-neutral-500 print:bg-transparent"
+          className="border-foreground/30 bg-foreground/18 text-primary data-[state=checked]:border-primary data-[state=checked]:bg-foreground/22 print:border-neutral-500 print:bg-transparent"
         />
         <Label htmlFor={field.key} className="text-sm text-foreground">
           {field.label}
