@@ -1,0 +1,19 @@
+{
+  "id": 12,
+  "title": "Appendix 12 - Evaluating Fidelity and Utility of Synthetic Health Data",
+  "purpose": "Guide evaluators on measuring how well synthetic data preserves source patterns and supports intended analytical use.",
+  "type": "read",
+  "component": "ReadOnlyContent",
+  "template": false,
+  "personaVisibility": [
+    "custodian",
+    "requestor",
+    "scientist"
+  ],
+  "exportKey": "appendix12_fidelity_utility",
+  "body": [
+    "Fidelity focuses on how closely synthetic data reflects the statistical properties and relationships in the source data.",
+    "Utility focuses on whether synthetic data supports the analyses, models, and decisions required by the approved use case.",
+    "Use this appendix to select evaluation metrics, document thresholds, and report limitations before data sharing."
+  ]
+}

@@ -12,6 +12,7 @@ const APPENDIX_LABELS: Record<number, string> = {
   9: "Lawful Pathways Guide (Appendix 9)",
   10: "Five Safes Framework (Appendix 10)",
   11: "Framework Outcomes Form (Appendix 11)",
+  12: "Evaluating Fidelity and Utility (Appendix 12)",
 }
 
 export const getAppendixNumberFromHref = (href: string): number | null => {

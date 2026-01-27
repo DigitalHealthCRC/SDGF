@@ -86,5 +86,13 @@
     "dp": ["Complete, sign, and archive final decision."],
     "dr": ["Provide inputs and retain outcome copy."],
     "ds": ["Attach supporting technical evidence from Steps 2–5."]
+  },
+  {
+    "id": 12,
+    "title": "Evaluating Fidelity and Utility",
+    "summary": "Guidance for assessing how well synthetic data preserves patterns and supports intended analysis.",
+    "dp": ["Review utility and fidelity evidence before approving release."],
+    "dr": ["Confirm utility measures align with the approved use case."],
+    "ds": ["Compute fidelity and utility metrics and document results."]
   }
 ]
