@@ -120,11 +120,11 @@ const readAppendices = (): AppendixRecord[] => {
         id: "full-framework",
         number: 12,
         title: "Synthetic Health Data Governance Framework",
-        purpose: "The complete governance framework document (Draft 1.01).",
+        purpose: "The complete governance framework document (Draft v1.02).",
         template: false,
         roles: [],
         roleDetails: {},
-        pdfFilename: "SYNTHETIC HEALTH DATA FRAMEWORK_DRAF_101.pdf",
+        pdfFilename: "SynD Synthetic Health Data Governance Framework (SHDGF)_Draft v1.02.pdf",
         component: undefined,
         type: undefined,
       },
@@ -135,5 +135,4 @@ export default function AppendicesIndexPage() {
   const appendices = readAppendices()
   return <AppendicesClient appendices={appendices} />
 }
-
 

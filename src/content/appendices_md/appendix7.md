@@ -1,296 +1,145 @@
+# Appendix 7: De-identification techniques and privacy evaluation in synthetic data
 
-# **Appendix 7: De-Identification Techniques and Evaluation of Privacy in Synthetic Data**
+## De-identification
 
-## **De-identification Techniques**
+De-identification refers to a collection of technical and organisational approaches intended to reduce the likelihood that data can be associated with an identifiable individual. Preventing direct identity disclosure is important, but data may still be personal information if it remains reasonably linkable to an individual or a small group.
 
-De-identification aims to break the link between a dataset and an individual in the real world, ensuring that a disclosed fact (e.g., “a patient is being treated for HIV”) cannot be linked back to an identified person.
-
-The harm being prevented is **identity disclosure**, which occurs when data is re-identified. Identity disclosure can arise by:
-
-1. **Matching a person to data**, or
-2. **Matching data to a person**
-
-Robustness checks should test for both types of re-identification risk.
-
-> “De-identification is not a single technique, but a collection of approaches, algorithms, and tools… privacy protection improves as more aggressive techniques are employed, but data utility decreases.”
-
-There is no single correct method; de-identification is a **risk management exercise**. The effectiveness of different techniques depends on:
-
-* The type of data
-* Context
-* Re-identification threats
-* Desired utility
+De-identification should therefore be understood as a risk-management exercise rather than a binary state. Privacy protection generally improves as more aggressive techniques are applied, but this usually comes at the cost of reduced data utility.
 
 Examples of de-identification techniques include:
 
-* **Aggregation**
-* **Suppression** (removing identifiers or overtly identifying fields)
-* **Generalisation** (e.g., replacing date of birth with an age band)
-* **Pseudonymisation** (SLKs, encryption, hashing)
-* **Perturbation** (noise addition, micro-aggregation, data swapping)
+- Aggregation and suppression to remove identifiers or overtly identifying data fields
+- Generalisation, such as replacing exact dates of birth with age bands
+- Pseudonymisation using cryptographically protected transformations such as keyed hashing with appropriate key management
+- Perturbation through noise addition, micro-aggregation, or data swapping
 
----
+## Evaluation of privacy in synthetic data
 
-# **Evaluation of Privacy in Synthetic Data**
+### Overview
 
-## **Introduction**
+Privacy protection is a foundational principle of synthetic data generation, but residual privacy risks still persist. Membership and attribute inference can arise when synthetic data preserves statistical patterns from the original dataset, so privacy evaluation remains an essential part of synthetic data governance.
 
-Privacy protection is the first principle guiding synthetic data generation, even though synthetic data represents a **trade-off** between fidelity, utility, and privacy.
+There is no single accepted definition or universal measure of privacy risk. Existing metrics capture only partial and often complementary aspects of risk. Results that look favourable under one metric do not rule out vulnerabilities under another. Privacy evaluation should therefore be treated as a portfolio of evidence rather than a single score.
 
-Residual privacy risks persist due to factors such as:
+### Types of privacy risk
 
-* Model overfitting
-* Memorisation of sensitive patterns
-* Inference attacks exploiting preserved distributions
+- **Identity disclosure**: a synthetic record can be confidently linked to a specific person
+- **Membership disclosure**: an adversary can infer whether a specific person was included in the training data
+- **Attribute disclosure**: an adversary can infer new and sensitive information about an individual using synthetic data plus auxiliary knowledge
 
-Some generative models implement privacy mechanisms (DPGAN, PATEGAN, ADSGAN), but **privacy evaluation is still essential**.
+### Categories of evaluation metrics
 
-This appendix provides a conceptual overview of privacy evaluation methods — not algorithms or code.
+#### I. Non-adversarial metrics
 
-There is no universal definition of “privacy risk,” and metrics only capture partial aspects of vulnerability. No single score indicates overall privacy safety.
+##### A. Re-identifiability metrics
 
-A wide range of privacy metrics has been proposed. A practical grouping is summarised in **Table 1**. Categories include:
+| Method | Description |
+| --- | --- |
+| k-Anonymity | Checks whether each individual is indistinguishable from at least `k - 1` other individuals with respect to a set of quasi-identifiers. |
+| l-Diversity | Extends k-anonymity by ensuring sensitive attributes within each anonymised group have at least `l` distinct values. |
+| t-Closeness | Refines l-diversity by requiring the distribution of a sensitive attribute in any group to remain close to the overall dataset distribution. |
 
-* Traditional re-identifiability metrics
-* Distance-based methods
-* Adversarial attack-based methods
+##### B. Memorisation, similarity, and distance-based metrics
 
-There is still **no unified standard** for what constitutes adequate privacy protection.
+| Method | Description |
+| --- | --- |
+| Hitting Rate (Common Row Proportion) | Measures the percentage of exact matching records between the synthetic and source data. |
+| Close Value Ratio | Assesses the probability of near matches using a distance threshold. |
+| Similarity Ratio (`epsilon`-identifiability) | Tests whether fewer than an `epsilon` ratio of synthetic observations are "similar enough" to those in the original dataset. |
+| Nearest Neighbour Accuracy (Adversarial Accuracy) | Evaluates proximity between source and synthetic distributions, but should be interpreted cautiously because similarity-based metrics can miss serious privacy leakage. |
 
----
+##### C. Distinguishability metrics
 
-# **Table 1: Categories of Metrics for Evaluating Privacy in Synthetic Data**
+| Method | Description |
+| --- | --- |
+| Data Likelihood | Measures the likelihood of synthetic data belonging to the source data distribution. |
+| Detection Rate | Assesses how easily models can distinguish source data from synthetic data. |
 
-### **Evaluation Category → Evaluation Method / Metric → Description**
+#### II. Adversarial metrics
 
----
+##### A. Singling out attacks
 
-## **I. Non-Adversarial Metrics**
+| Method | Description |
+| --- | --- |
+| Singling Out Attack (Univariate) | Observes the uniqueness of a single attribute in synthetic data. |
+| Singling Out Attack (Multivariate) | Examines uniqueness across combinations of attributes. |
 
-### **A. Re-identifiability Metrics**
+##### B. Record linkage attacks
 
-| Method          | Description                                                                                       |
-| --------------- | ------------------------------------------------------------------------------------------------- |
-| **k-Anonymity** | Checks if each record is indistinguishable from at least *k–1* others based on quasi-identifiers. |
-| **l-Diversity** | Extends k-Anonymity by enforcing at least *l* distinct sensitive values in each group.            |
-| **t-Closeness** | Requires each group’s sensitive attribute distribution to be close to the overall distribution.   |
+| Method | Description |
+| --- | --- |
+| Public-Public Linkage | Uses the synthetic dataset to establish links between records in two external datasets. |
+| Public-Synthetic Linkage | Links rows in the synthetic dataset to an external dataset using matching criteria. |
 
----
+##### C. Attribute inference attacks
 
-### **B. Memorisation Metrics**
+| Method | Description |
+| --- | --- |
+| Exact Match AIA | Determines a missing target attribute by matching overlapping quasi-identifiers. |
+| Closest Distance AIA | Infers a sensitive value using the nearest synthetic neighbour (`k = 1`). |
+| Nearest Neighbours AIA | Uses the `k` nearest synthetic neighbours where `k > 1`. |
+| ML Inference AIA | Trains a predictive model on synthetic data to infer target attributes. |
 
-| Method                                                | Description                                                                                                            |
-| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| **Hitting Rate / Common Row Proportion**              | Measures exact matches between synthetic and source data.                                                              |
-| **Close Value Ratio**                                 | Measures “blurry matches” within a set distance threshold.                                                             |
-| **Similarity Ratio (ε-identifiability)**              | Tests if fewer than ε proportion of synthetic records are too similar to originals.                                    |
-| **Nearest Neighbour Accuracy (Adversarial Accuracy)** | Measures whether records in the original dataset are closest to synthetic vs original points. 0.5 = indistinguishable. |
+##### D. Membership inference attacks
 
----
+| Method | Description |
+| --- | --- |
+| Closest Distance MIA | Infers membership when a target record is more similar to synthetic data than to unrelated data. |
+| Nearest Neighbours MIA | Relaxes the closest-distance approach to proximity against multiple neighbours. |
+| Probability Estimation MIA | Uses hypothesis testing to assess whether a target record belongs to the synthetic data distribution. |
+| MIA Shadow Model | Uses shadow models trained with and without the target record to classify membership. |
 
-### **C. Distinguishability Metrics**
+## Limitations of common metrics
 
-| Method              | Description                                                                                                    |
-| ------------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Data Likelihood** | Measures likelihood that synthetic records belong to the original data distribution (Bayesian networks, GMMs). |
-| **Detection Rate**  | Measures how well a classifier can distinguish synthetic from real data.                                       |
+Similarity-based metrics are intuitive and simple to compute, but they can fail to detect serious privacy leakage and do not provide bounded privacy guarantees. A strong result on a similarity metric should not be treated as evidence that a dataset is safe.
 
----
+Average-case metrics such as F1 also have important limits when used as privacy metrics:
 
-## **II. Adversarial Metrics (Attack-Based)**
+- They were designed to summarise classifier performance on average, not individual privacy risk
+- They can hide severe risk affecting a small number of people
+- A low score does not prove safety
+- A high score does clearly signal a privacy failure
 
-### **A. Singling Out Attacks**
+## Differential Privacy
 
-| Method                        | Description                                            |
-| ----------------------------- | ------------------------------------------------------ |
-| **Univariate Singling Out**   | Examines uniqueness in a single attribute.             |
-| **Multivariate Singling Out** | Examines uniqueness across combinations of attributes. |
+Differential Privacy (DP) is a property of the generation process, not the output dataset itself. It provides a probabilistic guarantee that outputs are nearly indistinguishable whether or not any single individual's data was included in the input.
 
----
+- **Pure `epsilon`-DP** is the strictest definition
+- **Approximate (`epsilon`, `delta`)-DP** allows a small probability that the guarantee fails
 
-### **B. Record Linkage Attacks**
+Smaller `epsilon` values provide stronger privacy guarantees. In practice, DP should not be treated as a tick-box solution because implementation flaws, invalid assumptions, or software bugs can undermine theoretical claims.
 
-| Method                       | Description                                                        |
-| ---------------------------- | ------------------------------------------------------------------ |
-| **Public–Public Linkage**    | Uses synthetic data as a bridge between two public datasets.       |
-| **Public–Synthetic Linkage** | Links synthetic rows to external datasets using quasi-identifiers. |
+## Privacy auditing
 
----
+Privacy auditing empirically tests whether a system behaves consistently with its stated privacy claims. It complements theoretical analysis by searching for concrete failures and unexpected leakage.
 
-### **C. Attribute Inference Attacks (AIA)**
+Examples include:
 
-| Method                     | Description                                                       |
-| -------------------------- | ----------------------------------------------------------------- |
-| **Exact Match AIA**        | Infers missing attribute via exact QI matching.                   |
-| **Closest Distance AIA**   | Infers sensitive values by nearest synthetic neighbour (k=1).     |
-| **Nearest Neighbours AIA** | Uses k>1 nearest neighbours.                                      |
-| **ML Inference AIA**       | Trains a model on synthetic data to predict sensitive attributes. |
+- Membership inference attacks
+- Attribute inference attacks
+- Reconstruction attacks
+- Tests on neighbouring datasets that differ by one individual
 
----
+### Canary-based auditing
 
-### **D. Membership Inference Attacks (MIA)**
+Canary-based auditing injects carefully constructed artificial records into the training data, trains the generator, and then checks whether those canaries are detectable or reconstructable in the synthetic output. Detectable canaries provide concrete evidence of memorisation or leakage.
 
-| Method                         | Description                                                                  |
-| ------------------------------ | ---------------------------------------------------------------------------- |
-| **Closest Distance MIA**       | Membership inferred by proximity of target record to synthetic distribution. |
-| **Nearest Neighbours MIA**     | Extends above with k>1 neighbours.                                           |
-| **Probability Estimation MIA** | Hypothesis testing of membership probability.                                |
-| **Shadow Model MIA**           | Trains classifiers on shadow models with and without the target record.      |
+## Practical considerations for privacy evaluation
 
----
+- Base evaluations on realistic quasi-identifiers that reflect likely adversary knowledge
+- Evaluate the entire dataset rather than only a subset of records
+- Assess both membership and attribute disclosure risks
+- Empirically validate Differential Privacy claims in practice
+- Report results across multiple generation runs and preserve visibility of worst-case outcomes
 
-# **Consensus-Based Recommendations (R1–R10)**
+## Future directions and open challenges
 
-A Delphi process (13 experts, 3 rounds) produced 10 consensus recommendations:
+- Better empirical privacy metrics that capture worst-case rather than average-case risk
+- More practical, automated, and reproducible privacy auditing tools
+- Clearer interpretation of `epsilon` and `delta` in operational settings
+- Better handling of cumulative privacy loss across successive synthetic data releases
+- Stronger methods for time-series, longitudinal data, free text, and other complex data types
 
-1. **Base evaluations on Quasi-Identifiers**
-2. **Evaluate all records**
-3. **Avoid stand-alone similarity metrics**
-4. **Align membership disclosure with threat models**
-5. **Report prevalence-adjusted scores**
-6. **Limit attribute disclosure to members**
-7. **Use non-member baselines**
-8. **Apply dual thresholds (absolute + relative)**
-9. **Validate Differential Privacy empirically**
-10. **Report stochastic variation** across multiple synthetic datasets
+## Conclusion
 
----
-
-# **Fundamental Concepts**
-
-## **Identity Disclosure**
-
-Occurs when a synthetic record can be linked to a specific individual. Often less relevant for synthetic data because records are artificial, but overfitting may still leak identity.
-
-## **Membership Disclosure**
-
-Occurs when an adversary can tell whether a person’s data was included in the training set.
-
-Useful metrics:
-
-* **F1 score**
-* **F naïve** baseline (expected success by random guessing)
-
-## **Attribute Disclosure**
-
-Occurs when an adversary can infer sensitive attributes about an individual using synthetic data.
-
-## **Differential Privacy**
-
-Defines privacy guarantees of the *process*, not the dataset.
-
-Key components:
-
-* **ε (epsilon): privacy budget**
-* Lower ε = stronger privacy
-
----
-
-# **Common Misconceptions to Avoid**
-
-1. **Synthetic data is inherently private**
-2. **Record-level similarity indicates privacy risk**
-3. **All attributes should be considered in evaluation**
-4. **Large DP budgets automatically ensure privacy**
-
----
-
-# **Practical Evaluation Guides**
-
-## **Guide: Membership Disclosure Evaluation**
-
-* Define threat model
-* Calculate naive baseline
-* Compute F1 and compare to baseline
-* Report assumptions clearly
-
-## **Guide: Attribute Disclosure Evaluation**
-
-* Select quasi-identifiers
-* Use non-member baseline
-* Compute absolute and relative risks
-* Apply dual thresholds
-
-## **Evaluating Multiple Synthetic Datasets**
-
-* Generate **≥10 datasets**
-* Report means, SDs, worst cases
-
----
-
-# **Implementation Considerations**
-
-## Computational Efficiency
-
-* Start with domain-informed QIs
-* Expand if needed
-
-## Threshold Determination
-
-* Must be context-specific
-* Evidence-informed
-* Document assumptions
-
-## Reporting Requirements
-
-Include:
-
-* Absolute & relative metrics
-* Variation measures
-* Worst-case values
-* Threat model definitions
-
----
-
-# **Future Directions**
-
-* Empirical threshold validation
-* Standardised ε interpretation
-* Automated privacy evaluation tools
-* Joint utility–privacy optimisation
-* Methods for non-tabular data
-
----
-
-# **Conclusion**
-
-Privacy evaluation in synthetic data requires:
-
-* Rigorous, contextual, evidence-based methods
-* Clear threat models
-* Empirical validation
-* Multiple complementary metrics
-
-Perfect privacy is impossible, but **risk can be meaningfully managed** through structured assessment.
-
----
-
-# **References**
-
-*(All references included exactly as in the source document)*
-
-1. Xie et al., *Differentially Private GANs* — arXiv:1802.06739
-2. Jordon et al., *PATE-GAN* — ICLR
-3. Yoon et al., *ADS-GAN* — IEEE JBHI
-4. Trudslev et al., *Review of Privacy Metrics* — arXiv:2507.11324
-5. Osorio-Marulanda et al., *Privacy Mechanisms* — IEEE Access
-6. Liao et al., *Pick Your Enemy*
-7. Folz et al., *Scoring System for Privacy* — IEEE Access
-8. Hernandez et al., *Comprehensive Framework* — Frontiers Digital Health
-9. Yan et al., *Benchmarking Synthetic EHR Models* — Nature Communications
-10. Pierce et al., *Practical Steps for Implementing Privacy* — WMHP
-11. Pilgram et al., *Consensus Privacy Metrics Framework* — Patterns
-
----
-
-# **Further Resources**
-
-* HealthStats NSW — Privacy and small counts
-* CSIRO & OAIC — *De-identification Decision-Making Framework*
-* OVIC — *Limitations of De-identification*
-* OIC QLD — *Managing Re-identification Risk*
-* ISO/IEC 27559:2022 — Privacy enhancing de-identification
-* ISO/IEC 27554:2024 — Identity-related risk assessment
-* ISO/TS 14265:2024 — Processing purposes classification
-* ISO 25237:2017 — Pseudonymisation
-
+Privacy evaluation for synthetic data requires a systematic, evidence-based approach. No single workflow or metric guarantees safety. Responsible practice depends on realistic threat modelling, transparent assumptions, empirical auditing, and a portfolio of complementary evidence to understand and manage residual risk.

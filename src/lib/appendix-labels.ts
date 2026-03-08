@@ -7,7 +7,7 @@ const APPENDIX_LABELS: Record<number, string> = {
   4: "Use Case Assessment (Appendix 4)",
   5: "Impact Assessment (Appendix 5)",
   6: "Technical Assessment Template (Appendix 6)",
-  7: "De-identification Techniques and Privacy Evaluation (Appendix 7)",
+  7: "De-identification techniques and privacy evaluation in synthetic data (Appendix 7)",
   8: "Decision Tree for Complex Cases (Appendix 8)",
   9: "Lawful Pathways Guide (Appendix 9)",
   10: "Five Safes Framework (Appendix 10)",
