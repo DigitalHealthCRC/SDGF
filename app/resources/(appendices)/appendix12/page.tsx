@@ -111,7 +111,7 @@ export default function Appendix12Page() {
             <div className="rounded-2xl border border-border/60 bg-card/70 p-6">
               <h3 className="text-base font-semibold text-foreground">Before release</h3>
               <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                <li>Define what "good enough" fidelity and utility mean for the approved use case.</li>
+                <li>Define what &quot;good enough&quot; fidelity and utility mean for the approved use case.</li>
                 <li>Select metrics that reflect those requirements and document thresholds.</li>
                 <li>Report results alongside synthesis parameters and data limitations.</li>
               </ul>

@@ -63,7 +63,7 @@ export default function Home() {
         <AuroraBackground />
         <div className="relative z-10 text-center px-6 py-16 md:py-20">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">
-            Synthetic Health Data Governance Framework <span className="text-2xl md:text-3xl text-white/50 font-normal">(DRAFT 1.01)</span>
+            Synthetic Health Data Governance Framework <span className="text-2xl md:text-3xl text-white/50 font-normal">(DRAFT v1.02)</span>
           </h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto text-pretty">
             A comprehensive governance framework for safely, legally, and ethically generating and using synthetic health data in Australia.

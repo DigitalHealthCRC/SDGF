@@ -8,9 +8,35 @@ import TemplateForm from "@/src/components/TemplateForm"
 import { Glossary } from "@/src/components/appendices/Glossary"
 import { DecisionTree } from "@/src/components/appendices/DecisionTree"
 import { BackButton } from "@/src/components/back-button"
-
-import type { AppendixRecord } from "./[id]/page"
 import { PageShell } from "@/components/page-shell"
+
+type AppendixRecord = {
+  id: string
+  title: string
+  purpose: string
+  template?: boolean
+  description?: string
+  body?: string | string[]
+  component?: string
+  type?: string
+  pdfFilename?: string
+  exportKey?: string
+  sections?: Array<{
+    groupLabel?: string
+    description?: string
+    fields: Array<{
+      name?: string
+      label: string
+      type?: "text" | "textarea" | "date" | "select" | "radio" | "checkbox"
+      placeholder?: string
+      options?: Array<string | { label: string; value?: string }>
+      required?: boolean
+      helperText?: string
+    }>
+  }>
+  nodes?: Array<{ id: string; text: string; options: Array<{ label: string; next: string }> }>
+  terms?: Array<{ term: string; definition: string }>
+}
 
 // Export BackLink as an alias for BackButton for backward compatibility
 export { BackButton as BackLink }

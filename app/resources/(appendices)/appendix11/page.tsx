@@ -2,13 +2,14 @@
 
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import TemplateForm, { type TemplateSection } from "@/src/components/TemplateForm"
-import appendixData from "@/src/content/appendices/appendix11.json"
+import { getRequiredAppendixDefinitionBySlug } from "@/src/lib/appendix-registry"
 
 import { BackLink } from "../appendix-detail"
 
+const appendixData = getRequiredAppendixDefinitionBySlug("appendix11")
 const sections = (appendixData.sections ?? []) as TemplateSection[]
 const storageId = (appendixData.exportKey as string) ?? "appendix11-outcomes-form"
-const pdfFilename = "APPENDIX 11_ Synthetic health data request and assessment outcomes form.pdf"
+const pdfFilename = appendixData.pdfFilename ?? "APPENDIX 11_ Synthetic health data request and assessment outcomes form.pdf"
 
 export default function Appendix11Page() {
   const pdfHref = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/appendices_pdf/${encodeURIComponent(pdfFilename)}`

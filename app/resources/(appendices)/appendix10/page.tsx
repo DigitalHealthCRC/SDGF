@@ -2,13 +2,14 @@
 
 import TwoColumnLayout from "@/src/components/TwoColumnLayout"
 import TemplateForm, { type TemplateSection } from "@/src/components/TemplateForm"
-import appendixData from "@/src/content/appendices/appendix10.json"
+import { getRequiredAppendixDefinitionBySlug } from "@/src/lib/appendix-registry"
 
 import { BackLink } from "../appendix-detail"
 
+const appendixData = getRequiredAppendixDefinitionBySlug("appendix10")
 const sections = (appendixData.sections ?? []) as TemplateSection[]
 const storageId = (appendixData.exportKey as string) ?? "appendix10-safety-assessment"
-const pdfFilename = "APPENDIX 10_ Safety Assessment.pdf"
+const pdfFilename = appendixData.pdfFilename ?? "APPENDIX 10_ Safety Assessment.pdf"
 
 export default function Appendix10Page() {
   const pdfHref = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/appendices_pdf/${encodeURIComponent(pdfFilename)}`

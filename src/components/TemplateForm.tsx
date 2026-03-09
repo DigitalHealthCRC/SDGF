@@ -13,6 +13,13 @@ import { Progress } from "@/components/ui/progress"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import {
+  LEGACY_SHARED_ANSWER_STORAGE_KEY,
+  SHARED_ANSWER_STORAGE_KEY,
+  getStorageCandidates,
+  makeStorageKey,
+  readFirstStorageValue,
+} from "@/src/lib/storage"
 
 type FieldType = "text" | "textarea" | "date" | "select" | "radio" | "checkbox"
 
@@ -60,8 +67,6 @@ type NormalisedSection = {
 
 type FieldValue = string | boolean
 
-const SHARED_ANSWER_STORAGE_KEY = "synd_framework_shared_answers_v1"
-
 export const slugify = (value: string) =>
   value
     .toLowerCase()
@@ -83,6 +88,7 @@ const normaliseOption = (option: TemplateFieldOption): NormalisedOption => {
 
 export default function TemplateForm({ id, exportKey, fields, sections, intro }: TemplateFormProps) {
   const storageId = exportKey ?? id
+  const storageKey = makeStorageKey(storageId)
   const [values, setValues] = useState<Record<string, FieldValue>>({})
   const [isSaving, setIsSaving] = useState(false)
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null)
@@ -171,12 +177,12 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
   useEffect(() => {
     if (typeof window === "undefined") return
 
-    if (hydratedStorageRef.current === storageId) return
-    hydratedStorageRef.current = storageId
+    if (hydratedStorageRef.current === storageKey) return
+    hydratedStorageRef.current = storageKey
 
-    const readRecord = (key: string) => {
+    const readRecord = (keys: string[]) => {
       try {
-        const raw = window.localStorage.getItem(key)
+        const raw = readFirstStorageValue(window.localStorage, keys)
         if (!raw) return null
         const parsed = JSON.parse(raw) as unknown
         if (!parsed || typeof parsed !== "object") return null
@@ -210,8 +216,8 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
       }
     }
 
-    const saved = readRecord(storageId)
-    const sharedRaw = readRecord(SHARED_ANSWER_STORAGE_KEY)
+    const saved = readRecord(getStorageCandidates(storageKey, [storageId]))
+    const sharedRaw = readRecord(getStorageCandidates(SHARED_ANSWER_STORAGE_KEY, [LEGACY_SHARED_ANSWER_STORAGE_KEY]))
     const shared: Record<string, string> = {}
 
     if (sharedRaw) {
@@ -242,7 +248,7 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
 
     setValues(merged)
     setLastSavedAt(new Date())
-  }, [normalisedSections, storageId])
+  }, [normalisedSections, storageId, storageKey])
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -254,7 +260,7 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
     setIsSaving(true)
     saveTimeoutRef.current = window.setTimeout(() => {
       try {
-        window.localStorage.setItem(storageId, JSON.stringify(values))
+        window.localStorage.setItem(storageKey, JSON.stringify(values))
         setLastSavedAt(new Date())
       } catch {
         // ignore storage failures (quota, private mode)
@@ -269,7 +275,7 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
         saveTimeoutRef.current = null
       }
     }
-  }, [normalisedSections.length, storageId, values])
+  }, [normalisedSections.length, storageKey, values])
 
   const scheduleSharedSave = () => {
     if (typeof window === "undefined") return
@@ -334,7 +340,7 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
 
     setIsSaving(true)
     try {
-      window.localStorage.setItem(storageId, JSON.stringify(values))
+      window.localStorage.setItem(storageKey, JSON.stringify(values))
       setLastSavedAt(new Date())
     } catch {
       // ignore storage failures (quota, private mode)
@@ -350,6 +356,7 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
     setValues({})
     setShowValidation(false)
     try {
+      window.localStorage.removeItem(storageKey)
       window.localStorage.removeItem(storageId)
     } catch {
       // ignore
@@ -371,6 +378,7 @@ export default function TemplateForm({ id, exportKey, fields, sections, intro }:
 
     try {
       window.localStorage.removeItem(SHARED_ANSWER_STORAGE_KEY)
+      window.localStorage.removeItem(LEGACY_SHARED_ANSWER_STORAGE_KEY)
     } catch {
       // ignore
     }

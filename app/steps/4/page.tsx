@@ -125,7 +125,7 @@ export default function Step4Page() {
       <div>
         <h3 className="font-semibold text-foreground">Why This Step</h3>
         <p className="text-muted-foreground">
-          Ensure the synthetic dataset meets the 'very low risk' threshold for re-identification before release.
+          Ensure the synthetic dataset meets the &lsquo;very low risk&rsquo; threshold for re-identification before release.
         </p>
       </div>
       <div>
@@ -145,7 +145,7 @@ export default function Step4Page() {
           <AlertCircle className="h-5 w-5" />
           <span className="font-semibold">Risk threshold critical</span>
         </div>
-        Only proceed if residual risk is 'very low'. High risk requires PIA and GC approval.
+        Only proceed if residual risk is &lsquo;very low&rsquo;. High risk requires PIA and GC approval.
       </div>
     </div>
   )
@@ -155,7 +155,7 @@ export default function Step4Page() {
       <section className="space-y-4 rounded-xl border border-border/60 bg-card/70 p-6 shadow-md">
         <header>
           <h2 className="text-xl font-semibold text-foreground">Re-identification Risk Assessment</h2>
-          <p className="text-sm text-muted-foreground">Complete all assessments to verify 'very low' risk status.</p>
+          <p className="text-sm text-muted-foreground">Complete all assessments to verify &lsquo;very low&rsquo; risk status.</p>
         </header>
         <div className="space-y-3">
           {stepData.checklist.map((label, index) => (
@@ -260,7 +260,7 @@ export default function Step4Page() {
           <div className="w-full max-w-md space-y-6 rounded-xl border border-border/60 bg-background p-6 shadow-2xl">
             <h3 className="text-xl font-semibold text-foreground">Complete Step 4?</h3>
             <p className="text-sm text-muted-foreground">
-              You have completed all required assessments for Step 4. The synthetic dataset meets 'very low' risk criteria.
+              You have completed all required assessments for Step 4. The synthetic dataset meets &lsquo;very low&rsquo; risk criteria.
             </p>
             <div className="flex gap-3">
               <button

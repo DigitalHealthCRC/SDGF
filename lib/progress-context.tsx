@@ -1,6 +1,14 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, startTransition, type ReactNode } from "react"
+import {
+  LEGACY_PROGRESS_COMPLETION_KEY,
+  LEGACY_PROGRESS_FORM_DATA_KEY,
+  PROGRESS_COMPLETION_STORAGE_KEY,
+  PROGRESS_FORM_DATA_STORAGE_KEY,
+  getStorageCandidates,
+  readFirstStorageValue,
+} from "@/src/lib/storage"
 
 interface ProgressContextType {
   stepCompletion: Record<number, boolean>
@@ -16,10 +24,15 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const [stepCompletion, setStepCompletion] = useState<Record<number, boolean>>({})
   const [formData, setFormData] = useState<Record<number, any>>({})
 
-  // Load from localStorage on mount
   useEffect(() => {
-    const savedCompletion = localStorage.getItem("synd-completion")
-    const savedFormData = localStorage.getItem("synd-form-data")
+    const savedCompletion = readFirstStorageValue(
+      localStorage,
+      getStorageCandidates(PROGRESS_COMPLETION_STORAGE_KEY, [LEGACY_PROGRESS_COMPLETION_KEY]),
+    )
+    const savedFormData = readFirstStorageValue(
+      localStorage,
+      getStorageCandidates(PROGRESS_FORM_DATA_STORAGE_KEY, [LEGACY_PROGRESS_FORM_DATA_KEY]),
+    )
 
     startTransition(() => {
       if (savedCompletion) setStepCompletion(JSON.parse(savedCompletion))
@@ -30,20 +43,22 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const completeStep = (step: number) => {
     const newCompletion = { ...stepCompletion, [step]: true }
     setStepCompletion(newCompletion)
-    localStorage.setItem("synd-completion", JSON.stringify(newCompletion))
+    localStorage.setItem(PROGRESS_COMPLETION_STORAGE_KEY, JSON.stringify(newCompletion))
   }
 
   const resetProgress = () => {
     setStepCompletion({})
     setFormData({})
-    localStorage.removeItem("synd-completion")
-    localStorage.removeItem("synd-form-data")
+    localStorage.removeItem(PROGRESS_COMPLETION_STORAGE_KEY)
+    localStorage.removeItem(PROGRESS_FORM_DATA_STORAGE_KEY)
+    localStorage.removeItem(LEGACY_PROGRESS_COMPLETION_KEY)
+    localStorage.removeItem(LEGACY_PROGRESS_FORM_DATA_KEY)
   }
 
   const saveFormData = (step: number, data: any) => {
     const newFormData = { ...formData, [step]: data }
     setFormData(newFormData)
-    localStorage.setItem("synd-form-data", JSON.stringify(newFormData))
+    localStorage.setItem(PROGRESS_FORM_DATA_STORAGE_KEY, JSON.stringify(newFormData))
   }
 
   const getFormData = (step: number) => {

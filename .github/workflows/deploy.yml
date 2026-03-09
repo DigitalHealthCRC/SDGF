@@ -3,8 +3,11 @@ name: Deploy static Next.js site to GitHub Pages
 on:
   push:
     branches:
-      - main          # build whenever main is updated
-  workflow_dispatch:   # allow manual runs
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -25,10 +28,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
       - name: Build static export
         run: npm run build
 
       - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
