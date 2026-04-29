@@ -15,6 +15,7 @@ import { RoleBadgeBar } from "@/src/components/RoleBadgeBar"
 import { GovernanceIntentCard } from "@/src/components/GovernanceIntentCard"
 import { DecisionPanel } from "@/src/components/DecisionPanel"
 import { EvidenceChecklist } from "@/src/components/EvidenceChecklist"
+import { StepCompletionRequirements } from "@/src/components/StepCompletionRequirements"
 
 interface StepContent {
   title: string
@@ -36,6 +37,23 @@ const stepData = stepDataJson as StepContent
 
 const normaliseTitle = (title?: string) => (title ? title.replace(/\s*[\u2013\u2014]\s*/, ": ") : "Step 2: Prepare Source Data")
 
+const dataQualityChecks = [
+  { id: "completeness", label: "Data completeness assessed", description: "Missing values, gaps, and coverage evaluated" },
+  { id: "accuracy", label: "Data accuracy verified", description: "Source data validated against known standards" },
+  { id: "consistency", label: "Data consistency checked", description: "Internal consistency and format standardisation confirmed" },
+  { id: "timeliness", label: "Data timeliness evaluated", description: "Currency and relevance of source data assessed" },
+]
+
+const fitnessChecks = [
+  { id: "representativeness", label: "Representativeness of source data confirmed" },
+  { id: "sampleSize", label: "Adequate sample size for synthesis" },
+  { id: "variableSelection", label: "Key variables identified and documented" },
+  { id: "biasAssessment", label: "Potential biases in source data assessed" },
+  { id: "dataLineage", label: "Data lineage and provenance documented" },
+]
+
+const requiredChecks = [...dataQualityChecks, ...fitnessChecks]
+
 export default function Step2Page() {
   const stepNumber = 2
   const { completeStep, stepCompletion, saveFormData, getFormData } = useProgress()
@@ -45,11 +63,13 @@ export default function Step2Page() {
   const [showCompleteModal, setShowCompleteModal] = useState(false)
 
   const allChecksComplete = () => {
-    const dataQualityChecks = ["completeness", "accuracy", "consistency", "timeliness"]
-    const fitnessChecks = ["representativeness", "sampleSize", "variableSelection", "biasAssessment", "dataLineage"]
-    const checks = [...dataQualityChecks, ...fitnessChecks]
-    return checks.every((id) => Boolean(formData[id]))
+    return requiredChecks.every((check) => Boolean(formData[check.id]))
   }
+
+  const completionRequirements = requiredChecks.map((check) => ({
+    label: check.label,
+    complete: Boolean(formData[check.id]),
+  }))
 
   const handleCheckChange = (id: string, checked: boolean) => {
     const next = { ...formData, [id]: checked }
@@ -148,12 +168,7 @@ export default function Step2Page() {
           <p className="text-sm text-muted-foreground">Evaluate readiness across core quality dimensions.</p>
         </header>
         <div className="space-y-3">
-          {[
-            { id: "completeness", label: "Data completeness assessed", description: "Missing values, gaps, and coverage evaluated" },
-            { id: "accuracy", label: "Data accuracy verified", description: "Source data validated against known standards" },
-            { id: "consistency", label: "Data consistency checked", description: "Internal consistency and format standardisation confirmed" },
-            { id: "timeliness", label: "Data timeliness evaluated", description: "Currency and relevance of source data assessed" },
-          ].map((check) => (
+          {dataQualityChecks.map((check) => (
             <label key={check.id} className="flex items-start gap-3">
               <input
                 type="checkbox"
@@ -178,13 +193,7 @@ export default function Step2Page() {
           <p className="text-sm text-muted-foreground">Confirm the dataset can support the intended synthesis use case.</p>
         </header>
         <div className="space-y-3">
-          {[
-            { id: "representativeness", label: "Representativeness of source data confirmed" },
-            { id: "sampleSize", label: "Adequate sample size for synthesis" },
-            { id: "variableSelection", label: "Key variables identified and documented" },
-            { id: "biasAssessment", label: "Potential biases in source data assessed" },
-            { id: "dataLineage", label: "Data lineage and provenance documented" },
-          ].map((check) => (
+          {fitnessChecks.map((check) => (
             <label key={check.id} className="flex items-start gap-3">
               <input
                 type="checkbox"
@@ -224,6 +233,11 @@ export default function Step2Page() {
           <Printer className="h-4 w-4" /> Print
         </button>
       </div>
+
+      <StepCompletionRequirements
+        requirements={completionRequirements}
+        isComplete={stepCompletion[stepNumber]}
+      />
 
       <button
         type="button"

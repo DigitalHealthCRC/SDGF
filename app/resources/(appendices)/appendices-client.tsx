@@ -1,12 +1,14 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Download, FileText, FileSpreadsheet, FileCode } from "lucide-react";
+import { ArrowRight, Download, FileText, FileSpreadsheet, FileCode, Search, X } from "lucide-react";
 
 import type { AppendixRecord } from "../page";
 import { PageShell } from "@/components/page-shell";
 import { RoleBadge } from "@/src/components/RoleBadge";
 import { RoleLegend } from "@/src/components/RoleLegend";
+import { filterAppendixResources, type AppendixResourceType } from "@/src/lib/resource-filters";
 
 const cardGradients = [
   "from-chart-1/20 to-chart-1/5",
@@ -21,6 +23,30 @@ interface AppendicesClientProps {
 }
 
 export function AppendicesClient({ appendices }: AppendicesClientProps) {
+  const [query, setQuery] = useState("")
+  const [type, setType] = useState<AppendixResourceType>("all")
+  const [role, setRole] = useState("all")
+  const [step, setStep] = useState("all")
+
+  const steps = useMemo(
+    () => Array.from(new Set(appendices.filter((appendix) => appendix.id !== "full-framework").map((appendix) => appendix.number))).sort((a, b) => a - b),
+    [appendices],
+  )
+
+  const filteredAppendices = useMemo(
+    () => filterAppendixResources(appendices, { query, type, role, step }),
+    [appendices, query, role, step, type],
+  )
+
+  const hasFilters = query.trim().length > 0 || type !== "all" || role !== "all" || step !== "all"
+
+  const clearFilters = () => {
+    setQuery("")
+    setType("all")
+    setRole("all")
+    setStep("all")
+  }
+
   const templates = [
     {
       title: "Use Case Assessment Template",
@@ -92,16 +118,90 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
 
       <RoleLegend />
 
+      <section className="mb-8 rounded-xl border border-border/60 bg-card/70 p-4 shadow-sm">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_180px_160px_160px_auto] lg:items-end">
+          <label className="space-y-2">
+            <span className="text-sm font-semibold text-foreground">Search resources</span>
+            <span className="relative block">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search by appendix, task, role, or keyword"
+                className="h-11 w-full rounded-lg border border-border/70 bg-background/80 pl-10 pr-3 text-sm text-foreground outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30"
+              />
+            </span>
+          </label>
+          <label className="space-y-2">
+            <span className="text-sm font-semibold text-foreground">Type</span>
+            <select
+              value={type}
+              onChange={(event) => setType(event.target.value as AppendixResourceType)}
+              className="h-11 w-full rounded-lg border border-border/70 bg-background/80 px-3 text-sm text-foreground outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30"
+            >
+              <option value="all">All types</option>
+              <option value="full-framework">Full framework</option>
+              <option value="template">Templates</option>
+              <option value="reference">References</option>
+            </select>
+          </label>
+          <label className="space-y-2">
+            <span className="text-sm font-semibold text-foreground">Role</span>
+            <select
+              value={role}
+              onChange={(event) => setRole(event.target.value)}
+              className="h-11 w-full rounded-lg border border-border/70 bg-background/80 px-3 text-sm text-foreground outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30"
+            >
+              <option value="all">All roles</option>
+              <option value="DP">Data Provider</option>
+              <option value="DR">Data Requestor</option>
+              <option value="DS">Data Scientist</option>
+            </select>
+          </label>
+          <label className="space-y-2">
+            <span className="text-sm font-semibold text-foreground">Step</span>
+            <select
+              value={step}
+              onChange={(event) => setStep(event.target.value)}
+              className="h-11 w-full rounded-lg border border-border/70 bg-background/80 px-3 text-sm text-foreground outline-none transition focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30"
+            >
+              <option value="all">All steps</option>
+              {steps.map((stepNumber) => (
+                <option key={stepNumber} value={String(stepNumber)}>
+                  Appendix {stepNumber}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            type="button"
+            onClick={clearFilters}
+            disabled={!hasFilters}
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-border/70 px-4 text-sm font-semibold text-foreground transition hover:bg-muted/60 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
+            Clear
+          </button>
+        </div>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Showing {filteredAppendices.length} of {appendices.length} resources. The full framework download is pinned first when it matches your filters.
+        </p>
+      </section>
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-24">
-        {appendices.map((appendix, index) => (
-          <div key={appendix.id} className="group relative h-full">
+        {filteredAppendices.map((appendix, index) => (
+          <div
+            key={appendix.id}
+            className={`group relative h-full ${appendix.id === "full-framework" ? "md:col-span-2 lg:col-span-3" : ""}`}
+          >
             {appendix.id !== "full-framework" && (
               <Link href={`/resources/${appendix.id}`} className="absolute inset-0 z-0">
                 <span className="sr-only">View {appendix.title}</span>
               </Link>
             )}
             <div
-              className={`flex flex-col h-full rounded-lg border-2 bg-gradient-to-br ${cardGradients[index % cardGradients.length]} p-6 transition-all hover:border-primary hover:shadow-lg`}
+              className={`flex flex-col h-full rounded-lg border-2 bg-gradient-to-br ${appendix.id === "full-framework" ? "from-emerald-500/20 via-card to-sky-500/10" : cardGradients[index % cardGradients.length]} p-6 transition-all hover:border-primary hover:shadow-lg`}
             >
               <div className="flex-1 pointer-events-none">
                 <div className="flex items-start justify-between gap-4">
@@ -148,6 +248,11 @@ export function AppendicesClient({ appendices }: AppendicesClientProps) {
             </div>
           </div>
         ))}
+        {filteredAppendices.length === 0 && (
+          <div className="rounded-xl border border-border/60 bg-card/70 p-6 text-sm text-muted-foreground md:col-span-2 lg:col-span-3">
+            No resources match these filters. Try clearing the filters or searching for a broader term.
+          </div>
+        )}
       </div>
 
       <div className="mb-12">

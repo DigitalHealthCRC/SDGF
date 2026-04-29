@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Users, Shield, FlaskConical, CheckCircle2, HeartPulse, Database, Building2, Microscope, Scale } from "lucide-react"
+import { ArrowRight, Download, FileSearch, Users, Shield, FlaskConical, CheckCircle2, HeartPulse, Database, Building2, Microscope, Scale } from "lucide-react"
 
 import { AuroraBackground } from "@/components/aurora-background"
 import { RoleBadge } from "@/src/components/RoleBadge"
@@ -68,6 +68,30 @@ export default function Home() {
           <p className="text-xl text-white/80 max-w-3xl mx-auto text-pretty">
             A comprehensive governance framework for safely, legally, and ethically generating and using synthetic health data in Australia.
           </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href="/about"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-sky-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:-translate-y-0.5 hover:shadow-emerald-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 sm:w-auto"
+            >
+              Start Framework
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+            <Link
+              href="/resources"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 sm:w-auto"
+            >
+              <FileSearch className="h-4 w-4" aria-hidden="true" />
+              Find The Right Appendix
+            </Link>
+            <a
+              href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/appendices_pdf/${encodeURIComponent("SynD Synthetic Health Data Governance Framework (SHDGF)_Draft v1.02.pdf")}`}
+              download
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 sm:w-auto"
+            >
+              <Download className="h-4 w-4" aria-hidden="true" />
+              Download Full Framework
+            </a>
+          </div>
         </div>
       </section>
 

@@ -15,6 +15,7 @@ import { RoleBadgeBar } from "@/src/components/RoleBadgeBar"
 import { GovernanceIntentCard } from "@/src/components/GovernanceIntentCard"
 import { DecisionPanel } from "@/src/components/DecisionPanel"
 import { EvidenceChecklist } from "@/src/components/EvidenceChecklist"
+import { StepCompletionRequirements } from "@/src/components/StepCompletionRequirements"
 
 interface StepContent {
     title: string
@@ -61,6 +62,10 @@ export default function Step6Page() {
     }
 
     const allComplete = formState.checklist.length > 0 && formState.checklist.every(Boolean)
+    const completionRequirements = stepData.checklist.map((label, index) => ({
+        label,
+        complete: Boolean(formState.checklist[index]),
+    }))
 
     const handleComplete = () => {
         if (!allComplete) return
@@ -198,6 +203,11 @@ export default function Step6Page() {
                     <Printer className="h-4 w-4" /> Print
                 </button>
             </div>
+
+            <StepCompletionRequirements
+                requirements={completionRequirements}
+                isComplete={stepCompletion[stepNumber]}
+            />
 
             <button
                 type="button"
