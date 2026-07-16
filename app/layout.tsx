@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
+import { SiteFooter } from "@/components/site-footer";
 import { ProgressProvider } from "@/lib/progress-context";
 
 const ENV = process.env as Record<string, string | undefined>;
@@ -29,11 +30,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href={assetPath("/favicon.png")} sizes="192x192" />
         <link rel="apple-touch-icon" href={assetPath("/favicon.png")} />
       </head>
-      <body>
+      <body className="flex min-h-dvh flex-col">
         <ProgressProvider>
           <Suspense fallback={null}>
             <Navigation />
-            <main className="min-h-screen">{children}</main>
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
           </Suspense>
         </ProgressProvider>
         <link rel="stylesheet" href={assetPath("/assets/chatbot/chatbot-theme.css")} />
